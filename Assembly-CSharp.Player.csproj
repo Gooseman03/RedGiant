@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{29E05ADD-0FAE-D268-B3FA-A992343C97A3}</ProjectGuid>
+    <ProjectGuid>{3D203C0D-DD71-CADB-ED6D-87547501EF9D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -90,6 +90,8 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+    <Compile Include="Assets\scripts\PowerSwitchController.cs" />
+    <Compile Include="Assets\scripts\UiUpdate.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
@@ -97,8 +99,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\scripts\OxygenGenerator.cs" />
-    <Compile Include="Assets\scripts\UiUpdate.cs" />
-    <Compile Include="Assets\scripts\PowerSwitchController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -718,95 +718,95 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.ProBuilder.Player.csproj">
-      <Project>{7019CA05-E0C7-B258-9D09-B5117722943F}</Project>
+      <Project>{30CD400A-DD00-680C-6D1F-90E0CC7EB311}</Project>
       <Name>Unity.ProBuilder.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.InputSystem.Player.csproj">
-      <Project>{2ACA6D75-5B6B-1817-EB7B-8115E18556A8}</Project>
+      <Project>{2331953B-5D71-B893-6A54-B379CF4EA4F3}</Project>
       <Name>Unity.InputSystem.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Autodesk.Fbx.Player.csproj">
-      <Project>{AFE7571D-A288-A9B9-1242-5F83F1085236}</Project>
+      <Project>{38844851-0B38-E49B-55D4-0CC708807280}</Project>
       <Name>Autodesk.Fbx.Player</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.Player.csproj">
-      <Project>{59297EFF-BBC1-11B2-4840-A772D9A24DEC}</Project>
+      <Project>{7D9497C3-6F75-097F-5DC1-BC3BD312E46A}</Project>
       <Name>UnityEngine.UI.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Cinemachine.Player.csproj">
-      <Project>{CE08C49A-12DF-0EE1-BC81-8929BD579902}</Project>
+      <Project>{35CAFE26-1B1C-5022-82A9-3F9A1C60C10F}</Project>
       <Name>Cinemachine.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Sequences.Player.csproj">
-      <Project>{8B5C02FA-7C4D-CB46-C156-BE66DDCE1FE4}</Project>
+      <Project>{73B528B0-4076-34F9-6146-BE4DF710BC3C}</Project>
       <Name>Unity.Sequences.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Formats.Fbx.Runtime.Player.csproj">
-      <Project>{EA1F2C6B-E346-D090-9E5D-6664356F5CDD}</Project>
+      <Project>{1B179F72-60E9-22EA-0ECC-3F907D2C99C0}</Project>
       <Name>Unity.Formats.Fbx.Runtime.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Formats.Alembic.Runtime.Player.csproj">
-      <Project>{B4496E3C-4295-7F42-B4B7-003E059374E8}</Project>
+      <Project>{A2A821B6-4FEF-33B1-73DD-73B6366875A2}</Project>
       <Name>Unity.Formats.Alembic.Runtime.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Recorder.Player.csproj">
-      <Project>{11533550-F901-02B6-3F93-E2292AC691B8}</Project>
+      <Project>{306A41CE-3442-27CA-FC84-B8B3AF7F8B69}</Project>
       <Name>Unity.Recorder.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Recorder.Base.Player.csproj">
-      <Project>{B31A488D-B027-C72B-06CB-83386B809A8C}</Project>
+      <Project>{46CDF4D7-E220-40DF-7283-21599193C58B}</Project>
       <Name>Unity.Recorder.Base.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.Player.csproj">
-      <Project>{2382157C-FBDB-5C96-1212-3133D6EF8717}</Project>
+      <Project>{14B7ED99-99C2-AF6E-9856-8F5D8995FFDC}</Project>
       <Name>Unity.Timeline.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.Player.csproj">
-      <Project>{F96199B2-106E-D8AE-C4E8-945177296146}</Project>
+      <Project>{A31A1610-D920-8A8E-0D0C-10E4F182EEA3}</Project>
       <Name>Unity.TextMeshPro.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Flow.Player.csproj">
-      <Project>{3CAC9F9A-66A7-F36F-227A-5BAF3971406A}</Project>
+      <Project>{6D2D6081-F5AA-E045-E72E-8238F55C7941}</Project>
       <Name>Unity.VisualScripting.Flow.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Services.Core.Player.csproj">
-      <Project>{FBE50959-E129-528D-FF00-7E02CD3FF6CA}</Project>
+      <Project>{157E0F99-E2BA-54A3-3537-EB1B553ABACA}</Project>
       <Name>Unity.Services.Core.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Polybrush.Player.csproj">
-      <Project>{E68F1003-EE77-0076-27D9-F857C12F1818}</Project>
+      <Project>{B25B8873-8B18-D44C-C812-28A0C1F63449}</Project>
       <Name>Unity.Polybrush.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Core.Player.csproj">
-      <Project>{E850F21D-D00E-2C17-2F66-895656934B5D}</Project>
+      <Project>{38ACA674-B034-6614-4431-EC73BAD9BD84}</Project>
       <Name>Unity.VisualScripting.Core.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Mathematics.Player.csproj">
-      <Project>{D604231A-78AA-DF47-D753-0762FBC31DE3}</Project>
+      <Project>{6D960410-5D46-E7B2-1FE8-764A6DAE1B74}</Project>
       <Name>Unity.Mathematics.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TerrainTools.Player.csproj">
-      <Project>{A28A3A3A-51EC-7334-0A1B-1EEDBC622B88}</Project>
+      <Project>{460AFE1D-4406-DA91-911D-1D5E9AF88E3E}</Project>
       <Name>Unity.TerrainTools.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Animation.Rigging.Player.csproj">
-      <Project>{D9CEDF3A-2B36-EFD0-73AA-D43F28DB15AA}</Project>
+      <Project>{3852385A-5403-1950-67CD-503A888806F9}</Project>
       <Name>Unity.Animation.Rigging.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Services.Core.Analytics.Player.csproj">
-      <Project>{75E3DF92-E353-0686-05F2-2D69FF6940B3}</Project>
+      <Project>{1441F697-7A62-70FE-D2EF-4EEDA16C4D81}</Project>
       <Name>Unity.Services.Core.Analytics.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Burst.Player.csproj">
-      <Project>{743CA4F5-1245-AAB5-55F2-747403695080}</Project>
+      <Project>{D8EF7942-002D-11DF-B1AC-739DF0384FBF}</Project>
       <Name>Unity.Burst.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Services.Core.Environments.Player.csproj">
-      <Project>{5B324988-5164-260C-2093-59E56E9BB827}</Project>
+      <Project>{CEB86AEA-4212-535A-B786-974528E23BFE}</Project>
       <Name>Unity.Services.Core.Environments.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.State.Player.csproj">
-      <Project>{CA7A4B61-53BB-A821-7505-46DC059DFEAB}</Project>
+      <Project>{85546C5A-47B8-C920-D81B-918046C74983}</Project>
       <Name>Unity.VisualScripting.State.Player</Name>
     </ProjectReference>
   </ItemGroup>

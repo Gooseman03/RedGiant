@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{75E3DF92-E353-0686-05F2-2D69FF6940B3}</ProjectGuid>
+    <ProjectGuid>{1441F697-7A62-70FE-D2EF-4EEDA16C4D81}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.Services.Core.Analytics</AssemblyName>
@@ -654,11 +654,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.Services.Core.Player.csproj">
-      <Project>{FBE50959-E129-528D-FF00-7E02CD3FF6CA}</Project>
+      <Project>{157E0F99-E2BA-54A3-3537-EB1B553ABACA}</Project>
       <Name>Unity.Services.Core.Player</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.Player.csproj">
-      <Project>{59297EFF-BBC1-11B2-4840-A772D9A24DEC}</Project>
+      <Project>{7D9497C3-6F75-097F-5DC1-BC3BD312E46A}</Project>
       <Name>UnityEngine.UI.Player</Name>
     </ProjectReference>
   </ItemGroup>

@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{D8C7037D-C752-351D-9E3E-D5A79C53E24A}</ProjectGuid>
+    <ProjectGuid>{86DD1E1B-DBA7-D359-C11A-57068901E0A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.Formats.Alembic.Runtime</AssemblyName>
@@ -769,19 +769,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.Timeline.csproj">
-      <Project>{3DFD125C-19C6-5B3F-D232-DD22F2EB9F7A}</Project>
+      <Project>{8F832443-6B86-E9C6-D2AD-29A2E2C04F55}</Project>
       <Name>Unity.Timeline</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Burst.csproj">
-      <Project>{20D539EF-FF2C-A2D4-3F59-6652D17ED7B6}</Project>
+      <Project>{4791081E-ED1E-B9E8-9555-1326CEA90B04}</Project>
       <Name>Unity.Burst</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
-      <Project>{0B329DEF-9359-A18D-993B-C64ABCC36137}</Project>
+      <Project>{DDAFAE3B-AAB4-09B3-32E4-AD3151613C8B}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{6ACD9F3C-A9C5-C520-C507-AC089FBE4C1F}</Project>
+      <Project>{314AFFEE-A1F3-B974-B863-CD8029A36AEE}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
   </ItemGroup>

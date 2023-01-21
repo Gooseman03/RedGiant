@@ -88,7 +88,6 @@ public class ObjectPlace : MonoBehaviour
         return objectGrabbable;
     }
 
-
     private void OnDrawGizmos()
     {
         objectReferences.GetConstructorItemReferences(objectType, true, out Mesh newMesh, out Material newMaterial);

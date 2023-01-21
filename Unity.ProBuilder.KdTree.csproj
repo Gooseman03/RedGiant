@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{D90933CF-4733-55D2-07F8-92B30AB4D39B}</ProjectGuid>
+    <ProjectGuid>{D3D9904D-63AE-64BE-0B37-7CDC2C431174}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.ProBuilder.KdTree</AssemblyName>
@@ -739,11 +739,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="UnityEditor.UI.csproj">
-      <Project>{0B329DEF-9359-A18D-993B-C64ABCC36137}</Project>
+      <Project>{DDAFAE3B-AAB4-09B3-32E4-AD3151613C8B}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{6ACD9F3C-A9C5-C520-C507-AC089FBE4C1F}</Project>
+      <Project>{314AFFEE-A1F3-B974-B863-CD8029A36AEE}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
   </ItemGroup>

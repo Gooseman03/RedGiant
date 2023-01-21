@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{B4496E3C-4295-7F42-B4B7-003E059374E8}</ProjectGuid>
+    <ProjectGuid>{A2A821B6-4FEF-33B1-73DD-73B6366875A2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.Formats.Alembic.Runtime</AssemblyName>
@@ -694,15 +694,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.Timeline.Player.csproj">
-      <Project>{2382157C-FBDB-5C96-1212-3133D6EF8717}</Project>
+      <Project>{14B7ED99-99C2-AF6E-9856-8F5D8995FFDC}</Project>
       <Name>Unity.Timeline.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Burst.Player.csproj">
-      <Project>{743CA4F5-1245-AAB5-55F2-747403695080}</Project>
+      <Project>{D8EF7942-002D-11DF-B1AC-739DF0384FBF}</Project>
       <Name>Unity.Burst.Player</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.Player.csproj">
-      <Project>{59297EFF-BBC1-11B2-4840-A772D9A24DEC}</Project>
+      <Project>{7D9497C3-6F75-097F-5DC1-BC3BD312E46A}</Project>
       <Name>UnityEngine.UI.Player</Name>
     </ProjectReference>
   </ItemGroup>

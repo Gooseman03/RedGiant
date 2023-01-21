@@ -21,6 +21,7 @@ public class ObjectReferences: MonoBehaviour
     [SerializeField] private Mesh AirCanisterMesh;
     [SerializeField] private Mesh FuseMesh;
     [SerializeField] private Mesh PowerConnectorMesh;
+    [SerializeField] private Mesh MonitorMesh;
 
 
     [Header("General Material Settings")]
@@ -61,6 +62,10 @@ public class ObjectReferences: MonoBehaviour
         if (Requested == ObjectType.PowerConnector)
         {
             meshOut = PowerConnectorMesh;
+        }
+        if (Requested == ObjectType.Monitor)
+        {
+            meshOut = MonitorMesh;
         }
     }
 

@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{451E45C2-A4B9-9722-1A71-5011F98C6CF8}</ProjectGuid>
+    <ProjectGuid>{C02A6B75-9FD9-A0E8-8A3E-6727AC826519}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>FbxBuildTestAssets</AssemblyName>
@@ -635,15 +635,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Autodesk.Fbx.Player.csproj">
-      <Project>{AFE7571D-A288-A9B9-1242-5F83F1085236}</Project>
+      <Project>{38844851-0B38-E49B-55D4-0CC708807280}</Project>
       <Name>Autodesk.Fbx.Player</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.TestRunner.Player.csproj">
-      <Project>{6E0691FF-3BEF-66FF-44F3-65F9351AE4A6}</Project>
+      <Project>{A85402E3-3681-F85D-C627-77ACF071DF60}</Project>
       <Name>UnityEngine.TestRunner.Player</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.Player.csproj">
-      <Project>{59297EFF-BBC1-11B2-4840-A772D9A24DEC}</Project>
+      <Project>{7D9497C3-6F75-097F-5DC1-BC3BD312E46A}</Project>
       <Name>UnityEngine.UI.Player</Name>
     </ProjectReference>
   </ItemGroup>

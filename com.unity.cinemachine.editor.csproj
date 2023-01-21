@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{54F9E404-0926-CAE4-4F81-E9C64EB77AF6}</ProjectGuid>
+    <ProjectGuid>{731DE281-2D47-D944-1998-23CD3ECE88E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>com.unity.cinemachine.editor</AssemblyName>
@@ -811,35 +811,35 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Cinemachine.csproj">
-      <Project>{13CD721C-8535-15A4-5DDC-9EB12A2ABEAD}</Project>
+      <Project>{65E0D139-5909-911B-78B1-6A2CED304008}</Project>
       <Name>Cinemachine</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.csproj">
-      <Project>{3DFD125C-19C6-5B3F-D232-DD22F2EB9F7A}</Project>
+      <Project>{8F832443-6B86-E9C6-D2AD-29A2E2C04F55}</Project>
       <Name>Unity.Timeline</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.Editor.csproj">
-      <Project>{4B653AA2-4AAD-6331-7581-7B0222325B1C}</Project>
+      <Project>{CFDD72C3-26CA-9DC7-B6A6-6BDE06563A16}</Project>
       <Name>Unity.Timeline.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.InputSystem.csproj">
-      <Project>{D3D3C6DB-870E-00BB-071F-1EAF66514586}</Project>
+      <Project>{725C118B-1AFA-A320-5741-9D56D1D3842E}</Project>
       <Name>Unity.InputSystem</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
-      <Project>{0B329DEF-9359-A18D-993B-C64ABCC36137}</Project>
+      <Project>{DDAFAE3B-AAB4-09B3-32E4-AD3151613C8B}</Project>
       <Name>UnityEditor.UI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
-      <Project>{6ACD9F3C-A9C5-C520-C507-AC089FBE4C1F}</Project>
+      <Project>{314AFFEE-A1F3-B974-B863-CD8029A36AEE}</Project>
       <Name>UnityEngine.UI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.TestRunner.csproj">
-      <Project>{15D59E2B-DED1-0C37-424E-0C41498E641E}</Project>
+      <Project>{1007E20E-6318-8DC4-2C45-4C091A78A141}</Project>
       <Name>UnityEditor.TestRunner</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.TestRunner.csproj">
-      <Project>{28F7BECC-39C7-BE22-5895-4C091E0B9185}</Project>
+      <Project>{5D68E35C-B73C-09AB-6DAB-8890EE0F326D}</Project>
       <Name>UnityEngine.TestRunner</Name>
     </ProjectReference>
   </ItemGroup>

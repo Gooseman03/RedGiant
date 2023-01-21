@@ -49,8 +49,6 @@ public class OxygenGenerator : MonoBehaviour
             {
                 DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Power Connector";
             }
-
-
         }
         else
         {

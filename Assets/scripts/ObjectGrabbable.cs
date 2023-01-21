@@ -99,7 +99,6 @@ public class ObjectGrabbable : MonoBehaviour
         MonitorText.ChangeMonitorText("");
     }
 
-
     public void Disconnect()
     {
         if (objectType == ObjectType.Monitor)

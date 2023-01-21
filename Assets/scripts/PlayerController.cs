@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField, Range(0f, 100f)] private float OxygenLevel;
 
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private float gravity;
 
     private CharacterController controller;
     [SerializeField] private GameObject CameraFollow;
@@ -47,6 +49,30 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+
+    private bool CheckGrounded()
+    {
+        if (!isGrounded)
+        {
+            return false;
+        }
+        return true;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.tag == "Ground")
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.tag == "Ground")
+        {
+            isGrounded = false;
+        }
+    }
     private void Interact()
     {
         if (InteractInput)
@@ -64,6 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         UiScript.ChangeColor(new Color (0, 0, 0, (-OxygenLevel/100) +1));
     }
+
     private void ChangeOxygen(float amount)
     {
         OxygenLevel += amount;
@@ -75,6 +102,10 @@ public class PlayerController : MonoBehaviour
     private void MovePlayer()
     {
         Vector3 move = MoveInput.x * transform.right + MoveInput.y * transform.forward;
+        if (!CheckGrounded())
+        {
+            move += -gravity * transform.up;
+        }
         controller.Move(move * speed * Time.deltaTime);
     }
     private void LookPlayer()

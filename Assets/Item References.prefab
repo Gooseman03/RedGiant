@@ -50,11 +50,13 @@ MonoBehaviour:
   AirCanisterMesh: {fileID: -2432090755550338912, guid: 61e4b6c2e99d1ea4c90f8fc882ce14ad, type: 3}
   FuseMesh: {fileID: -2432090755550338912, guid: d52ca1665fb62d84781e056c5a32010e, type: 3}
   PowerConnectorMesh: {fileID: 8604045607132181640, guid: 5fd7013d6415ef84895432b49e01fff8, type: 3}
+  MonitorMesh: {fileID: 8604045607132181640, guid: 0360f33224c61654f91302212190339f, type: 3}
   BaseColor: {r: 0, g: 0, b: 0, a: 0.78431374}
   FuseDurability: 100
   AirCanisterDurability: 100
   PowerConnectorDurability: 100
   MonitorDurability: 0
+  PowerSwitchDurability: 0
   AirCanisterPressure: 100
   FuseMaxCurrent: 2000
   PowerConnectorMaxCurrent: 2200

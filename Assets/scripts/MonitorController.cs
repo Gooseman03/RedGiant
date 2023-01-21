@@ -16,10 +16,10 @@ public class MonitorController : MonoBehaviour
         MonitorTextObject.name = "MonitorText";
         MonitorTextObject.transform.parent = this.transform;
         MonitorText = MonitorTextObject.AddComponent<TextMeshPro>();
-        MonitorText.rectTransform.localPosition = new Vector3(0,0,-.51f);
+        MonitorText.rectTransform.localPosition = new Vector3(0,0,-.121f);
         MonitorText.rectTransform.localRotation = Quaternion.identity;
         MonitorText.rectTransform.localScale = Vector3.one / 50;
-        MonitorText.rectTransform.sizeDelta = new Vector2(45, 45);
+        MonitorText.rectTransform.sizeDelta = new Vector2(86, 58);
         MonitorText.faceColor = Color.green;
     }
 

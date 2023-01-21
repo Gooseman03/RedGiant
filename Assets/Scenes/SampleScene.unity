@@ -840,7 +840,7 @@ GameObject:
   - component: {fileID: 936570868}
   - component: {fileID: 936570869}
   m_Layer: 0
-  m_Name: Storage
+  m_Name: Oxygen Gen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1216,7 +1216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8686170127513417541, guid: e5bdc1308fa7bcf4293059496be1b9d7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.5
+      value: -4.75
       objectReference: {fileID: 0}
     - target: {fileID: 8686170127513417541, guid: e5bdc1308fa7bcf4293059496be1b9d7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1224,7 +1224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8686170127513417541, guid: e5bdc1308fa7bcf4293059496be1b9d7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.75
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8686170127513417541, guid: e5bdc1308fa7bcf4293059496be1b9d7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1501,6 +1501,8 @@ MonoBehaviour:
   UpperLimit: 80
   LowerLimit: -80
   OxygenLevel: 100
+  isGrounded: 0
+  gravity: 9.87
   CameraFollow: {fileID: 1479431434}
   objectLeftGrabPointTransform: {fileID: 100060561}
   ItemInLeftHand: {fileID: 0}
@@ -2392,7 +2394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8686170127513417541, guid: e5bdc1308fa7bcf4293059496be1b9d7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.75
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8686170127513417541, guid: e5bdc1308fa7bcf4293059496be1b9d7, type: 3}
       propertyPath: m_LocalRotation.w
