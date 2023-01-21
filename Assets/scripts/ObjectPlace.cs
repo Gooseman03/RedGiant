@@ -1,0 +1,98 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ObjectPlace : MonoBehaviour
+{
+    [SerializeField]
+    private ObjectType objectType;
+    private ObjectGrabbable objectGrabbable;
+
+    [SerializeField] ObjectReferences objectReferences;
+
+    private GameObject Appearance;
+
+    [SerializeField]
+    private bool isRegistered = false;
+
+    [SerializeField]
+    private ObjectGrabbable LastObjectGrabbable;
+
+    private void Start()
+    {
+        Appearance = new GameObject();
+        Appearance.transform.parent = this.transform;
+        Appearance.transform.localPosition = Vector3.zero;
+        Appearance.name = "Look";
+        MeshFilter meshFilter = Appearance.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = Appearance.AddComponent<MeshRenderer>();
+        objectReferences.GetConstructorItemReferences(objectType, true, out Mesh newMesh, out Material newMaterial);
+        meshFilter.mesh = newMesh;
+        this.GetComponent<MeshCollider>().sharedMesh = newMesh;
+        meshRenderer.material = newMaterial;
+        this.name = objectType.ToString() + " Place";
+    }
+
+    private void OnTransformChildrenChanged()
+    {
+        LastObjectGrabbable = objectGrabbable;
+        objectGrabbable = gameObject.transform.GetComponentInChildren<ObjectGrabbable>();
+        if (objectGrabbable != null)
+        {
+            this.GetComponent<Collider>().enabled = false;
+            Appearance.GetComponent<MeshRenderer>().enabled = false;
+        }
+        else
+        {
+            this.GetComponent<Collider>().enabled = true;
+            Appearance.GetComponent<MeshRenderer>().enabled = true;
+        }
+        if (this.transform.parent.TryGetComponent<ItemRegister>(out ItemRegister parentObjectRegister) == false)
+        {
+            return;
+        }
+        if (isRegistered && objectGrabbable == null)
+        {
+            parentObjectRegister.UnregisterObject(LastObjectGrabbable);
+            LastObjectGrabbable.Disconnect();
+            isRegistered = false;
+            Debug.Log(
+                "ObjectPlace.OnTransformChildrenChanged() Unregistered object: "
+                    + LastObjectGrabbable.name
+            );
+            return;
+        }
+        if (!isRegistered && parentObjectRegister.CheckForObject(objectGrabbable) == false)
+        {
+            parentObjectRegister.RegisterObject(objectGrabbable);
+            isRegistered = true;
+            Debug.Log(
+                "ObjectPlace.OnTransformChildrenChanged() Registered object: "
+                    + objectGrabbable.name
+            );
+            return;
+        }
+
+        Debug.LogError(
+            "Error: ObjectPlace.OnTransformChildrenChanged() isRegistered is neither true nor false"
+        );
+    }
+
+    public ObjectType GetObjectType()
+    {
+        return objectType;
+    }
+
+    public ObjectGrabbable GetObjectGrabbable()
+    {
+        return objectGrabbable;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        objectReferences.GetConstructorItemReferences(objectType, true, out Mesh newMesh, out Material newMaterial);
+        Gizmos.color = newMaterial.color;
+        Gizmos.DrawMesh(newMesh, 0, transform.position,transform.rotation);
+    }
+}
