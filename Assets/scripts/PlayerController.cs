@@ -105,7 +105,8 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateUi()
     {
-        UiScript.ChangeColor(new Color (0, 0, 0,((-OxygenLevel+3)/100) +.97f));
+        
+        UiScript.ChangeColor(new Color (0f, 0f, 0f,((-OxygenLevel+3)/100) + .97f));
     }
 
     private void ChangeOxygen(float amount)

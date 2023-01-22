@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7445551312032306239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8721633448101507474}
+  - component: {fileID: 1666698185415828252}
+  m_Layer: 0
+  m_Name: Item References
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8721633448101507474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445551312032306239}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.1180687, y: 2.3088427, z: -1.9877462}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1666698185415828252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445551312032306239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e281a178ce1e9943a47c91a6aa2d596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GenericMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  TransparentMaterial: {fileID: 2100000, guid: badd57bff90e7684ab0cd74d1203b54b, type: 2}
+  OpaqueMaterial: {fileID: 2100000, guid: 3571b5bd07190034a90c864d1ed8b18b, type: 2}
+  AirCanisterMesh: {fileID: -2432090755550338912, guid: 61e4b6c2e99d1ea4c90f8fc882ce14ad, type: 3}
+  FuseMesh: {fileID: -2432090755550338912, guid: d52ca1665fb62d84781e056c5a32010e, type: 3}
+  PowerConnectorMesh: {fileID: 8604045607132181640, guid: 5fd7013d6415ef84895432b49e01fff8, type: 3}
+  MonitorMesh: {fileID: 8604045607132181640, guid: 0360f33224c61654f91302212190339f, type: 3}
+  PumpMesh: {fileID: 0}
+  PowerSwitchMeshs:
+  - {fileID: 6679289703562662588, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
+  - {fileID: 5358915128574053833, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
+  - {fileID: 8604045607132181640, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
+  PowerSwitchColors:
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0.5, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0.5, g: 0, b: 0, a: 1}
+  BaseColor: {r: 0, g: 0.5, b: 1, a: 0.5019608}
+  FuseDurability: 100
+  AirCanisterDurability: 100
+  PowerConnectorDurability: 100
+  MonitorDurability: 100
+  PowerSwitchDurability: 100
+  PumpDurability: 100
+  AirCanisterPressure: 100
+  FuseMaxCurrent: 2000
+  PowerConnectorMaxCurrent: 2000

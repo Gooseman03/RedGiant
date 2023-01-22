@@ -4,12 +4,15 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEditor.SceneManagement;
+using Unity.VisualScripting;
 
 public class MonitorController : MonoBehaviour
 {
     private GameObject MonitorTextObject;
     private TextMeshPro MonitorText;
+    private string NewMonitorText;
     private Font font;
+    private float Timer;
     private void Awake()
     {
         MonitorTextObject = new GameObject();
@@ -23,6 +26,16 @@ public class MonitorController : MonoBehaviour
         MonitorText.faceColor = Color.green;
     }
 
+    private void Update()
+    {
+        if (Timer > 1f)
+        {
+            MonitorText.text = NewMonitorText;
+            Timer = 0;
+        }
+        Timer += Time.deltaTime;
+    }
+
     public GameObject GetMonitorTextGameobject()
     {
         return MonitorTextObject;
@@ -31,9 +44,29 @@ public class MonitorController : MonoBehaviour
     {
         return MonitorText.text;
     }
+    public void InstantChangeMonitorText(string value)
+    {
+        MonitorText.text = value;
+    }
 
     public void ChangeMonitorText(string NewText)
     {
-        MonitorText.text = NewText;
+        
+        if (this.GetComponent<ObjectGrabbable>().Durability < 60f)
+        {
+            char[] CharArrayText = NewText.ToCharArray();
+            int i = 0;
+            
+            foreach(char Character in CharArrayText)
+            { 
+                if (CharArrayText[i] != '\n' && Random.Range(0, 100) < 100 - (float)this.GetComponent<ObjectGrabbable>().Durability)
+                { 
+                    CharArrayText[i] = '\u25A1'; 
+                }
+                i++;
+            }
+            NewText = CharArrayText.ArrayToString();
+        }
+        NewMonitorText = NewText;
     }
 }

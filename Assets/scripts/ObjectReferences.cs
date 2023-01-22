@@ -37,6 +37,7 @@ public class ObjectReferences : MonoBehaviour
     [SerializeField] private float PowerConnectorDurability;
     [SerializeField] private float MonitorDurability;
     [SerializeField] private float PowerSwitchDurability;
+    [SerializeField] private float PumpDurability;
 
 
     [SerializeField] private float AirCanisterPressure;
@@ -121,6 +122,12 @@ public class ObjectReferences : MonoBehaviour
         if (Requested == ObjectType.PowerSwitch)
         {
             OutList.Add("Durability", PowerSwitchDurability);
+            OutList.Add("Pressure", null);
+            OutList.Add("MaxCurrent", null);
+        }
+        if (Requested == ObjectType.Pump)
+        {
+            OutList.Add("Durability", PumpDurability);
             OutList.Add("Pressure", null);
             OutList.Add("MaxCurrent", null);
         }

@@ -11,7 +11,9 @@ public class ObjectGrabbable : MonoBehaviour
     [SerializeField] private ObjectType objectType;
     private Rigidbody objectRigidbody;
 
-    [SerializeField]private float? Durability;
+    [SerializeField, Range(0f, 100f)] private float DurabilityOverride;
+
+    public float? Durability { get; private set; }
     private float? Pressure;
     private float? MaxCurrent;
 
@@ -49,6 +51,14 @@ public class ObjectGrabbable : MonoBehaviour
         MaxCurrent = ObjectStats["MaxCurrent"];
     }
 
+    private void Update()
+    {
+        if (DurabilityOverride != 0)
+        {
+            Durability = DurabilityOverride;
+        }
+    }
+
     public void ChangeObjectType(ObjectType newObjectType)
     {
         objectType = newObjectType;
@@ -69,18 +79,9 @@ public class ObjectGrabbable : MonoBehaviour
         return objectType;
     }
 
-    public void ChangeDurability(float Ammount)
-    {
-        Durability += Ammount;
-    }
-
     public void ChangePressure(float Ammount)
     {
         Pressure += Ammount;
-    }
-
-    public float? GetDurability() {
-        return Durability;
     }
 
     public float? GetPressure() {
@@ -118,7 +119,7 @@ public class ObjectGrabbable : MonoBehaviour
 
     public void ClearMonitorText()
     {
-        MonitorText.ChangeMonitorText("");
+        MonitorText.InstantChangeMonitorText("");
     }
 
     public void Disconnect()

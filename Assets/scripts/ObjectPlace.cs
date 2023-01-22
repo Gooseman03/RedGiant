@@ -36,7 +36,7 @@ public class ObjectPlace : MonoBehaviour
         this.GetComponent<MeshCollider>().sharedMesh = newMesh;
         meshRenderer.material = newMaterial;
         this.name = objectType.ToString() + " Place";
-        if (Preplace != null && WillPreplace)
+        if (Preplace == objectType && WillPreplace)
         {
             PrefabObjectGrabbable.SetActive(false);
             GameObject gameObject = Instantiate(PrefabObjectGrabbable);

@@ -1,8 +1,4 @@
-using Cinemachine.Editor;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class OxygenGenerator : MonoBehaviour
@@ -15,8 +11,9 @@ public class OxygenGenerator : MonoBehaviour
     [SerializeField] bool PowerSwitchState;
     [SerializeField] List<OxygenCube> oxygenCubes = new List<OxygenCube>();
 
-    private bool BadFuse;
-    private bool BadPowerConnector;
+    private bool ErrorBadFuse;
+    private bool ErrorBadPowerConnector;
+    private bool ErrorBadMonitor;
 
     private void Awake()
     {
@@ -48,6 +45,7 @@ public class OxygenGenerator : MonoBehaviour
         }
         if (SystemPower && PowerSwitchState)
         {
+            LoadMonitor();
             DisplayOutput();
             if (CheckAirline())
             {
@@ -83,26 +81,52 @@ public class OxygenGenerator : MonoBehaviour
         {
             DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 1: " + Mathf.Ceil((float)AircanisterPressure[1]).ToString() + "%";
         }
-        if (BadFuse == true)
+        if (ErrorBadFuse == true)
         {
             DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Fuse";
         }
-        if (BadPowerConnector == true)
+        if (ErrorBadPowerConnector == true)
         {
             DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Power Connector";
         }
+        if (ErrorBadMonitor == true)
+        {
+            DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Monitor";
+        }
+    }
+
+    private bool pumpCheck()
+    {
+        if (itemRegister.HasObject(ObjectType.Pump, out List<ObjectGrabbable> PumpList))
+        {
+            bool HasGoodPump = false;
+            foreach(ObjectGrabbable pump in PumpList)
+            {
+                if (pump.Durability > 20)
+                {
+                    HasGoodPump = true;
+                }
+            }
+            if (!HasGoodPump)
+            {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     private bool CheckAirline()
     {
+        if(!pumpCheck())
+        {
+            return false;
+        }
         if (AircanisterPressure[0] + AircanisterPressure[1] < 0f)
         {
             return false;
         }
-        else
-        {
-            return true;
-        }
+        return true;
     }
 
     private bool CheckPowerLine()
@@ -120,48 +144,85 @@ public class OxygenGenerator : MonoBehaviour
 
     private bool LoadFuses()
     {
-        BadFuse = true;
+        ErrorBadFuse = false;
         if (itemRegister.HasObject(ObjectType.Fuse,out List<ObjectGrabbable> FuseList))
         {
-            BadFuse = false;
+            bool HasGoodFuse = false;
             foreach (ObjectGrabbable Fuse in FuseList)
             {
-                
-                if (Fuse.GetDurability() <= 60)
+                if (Fuse.Durability >= 20)
                 {
-                    BadFuse = true;
+                    HasGoodFuse = true;
                 }
-                if (Fuse.GetDurability() >= 20)
+                if (Fuse.Durability < 40)
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    ErrorBadFuse = true;
                 }
             }
+            if (!HasGoodFuse)
+            {
+                return false;
+            }
+            return true;
         }
         return false;
     }
 
     private bool LoadPowerConnector()
     {
+        ErrorBadPowerConnector = false;
         if (itemRegister.HasObject(ObjectType.PowerConnector, out List<ObjectGrabbable> PowerConnectorList))
         {
+            bool HasGoodPowerConnector = false;
             foreach (ObjectGrabbable PowerConnector in PowerConnectorList)
             {
-                if (PowerConnector.GetDurability() >= 20)
+                if (PowerConnector.Durability >= 20)
                 {
-                    return true;
+                    HasGoodPowerConnector = true;
                 }
-                else
+                if (PowerConnector.Durability < 40)
                 {
-                    return false;
+                    ErrorBadPowerConnector = true;
                 }
             }
+            if (!HasGoodPowerConnector)
+            {
+                return false;
+            }
+            return true;
         }
         return false;
     }
+    private bool LoadMonitor()
+    {
+        ErrorBadMonitor = false;
+        if (itemRegister.HasObject(ObjectType.Monitor, out List<ObjectGrabbable> MonitorList))
+        {
+            bool HasGoodMonitor = false;
+            foreach (ObjectGrabbable Monitor in MonitorList)
+            {
+                if (Monitor.Durability >= 20)
+                {
+                    HasGoodMonitor = true;
+                }
+                if (Monitor.Durability < 60)
+                {
+                    ErrorBadMonitor = true;
+                }
+            }
+            if (!HasGoodMonitor)
+            {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
 
     private void OxygenCalculations()
     {

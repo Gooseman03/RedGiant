@@ -7,11 +7,7 @@
     },
     {
       "FullName": "Unity.Animation.Rigging, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2023-01-20T23:55:14.3356008Z"
-    },
-    {
-      "FullName": "mscorlib, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2022-12-12T20:25:42Z"
+      "LastWriteTime": "2023-01-22T20:13:46.8658433Z"
     },
     {
       "FullName": "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
@@ -26,20 +22,16 @@
       "LastWriteTime": "2022-12-12T20:25:42Z"
     },
     {
-      "FullName": "mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-      "LastWriteTime": "2022-12-12T20:25:42Z"
-    },
-    {
       "FullName": "Unity.Formats.Alembic.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2023-01-20T23:55:14.4198846Z"
+      "LastWriteTime": "2023-01-22T20:13:47.2367361Z"
     },
     {
       "FullName": "Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2023-01-20T23:55:14.6587801Z"
+      "LastWriteTime": "2023-01-22T20:13:47.1948487Z"
     },
     {
       "FullName": "Unity.Animation.Rigging.Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "LastWriteTime": "2023-01-20T23:55:14.6418254Z"
+      "LastWriteTime": "2023-01-22T20:13:47.2347412Z"
     }
   ],
   "Functions": [
@@ -53,9 +45,7 @@
         1,
         2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -66,10 +56,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -80,10 +69,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -94,10 +82,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -106,11 +93,10 @@
       "ModuleHash": "941d71229a0bd9cc8ffa81b4ea922229",
       "LinkName": "4BE516021E1E5245",
       "AssemblyDependencyIndices": [
-        4,
-        7,
         3,
         5,
-        6
+        2,
+        4
       ]
     },
     {
@@ -121,10 +107,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -135,10 +120,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -149,10 +133,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -163,10 +146,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -177,10 +159,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
-        5,
+        2,
         3,
-        4,
-        6
+        4
       ]
     },
     {
@@ -191,10 +172,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -205,10 +185,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -217,11 +196,9 @@
       "ModuleHash": "dbc6e18c24dae6b3ae57263d3fb58545",
       "LinkName": "256C5A39CD1AE7F7",
       "AssemblyDependencyIndices": [
-        4,
-        7,
         3,
-        6,
-        5
+        5,
+        2
       ]
     },
     {
@@ -232,10 +209,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -246,10 +222,9 @@
       "AssemblyDependencyIndices": [
         0,
         1,
+        2,
         3,
-        4,
-        5,
-        6
+        4
       ]
     },
     {
@@ -258,9 +233,9 @@
       "ModuleHash": "77b0b69c38b254d4ed60651bdd903519",
       "LinkName": "801E9A000BB37B05",
       "AssemblyDependencyIndices": [
-        8,
-        5,
-        3
+        6,
+        4,
+        2
       ]
     },
     {
@@ -269,9 +244,9 @@
       "ModuleHash": "db372871a56806dc7a52db7b37ca4328",
       "LinkName": "CDCA4A5193BE5947",
       "AssemblyDependencyIndices": [
-        8,
-        5,
-        3
+        6,
+        4,
+        2
       ]
     },
     {
@@ -281,12 +256,11 @@
       "LinkName": "20FD37D8DECBDFA6",
       "AssemblyDependencyIndices": [
         0,
-        9,
+        7,
+        2,
         3,
-        4,
         1,
-        5,
-        6
+        4
       ]
     },
     {
@@ -296,12 +270,11 @@
       "LinkName": "C7F3D860D6E34BD2",
       "AssemblyDependencyIndices": [
         0,
-        9,
+        7,
+        2,
         3,
-        4,
         1,
-        5,
-        6
+        4
       ]
     },
     {
@@ -311,12 +284,11 @@
       "LinkName": "CA8FB46B9E70B3A2",
       "AssemblyDependencyIndices": [
         0,
-        9,
+        7,
+        2,
         3,
-        4,
         1,
-        5,
-        6
+        4
       ]
     },
     {
@@ -326,12 +298,11 @@
       "LinkName": "7F8C4305FFA0C3EF",
       "AssemblyDependencyIndices": [
         0,
-        9,
+        7,
+        2,
         3,
-        4,
         1,
-        5,
-        6
+        4
       ]
     },
     {
@@ -341,12 +312,11 @@
       "LinkName": "511E703D342EE196",
       "AssemblyDependencyIndices": [
         0,
-        9,
+        7,
+        2,
         3,
-        4,
         1,
-        5,
-        6
+        4
       ]
     },
     {
@@ -356,12 +326,11 @@
       "LinkName": "D7890560FD1F87A6",
       "AssemblyDependencyIndices": [
         0,
-        9,
+        7,
+        2,
         3,
-        4,
         1,
-        5,
-        6
+        4
       ]
     },
     {
@@ -371,12 +340,11 @@
       "LinkName": "92EA52C8350EF75D",
       "AssemblyDependencyIndices": [
         0,
-        9,
+        7,
+        2,
         3,
-        4,
         1,
-        5,
-        6
+        4
       ]
     }
   ]
