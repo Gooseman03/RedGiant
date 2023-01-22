@@ -39,7 +39,7 @@ public class ItemRegister : MonoBehaviour
             }
         }
 
-        if (OutputList != null)
+        if (OutputList.Count > 0)
         {
             return true;
         }

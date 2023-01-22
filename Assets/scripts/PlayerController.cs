@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0f, -89f)] private float LowerLimit = -10f;
 
     [SerializeField, Range(0f, 100f)] private float OxygenLevel;
+    [SerializeField] private OxygenCube CurrentOxygenArea;
 
     [SerializeField] private bool isGrounded;
     [SerializeField] private float gravity;
@@ -46,9 +48,22 @@ public class PlayerController : MonoBehaviour
         Pickup();
         Interact();
         UpdateUi();
+        UpdateOxygen();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    private void UpdateOxygen()
+    {
+        if (CurrentOxygenArea != null)
+        {
+            CurrentOxygenArea.ChangeOxygen(-1*Time.deltaTime);
+            OxygenLevel = Mathf.Lerp(OxygenLevel, CurrentOxygenArea.GetOxygen(), 1f * Time.deltaTime);
+        }
+        else
+        {
+            OxygenLevel = Mathf.Lerp(OxygenLevel, 0f, .5f*Time.deltaTime);
+        } 
+    }
 
     private bool CheckGrounded()
     {
@@ -58,7 +73,8 @@ public class PlayerController : MonoBehaviour
         }
         return true;
     }
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.transform.tag == "Ground")
         {
@@ -73,6 +89,7 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
         }
     }
+
     private void Interact()
     {
         if (InteractInput)
@@ -88,17 +105,19 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateUi()
     {
-        UiScript.ChangeColor(new Color (0, 0, 0, (-OxygenLevel/100) +1));
+        UiScript.ChangeColor(new Color (0, 0, 0,((-OxygenLevel+3)/100) +.97f));
     }
 
     private void ChangeOxygen(float amount)
     {
         OxygenLevel += amount;
     }
+
     private void Death()
     {
 
     }
+
     private void MovePlayer()
     {
         Vector3 move = MoveInput.x * transform.right + MoveInput.y * transform.forward;
@@ -108,6 +127,7 @@ public class PlayerController : MonoBehaviour
         }
         controller.Move(move * speed * Time.deltaTime);
     }
+
     private void LookPlayer()
     {
         if (LookInput != Vector2.zero)
@@ -119,6 +139,7 @@ public class PlayerController : MonoBehaviour
             transform.eulerAngles = new Vector3(0, RotationY, 0);
         }
     }
+
     private void Pickup()
     {
         if (PickupInput)
@@ -126,7 +147,7 @@ public class PlayerController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, 10f))
             {
-                if (hit.transform.TryGetComponent(out ObjectPlace objectPlace) && ItemInLeftHand != null && objectPlace.GetObjectType() == ItemInLeftHand.GetComponent<ObjectGrabbable>().GetObjectType())
+                if (hit.transform.TryGetComponent(out ObjectPlace objectPlace) && ItemInLeftHand != null && (objectPlace.GetObjectType() == ItemInLeftHand.GetComponent<ObjectGrabbable>().GetObjectType() || objectPlace.GetObjectType() == ObjectType.Generic))
                 {   
                     ItemInLeftHand.GetComponent<ObjectGrabbable>().Place(objectPlace.transform);
                     ItemInLeftHand = null;
@@ -157,14 +178,17 @@ public class PlayerController : MonoBehaviour
         }
         PickupInput = false;
     }
+
     public void OnLook(InputValue value)
     {
         LookInput = value.Get<Vector2>();
     }
+
     public void OnMove(InputValue value)
     {
         MoveInput = value.Get<Vector2>();
     }
+
     public void OnPickup(InputValue value)
     {
         PickupInput = value.isPressed;
@@ -173,6 +197,22 @@ public class PlayerController : MonoBehaviour
     public void OnInteract(InputValue value)
     {
         InteractInput = value.isPressed;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<OxygenCube>() != null)
+        {
+            CurrentOxygenArea = other.GetComponent<OxygenCube>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<OxygenCube>() != null)
+        {
+            CurrentOxygenArea = null;
+        }
     }
 
     private void OnDrawGizmos() {

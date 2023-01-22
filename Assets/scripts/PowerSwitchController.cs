@@ -1,20 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PowerSwitchController : MonoBehaviour
 {
     [SerializeField] private bool Activated;
+    private ObjectReferences objectReferences;
 
 
+    private List<Color> colorList;
 
-    [SerializeField] private Color ActivatedColor;
-    [SerializeField] private Color DeactivatedColor;
+    [SerializeField] private GameObject GreenButton;
+    [SerializeField] private GameObject RedButton;
 
-    private void Start()
+
+    public void StartUp(ObjectReferences newReferences) 
     {
-        ActivatedColor = new Color(0f, 1f, 0f, 1f);
-        DeactivatedColor = new Color(1f, 0f, 0f, 1f);
+        objectReferences = newReferences;
+        objectReferences.GetConstructorItemReferences(ObjectType.PowerSwitch, out List<Mesh> ListOfMeshs, out Material material, out List<Color> ListOfColors);
+
+        colorList = ListOfColors;
+        GreenButton = new GameObject();
+        RedButton = new GameObject();
+        void Setup(GameObject Button)
+        {
+            Button.transform.parent = transform;
+            Button.transform.localPosition = Vector3.zero;
+            Button.transform.localRotation = quaternion.identity;
+            MeshFilter meshFilter = Button.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = Button.AddComponent<MeshRenderer>();
+            if (Button == GreenButton)
+            {
+                meshFilter.sharedMesh = ListOfMeshs[2];
+            }
+            else
+            {
+                meshFilter.sharedMesh = ListOfMeshs[1];
+            }
+            meshRenderer.material = material;   
+
+        }
+        Setup(GreenButton);
+        Setup(RedButton);
     }
 
     public bool GetState()
@@ -27,11 +55,17 @@ public class PowerSwitchController : MonoBehaviour
         Activated = state;
         if (Activated)
         {
-            this.GetComponent<Renderer>().material.color = ActivatedColor;
+            GreenButton.GetComponent<MeshRenderer>().material.color = colorList[0];
+            RedButton.GetComponent<MeshRenderer>().material.color = colorList[3];
+            GreenButton.transform.localPosition = new Vector3(0f, 0f, -.01f);
+            RedButton.transform.localPosition = Vector3.zero;
         }
         else
         {
-            this.GetComponent<Renderer>().material.color = DeactivatedColor;
+            GreenButton.GetComponent<MeshRenderer>().material.color = colorList[1];
+            RedButton.GetComponent<MeshRenderer>().material.color = colorList[2];
+            GreenButton.transform.localPosition = Vector3.zero; ;
+            RedButton.transform.localPosition = new Vector3(0f, 0f, -.01f);
         }
     }
 }

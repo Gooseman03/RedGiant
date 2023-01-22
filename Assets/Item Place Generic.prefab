@@ -46,7 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 0
-  objectReferences: {fileID: 2672485714626016995, guid: b5b21fe53c8042f49b27680b522560d2, type: 3}
+  objectReferences: {fileID: 1666698185415828252, guid: b5b21fe53c8042f49b27680b522560d2, type: 3}
+  Preplace: 0
+  WillPreplace: 0
+  PrefabObjectGrabbable: {fileID: 7744315431106317710, guid: 96c5d88fc196c6745aa8341cd99de379, type: 3}
   isRegistered: 0
   LastObjectGrabbable: {fileID: 0}
 --- !u!64 &6042397570977473

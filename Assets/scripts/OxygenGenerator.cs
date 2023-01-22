@@ -1,3 +1,4 @@
+using Cinemachine.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,11 @@ public class OxygenGenerator : MonoBehaviour
     [SerializeField] private List<string> DisplayOutputs = new List<string>();
     [SerializeField] private List<float?> AircanisterPressure = new List<float?>();
 
+    [SerializeField] bool PowerSwitchState;
+    [SerializeField] List<OxygenCube> oxygenCubes = new List<OxygenCube>();
 
     private bool BadFuse;
     private bool BadPowerConnector;
-
 
     private void Awake()
     {
@@ -32,22 +34,25 @@ public class OxygenGenerator : MonoBehaviour
     {
         DisplayOutputs.Clear();
         SystemPower = CheckPowerLine();
-
-        if (SystemPower)
+        if (itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectGrabbable> ListOfPowerSwitchs))
         {
-            DisplayOutputs.Add("Error Display"); // Default Text on Display 1 
-            DisplayOutputs.Add("Component Display"); // Default Text on Display 2
-
-            DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 0: " + AircanisterPressure[0].ToString();
-            DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 1: " + AircanisterPressure[1].ToString();
-
-            if (BadFuse == true)
+            bool? SwitchState = ListOfPowerSwitchs[0].GetSwitchState();
+            if (SwitchState == true)
             {
-                DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Fuse";
+                PowerSwitchState = true;
             }
-            if (BadPowerConnector == true)
+            else if (SwitchState == false)
             {
-                DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Power Connector";
+                PowerSwitchState = false;
+            }
+        }
+        if (SystemPower && PowerSwitchState)
+        {
+            DisplayOutput();
+            if (CheckAirline())
+            {
+                UpdateOxygenCubes();
+                DrainAircanisters();
             }
         }
         else
@@ -58,6 +63,48 @@ public class OxygenGenerator : MonoBehaviour
             AircanisterPressure.Add(0f);
         }
     }
+
+    private void DisplayOutput()
+    {
+        DisplayOutputs.Add("Error Display"); // Default Text on Display 1 
+        DisplayOutputs.Add("Component Display"); // Default Text on Display 2
+
+        if (AircanisterPressure[0] == null)
+        {
+            DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 0: Missing";
+        }
+        else DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 0: " + Mathf.Ceil((float)AircanisterPressure[0]).ToString() + "%";
+
+        if (AircanisterPressure[1] == null)
+        {
+            DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 1: Missing";
+        }
+        else
+        {
+            DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 1: " + Mathf.Ceil((float)AircanisterPressure[1]).ToString() + "%";
+        }
+        if (BadFuse == true)
+        {
+            DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Fuse";
+        }
+        if (BadPowerConnector == true)
+        {
+            DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Power Connector";
+        }
+    }
+
+    private bool CheckAirline()
+    {
+        if (AircanisterPressure[0] + AircanisterPressure[1] < 0f)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     private bool CheckPowerLine()
     {
         if (LoadPowerConnector() != true)
@@ -70,7 +117,6 @@ public class OxygenGenerator : MonoBehaviour
         }
         return false;
     }
-
 
     private bool LoadFuses()
     {
@@ -117,12 +163,11 @@ public class OxygenGenerator : MonoBehaviour
         return false;
     }
 
-
-private void OxygenCalculations()
+    private void OxygenCalculations()
     {
         AircanisterPressure.Clear();
-        AircanisterPressure.Add(0f); // Default Air Pressure on Aircanister 1 0f Unless Debuging
-        AircanisterPressure.Add(0f); // Default Air Pressure on Aircanister 2 0f Unless Debuging
+        AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 0f Unless Debuging
+        AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 2 0f Unless Debuging
         if (itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectGrabbable> ObjectList))
         {
             int i = 0;
@@ -130,6 +175,33 @@ private void OxygenCalculations()
             {
                 AircanisterPressure[i] = Aircanister.GetPressure();
                 i++;
+            }
+        }
+    }
+
+    private void UpdateOxygenCubes()
+    {
+        foreach(OxygenCube cube in oxygenCubes)
+        {
+            if (cube.GetOxygen() < 100)
+            {
+                cube.ChangeOxygen(2*Time.deltaTime);
+            }
+        }
+    }
+
+    private void DrainAircanisters()
+    {
+        if (itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectGrabbable> ObjectList))
+        {
+            float TotalLoss = -1 * Time.deltaTime;
+            foreach (ObjectGrabbable Aircanister in ObjectList)
+            {
+                if (ObjectList.Count > 1)
+                {
+                    Aircanister.ChangePressure(TotalLoss / 2);
+                }
+                else Aircanister.ChangePressure(TotalLoss);
             }
         }
     }

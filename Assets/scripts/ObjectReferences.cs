@@ -1,27 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
 public enum ObjectType
 {
     Generic,
     Fuse,
-    AirCanister,
-    PowerConnector,
     Monitor,
-    PowerSwitch
+    PowerConnector,
+    PowerSwitch,
+    AirCanister,
+    Pump
 }
-public class ObjectReferences: MonoBehaviour
+public class ObjectReferences : MonoBehaviour
 {
     [Header("Object References")]
-    [SerializeField] private Mesh GenericMesh;
+    [SerializeField] private  Mesh GenericMesh;
     [SerializeField] private Material TransparentMaterial;
     [SerializeField] private Material OpaqueMaterial;
     [SerializeField] private Mesh AirCanisterMesh;
     [SerializeField] private Mesh FuseMesh;
     [SerializeField] private Mesh PowerConnectorMesh;
     [SerializeField] private Mesh MonitorMesh;
+    [SerializeField] private Mesh PumpMesh;
+    [SerializeField] private List<Mesh> PowerSwitchMeshs;
+
+    [SerializeField] private List<Color> PowerSwitchColors;
 
 
     [Header("General Material Settings")]
@@ -42,7 +44,8 @@ public class ObjectReferences: MonoBehaviour
     [SerializeField] private float FuseMaxCurrent;
     [SerializeField] private float PowerConnectorMaxCurrent;
 
-    public void GetConstructorItemReferences( ObjectType Requested , bool Transparent ,out Mesh meshOut, out Material materialOut)
+
+    public void GetConstructorItemReferences(ObjectType Requested, bool Transparent, out Mesh meshOut, out Material materialOut)
     {
         meshOut = GenericMesh;
         materialOut = OpaqueMaterial;
@@ -67,9 +70,28 @@ public class ObjectReferences: MonoBehaviour
         {
             meshOut = MonitorMesh;
         }
+        if (Requested == ObjectType.PowerSwitch)
+        {
+            meshOut = PowerSwitchMeshs[0];
+        }
     }
 
-    public void GetStatsItemReferences( ObjectType Requested , out Dictionary<string,float?> OutList)
+    public void GetConstructorItemReferences(ObjectType Requested, out List<Mesh> meshsOut, out Material materialOut,out List<Color> ColorsOut)
+    {
+        meshsOut = new List<Mesh>();
+        meshsOut.Add(GenericMesh);
+        ColorsOut = new List<Color>();
+        ColorsOut.Add(new Color (0f,0f,0f,1f));
+        materialOut = OpaqueMaterial;
+        if (Requested == ObjectType.PowerSwitch)
+        {
+            meshsOut = PowerSwitchMeshs;
+            ColorsOut = PowerSwitchColors;
+        }
+        
+    }
+
+    public void GetStatsItemReferences(ObjectType Requested, out Dictionary<string, float?> OutList)
     {
         OutList = new Dictionary<string, float?>();
         if (Requested == ObjectType.Fuse)

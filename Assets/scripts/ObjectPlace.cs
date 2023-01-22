@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using UnityEditor;
 using UnityEngine;
 
 public class ObjectPlace : MonoBehaviour
@@ -7,8 +9,10 @@ public class ObjectPlace : MonoBehaviour
     [SerializeField]
     private ObjectType objectType;
     private ObjectGrabbable objectGrabbable;
-
-    [SerializeField] ObjectReferences objectReferences;
+    [SerializeField] private ObjectReferences objectReferences;
+    [SerializeField] private ObjectType Preplace;
+    [SerializeField] private bool WillPreplace;
+    [SerializeField] private GameObject PrefabObjectGrabbable;
 
     private GameObject Appearance;
 
@@ -23,6 +27,7 @@ public class ObjectPlace : MonoBehaviour
         Appearance = new GameObject();
         Appearance.transform.parent = this.transform;
         Appearance.transform.localPosition = Vector3.zero;
+        Appearance.transform.localRotation = Quaternion.identity;
         Appearance.name = "Look";
         MeshFilter meshFilter = Appearance.AddComponent<MeshFilter>();
         MeshRenderer meshRenderer = Appearance.AddComponent<MeshRenderer>();
@@ -31,6 +36,15 @@ public class ObjectPlace : MonoBehaviour
         this.GetComponent<MeshCollider>().sharedMesh = newMesh;
         meshRenderer.material = newMaterial;
         this.name = objectType.ToString() + " Place";
+        if (Preplace != null && WillPreplace)
+        {
+            PrefabObjectGrabbable.SetActive(false);
+            GameObject gameObject = Instantiate(PrefabObjectGrabbable);
+            PrefabObjectGrabbable.SetActive(true);
+            gameObject.GetComponent<ObjectGrabbable>().ChangeObjectType(Preplace);
+            gameObject.SetActive(true);
+            gameObject.GetComponent<ObjectGrabbable>().Place(this.transform);
+        }
     }
 
     private void OnTransformChildrenChanged()
@@ -47,10 +61,18 @@ public class ObjectPlace : MonoBehaviour
             this.GetComponent<Collider>().enabled = true;
             Appearance.GetComponent<MeshRenderer>().enabled = true;
         }
-        if (this.transform.parent.TryGetComponent<ItemRegister>(out ItemRegister parentObjectRegister) == false)
+        ItemRegister parentObjectRegister;
+        try
         {
-            return;
+            if (this.transform.parent.TryGetComponent<ItemRegister>(out parentObjectRegister) != true)
+            {
+                return;
+            }
         }
+        catch { return; }
+
+            
+        
         if (isRegistered && objectGrabbable == null)
         {
             parentObjectRegister.UnregisterObject(LastObjectGrabbable);
