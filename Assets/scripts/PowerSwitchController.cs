@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PowerSwitchController : MonoBehaviour
 {
-    [SerializeField] private bool Activated;
+    [SerializeField] private bool Activated = false;
     private ObjectReferences objectReferences;
 
 
@@ -27,7 +27,7 @@ public class PowerSwitchController : MonoBehaviour
         {
             Button.transform.parent = transform;
             Button.transform.localPosition = Vector3.zero;
-            Button.transform.localRotation = quaternion.identity;
+            Button.transform.localRotation = Quaternion.identity;
             MeshFilter meshFilter = Button.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = Button.AddComponent<MeshRenderer>();
             if (Button == GreenButton)
@@ -52,6 +52,12 @@ public class PowerSwitchController : MonoBehaviour
 
     public void SetState(bool state)
     {
+        
+        float durability = (float)this.GetComponent<ObjectGrabbable>().Durability;
+        if (durability < 60 && Random.Range(0, 100) > durability)
+        {
+            return;
+        }
         Activated = state;
         if (Activated)
         {

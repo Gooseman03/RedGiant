@@ -33,7 +33,7 @@ public class ItemRegister : MonoBehaviour
         OutputList = new List<ObjectGrabbable>();
         foreach (ObjectGrabbable item in Objects)
         {
-            if (item.GetObjectType() == type)
+            if (item.objectType == type)
             {
                 OutputList.Add(item);
             }

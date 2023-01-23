@@ -6,22 +6,31 @@ using UnityEngine;
 
 public class ObjectPlace : MonoBehaviour
 {
-    [SerializeField]
-    private ObjectType objectType;
-    private ObjectGrabbable objectGrabbable;
+    [SerializeField] private ObjectType _objectType;
+    public ObjectType objectType
+    {
+        get { return _objectType; }
+        private set { _objectType = value; }
+    }
+    private ObjectGrabbable _objectGrabbable;
+    public ObjectGrabbable objectGrabbable 
+    {
+        get { return _objectGrabbable; } 
+        private set { _objectGrabbable = value; } 
+    }
     [SerializeField] private ObjectReferences objectReferences;
     [SerializeField] private ObjectType Preplace;
-    [SerializeField] private bool WillPreplace;
-    [SerializeField] private GameObject PrefabObjectGrabbable;
+    
 
     private GameObject Appearance;
-
-    [SerializeField]
     private bool isRegistered = false;
-
-    [SerializeField]
     private ObjectGrabbable LastObjectGrabbable;
+    bool SetupComplete = false;
 
+
+
+    [SerializeField] private bool WillPreplace;
+    [SerializeField] private GameObject PrefabObjectGrabbable;
     private void Start()
     {
         Appearance = new GameObject();
@@ -40,17 +49,22 @@ public class ObjectPlace : MonoBehaviour
         {
             PrefabObjectGrabbable.SetActive(false);
             GameObject gameObject = Instantiate(PrefabObjectGrabbable);
+            SetupComplete = true;
             PrefabObjectGrabbable.SetActive(true);
             gameObject.GetComponent<ObjectGrabbable>().ChangeObjectType(Preplace);
             gameObject.SetActive(true);
             gameObject.GetComponent<ObjectGrabbable>().Place(this.transform);
         }
+        SetupComplete = true;
     }
 
     private void OnTransformChildrenChanged()
     {
+        if (!SetupComplete) { return; }
         LastObjectGrabbable = objectGrabbable;
         objectGrabbable = gameObject.transform.GetComponentInChildren<ObjectGrabbable>();
+
+
         if (objectGrabbable != null)
         {
             this.GetComponent<Collider>().enabled = false;
@@ -61,6 +75,7 @@ public class ObjectPlace : MonoBehaviour
             this.GetComponent<Collider>().enabled = true;
             Appearance.GetComponent<MeshRenderer>().enabled = true;
         }
+
         ItemRegister parentObjectRegister;
         try
         {
@@ -98,16 +113,6 @@ public class ObjectPlace : MonoBehaviour
         Debug.LogError(
             "Error: ObjectPlace.OnTransformChildrenChanged() isRegistered is neither true nor false"
         );
-    }
-
-    public ObjectType GetObjectType()
-    {
-        return objectType;
-    }
-
-    public ObjectGrabbable GetObjectGrabbable()
-    {
-        return objectGrabbable;
     }
 
     private void OnDrawGizmos()

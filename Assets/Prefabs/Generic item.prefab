@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectReferences: {fileID: 1666698185415828252, guid: b5b21fe53c8042f49b27680b522560d2, type: 3}
-  objectType: 0
+  _objectType: 0
   DurabilityOverride: 0
 --- !u!64 &2925615543777718979
 MeshCollider:

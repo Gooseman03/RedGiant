@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.SceneManagement;
-using Unity.VisualScripting;
 
 public class MonitorController : MonoBehaviour
 {

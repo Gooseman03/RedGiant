@@ -11,9 +11,15 @@ public class OxygenGenerator : MonoBehaviour
     [SerializeField] bool PowerSwitchState;
     [SerializeField] List<OxygenCube> oxygenCubes = new List<OxygenCube>();
 
+    [SerializeField] private int ErrorThresholdDurability = 60;
+    [SerializeField] private int ErrorThresholdPressure = 20;
+
     private bool ErrorBadFuse;
     private bool ErrorBadPowerConnector;
     private bool ErrorBadMonitor;
+    private bool ErrorBadPowerSwitch;
+    private bool ErrorBadPump;
+    private bool ErrorLowAirCanister;
 
     private void Awake()
     {
@@ -23,11 +29,53 @@ public class OxygenGenerator : MonoBehaviour
     private void FixedUpdate()
     {
         OxygenCalculations();
-        CheckPower();
+        WhenPowered();
+        CheckForErrors();
         Display();
     }
 
-    private void CheckPower()
+    private void CheckForErrors()
+    {
+        CheckForBadCompontent(ObjectType.Fuse , ref ErrorBadFuse);
+        CheckForBadCompontent(ObjectType.Monitor, ref ErrorBadMonitor);
+        CheckForBadCompontent(ObjectType.PowerSwitch, ref ErrorBadPowerSwitch);
+        CheckForBadCompontent(ObjectType.PowerConnector, ref ErrorBadPowerConnector);
+        CheckForBadCompontent(ObjectType.Pump, ref ErrorBadPump);
+        CheckForBadCompontent(ObjectType.AirCanister, true, ref ErrorLowAirCanister);
+    }
+
+    private void CheckForBadCompontent(ObjectType objectType, ref bool Error)
+    {
+        Error = false;
+        if (itemRegister.HasObject(objectType, out List<ObjectGrabbable> List))
+        {
+            foreach (ObjectGrabbable Object in List)
+            {
+                if (Object.Durability < ErrorThresholdDurability)
+                {
+                    Error = true;
+                }
+            }
+        }
+    }
+    private void CheckForBadCompontent(ObjectType objectType, bool PressureCheck, ref bool Error)
+    {
+        if (!PressureCheck)
+        { return; }
+        Error = false;
+        if (itemRegister.HasObject(objectType, out List<ObjectGrabbable> List))
+        {
+            foreach (ObjectGrabbable Object in List)
+            {
+                if (Object.Pressure < ErrorThresholdPressure)
+                {
+                    Error = true;
+                }
+            }
+        }
+    }
+
+    private void WhenPowered()
     {
         DisplayOutputs.Clear();
         SystemPower = CheckPowerLine();
@@ -45,7 +93,6 @@ public class OxygenGenerator : MonoBehaviour
         }
         if (SystemPower && PowerSwitchState)
         {
-            LoadMonitor();
             DisplayOutput();
             if (CheckAirline())
             {
@@ -64,7 +111,7 @@ public class OxygenGenerator : MonoBehaviour
 
     private void DisplayOutput()
     {
-        DisplayOutputs.Add("Error Display"); // Default Text on Display 1 
+        DisplayOutputs.Add("Error Display\n"); // Default Text on Display 1 
         DisplayOutputs.Add("Component Display"); // Default Text on Display 2
 
         if (AircanisterPressure[0] == null)
@@ -81,18 +128,15 @@ public class OxygenGenerator : MonoBehaviour
         {
             DisplayOutputs[1] = DisplayOutputs[1] + "\n Air Canister 1: " + Mathf.Ceil((float)AircanisterPressure[1]).ToString() + "%";
         }
-        if (ErrorBadFuse == true)
-        {
-            DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Fuse";
-        }
-        if (ErrorBadPowerConnector == true)
-        {
-            DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Power Connector";
-        }
-        if (ErrorBadMonitor == true)
-        {
-            DisplayOutputs[0] = DisplayOutputs[0] + "\n Bad Monitor";
-        }
+
+        List<ErrorTypes> ErrorList = new List<ErrorTypes>();
+        if (ErrorBadFuse){ ErrorList.Add(ErrorTypes.ErrorBadFuse); }
+        if (ErrorBadMonitor) { ErrorList.Add(ErrorTypes.ErrorBadMonitor); }
+        if (ErrorBadPowerConnector) { ErrorList.Add(ErrorTypes.ErrorBadPowerConnector); }
+        if (ErrorBadPowerSwitch) { ErrorList.Add(ErrorTypes.ErrorBadPowerSwitch); }
+        if (ErrorBadPump) { ErrorList.Add(ErrorTypes.ErrorBadPump); }
+        if (ErrorLowAirCanister) { ErrorList.Add(ErrorTypes.ErrorLowAirCanister); }
+        DisplayOutputs[0] += ErrorCodes.ErrorCheck(ErrorList, false);
     }
 
     private bool pumpCheck()
@@ -144,7 +188,6 @@ public class OxygenGenerator : MonoBehaviour
 
     private bool LoadFuses()
     {
-        ErrorBadFuse = false;
         if (itemRegister.HasObject(ObjectType.Fuse,out List<ObjectGrabbable> FuseList))
         {
             bool HasGoodFuse = false;
@@ -153,10 +196,6 @@ public class OxygenGenerator : MonoBehaviour
                 if (Fuse.Durability >= 20)
                 {
                     HasGoodFuse = true;
-                }
-                if (Fuse.Durability < 40)
-                {
-                    ErrorBadFuse = true;
                 }
             }
             if (!HasGoodFuse)
@@ -170,7 +209,6 @@ public class OxygenGenerator : MonoBehaviour
 
     private bool LoadPowerConnector()
     {
-        ErrorBadPowerConnector = false;
         if (itemRegister.HasObject(ObjectType.PowerConnector, out List<ObjectGrabbable> PowerConnectorList))
         {
             bool HasGoodPowerConnector = false;
@@ -179,10 +217,6 @@ public class OxygenGenerator : MonoBehaviour
                 if (PowerConnector.Durability >= 20)
                 {
                     HasGoodPowerConnector = true;
-                }
-                if (PowerConnector.Durability < 40)
-                {
-                    ErrorBadPowerConnector = true;
                 }
             }
             if (!HasGoodPowerConnector)
@@ -193,48 +227,23 @@ public class OxygenGenerator : MonoBehaviour
         }
         return false;
     }
-    private bool LoadMonitor()
-    {
-        ErrorBadMonitor = false;
-        if (itemRegister.HasObject(ObjectType.Monitor, out List<ObjectGrabbable> MonitorList))
-        {
-            bool HasGoodMonitor = false;
-            foreach (ObjectGrabbable Monitor in MonitorList)
-            {
-                if (Monitor.Durability >= 20)
-                {
-                    HasGoodMonitor = true;
-                }
-                if (Monitor.Durability < 60)
-                {
-                    ErrorBadMonitor = true;
-                }
-            }
-            if (!HasGoodMonitor)
-            {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-
-
-
 
     private void OxygenCalculations()
     {
+        ErrorLowAirCanister = false;
         AircanisterPressure.Clear();
-        AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 0f Unless Debuging
-        AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 2 0f Unless Debuging
+        AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 null Unless Debuging
+        AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 2 null Unless Debuging
         if (itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectGrabbable> ObjectList))
         {
             int i = 0;
             foreach (ObjectGrabbable Aircanister in ObjectList)
             {
-                AircanisterPressure[i] = Aircanister.GetPressure();
+                if (AircanisterPressure[i] < 20)
+                {
+                    ErrorLowAirCanister = true;
+                }
+                AircanisterPressure[i] = Aircanister.Pressure;
                 i++;
             }
         }
@@ -256,13 +265,15 @@ public class OxygenGenerator : MonoBehaviour
         if (itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectGrabbable> ObjectList))
         {
             float TotalLoss = -1 * Time.deltaTime;
+            int i = 0;
             foreach (ObjectGrabbable Aircanister in ObjectList)
             {
-                if (ObjectList.Count > 1)
+                if (Aircanister.Pressure > 0f)
                 {
-                    Aircanister.ChangePressure(TotalLoss / 2);
+                    if (i == 0 && ObjectList.Count >= 2) { TotalLoss /= 2;}
+                    Aircanister.ChangePressure(TotalLoss);
                 }
-                else Aircanister.ChangePressure(TotalLoss);
+                i++;
             }
         }
     }

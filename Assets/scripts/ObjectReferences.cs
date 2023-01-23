@@ -33,7 +33,6 @@ public class ObjectReferences : MonoBehaviour
 
     [Header("Object Settings")]
     [SerializeField] private float FuseDurability;
-    [SerializeField] private float AirCanisterDurability;
     [SerializeField] private float PowerConnectorDurability;
     [SerializeField] private float MonitorDurability;
     [SerializeField] private float PowerSwitchDurability;
@@ -103,7 +102,7 @@ public class ObjectReferences : MonoBehaviour
         }
         if (Requested == ObjectType.AirCanister)
         {
-            OutList.Add("Durability", AirCanisterDurability);
+            OutList.Add("Durability", null);
             OutList.Add("Pressure", AirCanisterPressure);
             OutList.Add("MaxCurrent", null);
         }

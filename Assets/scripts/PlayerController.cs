@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, 10f))
             {
-                if (hit.transform.TryGetComponent(out ObjectPlace objectPlace) && ItemInLeftHand != null && (objectPlace.GetObjectType() == ItemInLeftHand.GetComponent<ObjectGrabbable>().GetObjectType() || objectPlace.GetObjectType() == ObjectType.Generic))
+                if (hit.transform.TryGetComponent(out ObjectPlace objectPlace) && ItemInLeftHand != null && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectGrabbable>().objectType || objectPlace.objectType == ObjectType.Generic))
                 {   
                     ItemInLeftHand.GetComponent<ObjectGrabbable>().Place(objectPlace.transform);
                     ItemInLeftHand = null;
