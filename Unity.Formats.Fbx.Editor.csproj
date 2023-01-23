@@ -58,22 +58,22 @@
   <ItemGroup>
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ExportSettings.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\FbxExporterRepairMissingScripts.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\FbxRotationCurve.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ConvertToNestedPrefab.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ExportModelEditorWindow.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\FbxPropertyChannelPair.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ConvertToPrefabSettings.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\FbxExporter.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\Sources\Recorders\FbxRecorder\FbxRecorder.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\FbxRotationCurve.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\CustomExtensions.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ConvertToNestedPrefab.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ConvertToPrefabEditorWindow.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\CameraVisitor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ExportModelEditorWindow.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\InstallIntegration.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ManualUpdateEditorWindow.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\FbxExportPresetSelectorReceiver.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\Sources\Recorders\FbxRecorder\FbxRecorderSettingsEditor.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ExportModelSettings.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\Sources\Recorders\FbxRecorder\FbxRecorderSettings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\FbxPropertyChannelPair.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\ConvertToPrefabSettings.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.fbx@4.1.2\Editor\IExportData.cs" />
   </ItemGroup>
   <ItemGroup>

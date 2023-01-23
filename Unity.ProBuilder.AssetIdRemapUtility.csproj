@@ -56,10 +56,10 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssetIdRemapBuilderEditor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssetIdRemapEditor.cs" />
     <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\PackageImporter.cs" />
     <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssetIdRemapBuilderTreeView.cs" />
+    <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssetIdRemapBuilderEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssetIdRemapEditor.cs" />
     <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssetTreeView.cs" />
     <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.probuilder@5.0.3\AssetIdRemapUtility\Editor\AssetId.cs" />

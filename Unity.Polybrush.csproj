@@ -56,36 +56,36 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\PolyEdge.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\ComponentIndex.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\SelectionRenderState.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\MirrorCoordinateSpace.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\PlacementDirection.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\MonoBehaviour\z_AdditionalVertexStreams.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\IHasDefault.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\MirrorSettings.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\MonoBehaviour\OverlayRenderer.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\IValid.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\GradientSerializer.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\MeshChannel.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\SubMesh.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\Culling.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\PaintMode.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\ModelSource.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\RndVec3.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\PolyEdge.cs" />
+    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\MirrorCoordinateSpace.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\ICustomSettings.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Utility\MeshUtility.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\BrushMirror.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\MonoBehaviour\PolybrushMesh.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\MonoBehaviour\OverlayRenderer.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\IValid.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\GradientSerializer.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\PolyMesh.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\MeshChannel.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\ColorMask.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\SubMesh.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Utility\BoundsUtility.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\Culling.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\PaintMode.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\CommonEdge.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Utility\Math.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\MonoBehaviour\ZoomOverride.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\ModelSource.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Enum\Direction.cs" />
     <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Utility\Util.cs" />
-    <Compile Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Scripts\Type\RndVec3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\PackageCache\com.unity.polybrush@1.1.2\Runtime\Unity.Polybrush.asmdef" />

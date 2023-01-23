@@ -56,11 +56,11 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\ConfigurationBuilder.cs" />
     <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\IConfigurationProvider.cs" />
     <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\ProjectConfigurationBuilder.cs" />
     <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\Utils\IoUtils.cs" />
+    <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\ProjectConfigurationBuildInjectorWithPlayerProcessor.cs" />
     <Compile Include="Library\PackageCache\com.unity.services.core@1.6.0\Editor\Core\Configuration\ProjectConfigurationBuildInjectorWithReport.cs" />
   </ItemGroup>

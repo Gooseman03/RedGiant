@@ -56,37 +56,37 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Exporter\AlembicExporter_impl.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicPointsCloud.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Misc\RuntimeUtils.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicPointsRenderer.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Exporter\AbcAPI.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Exporter\Utils.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicStreamDescriptor.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicPoints.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Exporter\AlembicExporter.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicMaterial.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicSettings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Timeline\AlembicTrack.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicCurvesElement.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\EmbeddedAlembicStreamDescriptor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Misc\Bool.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Timeline\AlembicShotPlayable.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Timeline\AlembicShotAsset.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\IStreamDescriptor.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AbcAPI.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Misc\PinnedArray.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicStreamPlayer.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicMesh.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicCurves.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Exporter\AlembicExporter_impl.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicPointsCloud.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Exporter\AbcAPI.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Exporter\Utils.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicMaterial.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicSettings.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Timeline\AlembicTrack.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\EmbeddedAlembicStreamDescriptor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Misc\Bool.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Timeline\AlembicShotPlayable.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicElement.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicXForm.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicStreamPlayer.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicTreeNode.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicMesh.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Misc\ReadOnlyAttribute.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicCamera.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicCurvesRenderer.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Misc\CameraData.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicStream.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Scripts\Importer\AlembicCurves.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Runtime\Shaders\StandardInstanced.shader" />

@@ -56,18 +56,18 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Exporter\AlembicExporterEditor.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicStreamDescriptorEditor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\UnityRecorder\Recorder\AlembicRecorder.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicImporter.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\UnityRecorder\Recorder\AlembicRecorderSettingsEditor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicStreamPlayerEditor.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\UnityRecorder\Input\AlembicInput.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\UnityRecorder\Input\AlembicInputSettings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicImporterEditor.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\UnityRecorder\Recorder\AlembicRecorderSettings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Misc\BoolDrawer.cs" />
     <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicBuildPostProcess.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Exporter\AlembicExporterEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\UnityRecorder\Recorder\AlembicRecorder.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicImporter.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicStreamPlayerEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Importer\AlembicImporterEditor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Misc\BoolDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\PackageCache\com.unity.formats.alembic@2.2.2\Editor\Unity.Formats.Alembic.Editor.asmdef" />
