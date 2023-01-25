@@ -3,7 +3,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class ObjectGrabbable : MonoBehaviour
-
 {
     [SerializeField] private ObjectReferences objectReferences;
     [SerializeField] private ObjectType _objectType;
@@ -14,9 +13,9 @@ public class ObjectGrabbable : MonoBehaviour
     }
     private Rigidbody objectRigidbody;
     [SerializeField] private float DurabilityOverride;
-    [SerializeField, Range(0f, 100f)] private float? _Durability;
-    [SerializeField, Range(0f, 100f)] private float? _Pressure;
-    [SerializeField] private float? _MaxCurrent;
+    private float? _Durability;
+    private float? _Pressure;
+    private float? _Dirt;
     public float? Durability 
     { 
         get { return _Durability; } 
@@ -27,16 +26,17 @@ public class ObjectGrabbable : MonoBehaviour
         get { return _Pressure; } 
         private set { _Pressure = value; }
     }
-    public float? MaxCurrent 
-    { 
-        get { return _MaxCurrent; }
-        private set { _MaxCurrent = value; }
+    public float? Dirt
+    {
+        get { return _Dirt; }
+        private set { _Dirt = value; }
     }
-
-    public int method { get; internal set; }
 
     private MonitorController MonitorText;
     private PowerSwitchController PowerSwitch;
+    private FuseController Fuse;
+    private PumpController Pump;
+    private AudioHandler audioHandler;
 
     private void Start()
     {
@@ -61,12 +61,24 @@ public class ObjectGrabbable : MonoBehaviour
             PowerSwitch = this.AddComponent<PowerSwitchController>();
             PowerSwitch.StartUp(objectReferences);
         }    
+        if (objectType == ObjectType.Fuse)
+        {
+            Fuse = this.AddComponent<FuseController>();
+            Fuse.Setup(this);
+        }
+        if(objectType == ObjectType.Pump)
+        {
+            Pump = this.AddComponent<PumpController>();
+            Pump.StartUp(objectReferences);
+            audioHandler = Pump.audioHandler;
+        }
 
         this.name = objectType.ToString() + " Object";
 
         Durability = ObjectStats["Durability"];
         Pressure = ObjectStats["Pressure"];
-        MaxCurrent = ObjectStats["MaxCurrent"];
+        Dirt = ObjectStats["Dirt"];
+
     }
     private void Update()
     {
@@ -74,6 +86,11 @@ public class ObjectGrabbable : MonoBehaviour
         {
             Durability = DurabilityOverride;
         }  
+    }
+
+    public void ShockPlayer()
+    {
+        SendMessageUpwards("ShockPlayer");
     }
     public void ChangeObjectType(ObjectType newObjectType)
     {
@@ -85,6 +102,7 @@ public class ObjectGrabbable : MonoBehaviour
         if (objectType == ObjectType.PowerSwitch)
         {
             SwapSwitchState();
+
         }
 
     }
@@ -92,8 +110,11 @@ public class ObjectGrabbable : MonoBehaviour
     {
         Pressure += Ammount;
     }
+    public void ChangeDurability(float Ammount)
+    {
+        Durability += Ammount;
+    }
 
-    
     // Power Switch Stuff
     public bool? GetSwitchState()
     {
@@ -136,34 +157,66 @@ public class ObjectGrabbable : MonoBehaviour
         {
             ClearMonitorText();
         }
+        if (objectType == ObjectType.Pump)
+        {
+            stopAudio();
+        }
     }
     //End Monitor Stuff
+
+    //Audio
+    public void playAudio()
+    {
+        if (audioHandler == null)
+        {
+            return;
+        }
+        audioHandler.ChangeAudioPlaying(true);
+    }
+    public void stopAudio()
+    {
+        if (audioHandler == null)
+        {
+            return;
+        }
+        audioHandler.ChangeAudioPlaying(false);
+    }
+    public bool? IsAudioPlaying()
+    {
+        if (audioHandler == null)
+        {
+            return null;
+        }
+        return audioHandler.IsAudioPlaying;
+    }
+    //End Audio
+
 
     //Inventory System
     public void Grab(Transform objectGrabPointTransform)
     {
-        this.GetComponent<Rigidbody>().isKinematic = true;
-        this.gameObject.GetComponent<Collider>().enabled = false;
-        this.gameObject.layer = 6;
+        GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<Collider>().enabled = false;
+        gameObject.layer = 6;
         foreach (Transform child in this.GetComponentsInChildren<Transform>())
         {
             child.gameObject.layer = 6;
         }
-        this.transform.position = objectGrabPointTransform.position;
-        this.transform.SetParent(objectGrabPointTransform);
+        transform.position = objectGrabPointTransform.position;
+        transform.SetParent(objectGrabPointTransform);
     }
     public void Place(Transform objectPlacePointTransform)
     {
-        this.transform.SetParent(objectPlacePointTransform);
-        this.GetComponent<Rigidbody>().isKinematic = true;
-        this.gameObject.layer = 0;
+        transform.SetParent(objectPlacePointTransform);
+        GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.layer = 0;
         foreach (Transform child in this.GetComponentsInChildren<Transform>())
         {
             child.gameObject.layer = 0;
         }
         transform.position = objectPlacePointTransform.position;
         transform.rotation = objectPlacePointTransform.rotation;
-        this.gameObject.GetComponent<Collider>().enabled = true;
+        gameObject.GetComponent<Collider>().enabled = true;
     }
     public void Drop()
     {

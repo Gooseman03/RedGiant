@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +15,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0f,89f)] private float UpperLimit = 10f;
     [SerializeField, Range(0f, -89f)] private float LowerLimit = -10f;
 
+    [SerializeField] private bool IsBeingShocked = false;
+    [SerializeField] private float DeathTimer = 0;
+    [SerializeField] private int FightDeathPresses = 20;
+    [SerializeField] private int LastFightDeathPresses = 20;
+
     [SerializeField, Range(0f, 100f)] private float OxygenLevel;
+    [SerializeField, Range(0f, 100f)] private float CarbonLevel;
     [SerializeField] private OxygenCube CurrentOxygenArea;
 
     [SerializeField] private bool isGrounded;
@@ -32,6 +38,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private UiUpdate UiScript;
 
+    [SerializeField] private AudioSource Audio;
+    [SerializeField] private AudioSource ElectrocutionAudioSource;
+
 
     private float RotationX = 0.0f;
     private float RotationY = 0.0f;
@@ -40,31 +49,99 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
     }
+    private void ShockPlayer()
+    {
+        IsBeingShocked = true;
+    }
 
     private void Update()
     {
-        MovePlayer();
-        LookPlayer();
-        Pickup();
-        Interact();
+        if (!IsBeingShocked)
+        {
+            MovePlayer();
+            LookPlayer();
+            Pickup();
+            Interact();
+            Cursor.lockState = CursorLockMode.Locked;
+        } else
+        {
+            Shocked();
+        }
         UpdateUi();
         UpdateOxygen();
-        Cursor.lockState = CursorLockMode.Locked;
+        UpdateCarbon();
+        if (OxygenLevel <= 0 || CarbonLevel >= 100)
+        {
+            Death();
+        }
     }
 
+    private void Shocked()
+    {
+        if (!ElectrocutionAudioSource.isPlaying)
+        {
+            UiScript.StartShocking(3, LastFightDeathPresses);
+            LastFightDeathPresses = FightDeathPresses;
+            ElectrocutionAudioSource.Play();
+        }
+        DeathTimer += Time.deltaTime;
+        Cursor.lockState = CursorLockMode.None;
+        if (InteractInput)
+        {
+            FightDeathPresses -= 1;
+            InteractInput = false;
+        }
+        if (FightDeathPresses <= 0)
+        {
+            UiScript.EscapeShock();
+            IsBeingShocked = false;
+            DeathTimer = 0;
+            FightDeathPresses = LastFightDeathPresses*2;
+            ElectrocutionAudioSource.Stop();
+        }
+
+
+        if (DeathTimer >= 3)
+        {
+            Death();
+        }
+    }
+    private void UpdateCarbon()
+    {
+        if (CurrentOxygenArea != null)
+        {
+            CurrentOxygenArea.ChangeCarbon(1 * Time.deltaTime);
+            CarbonLevel = Mathf.Lerp(CarbonLevel, CurrentOxygenArea.Carbon, Time.deltaTime);
+        }
+        else
+        {
+            CarbonLevel = Mathf.Lerp(CarbonLevel, 0f, .5f * Time.deltaTime);
+        }
+    }
     private void UpdateOxygen()
     {
         if (CurrentOxygenArea != null)
         {
-            CurrentOxygenArea.ChangeOxygen(-1*Time.deltaTime);
-            OxygenLevel = Mathf.Lerp(OxygenLevel, CurrentOxygenArea.GetOxygen(), 1f * Time.deltaTime);
+            CurrentOxygenArea.ChangeOxygen(-1 * Time.deltaTime);
+            OxygenLevel = Mathf.Lerp(OxygenLevel, CurrentOxygenArea.Oxygen, 1f * Time.deltaTime);
         }
         else
         {
             OxygenLevel = Mathf.Lerp(OxygenLevel, 0f, .5f*Time.deltaTime);
-        } 
+        }
+        if (OxygenLevel < 50f && !Audio.isPlaying)
+        {
+            Audio.Play();
+        }
+        else if(OxygenLevel > 50f)
+        {
+            Audio.Stop();
+        }
+        if (OxygenLevel <= 0.1f)
+        {
+            OxygenLevel = 0;
+        }
     }
-
     private bool CheckGrounded()
     {
         if (!isGrounded)
@@ -105,18 +182,22 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateUi()
     {
-        
-        UiScript.ChangeColor(new Color (0f, 0f, 0f,((-OxygenLevel+3)/100) + .97f));
-    }
+        if (IsBeingShocked)
+        {
+            UiScript.ChangeShockStates(DeathTimer, FightDeathPresses);
+        }
 
-    private void ChangeOxygen(float amount)
-    {
-        OxygenLevel += amount;
+        UiScript.ChangeColor(new Color (0f, 0f, 0f,((-OxygenLevel+3)/100) + .97f));
     }
 
     private void Death()
     {
+        RestartLevel();
+    }
 
+    private void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void MovePlayer()

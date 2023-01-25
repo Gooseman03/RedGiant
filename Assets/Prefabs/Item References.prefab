@@ -61,9 +61,10 @@ MonoBehaviour:
   - {r: 0, g: 0.5, b: 0, a: 1}
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0.5, g: 0, b: 0, a: 1}
-  BaseColor: {r: 0, g: 0.5, b: 1, a: 0.5019608}
+  GeneralColor: {r: 0, g: 1, b: 0.9779241, a: 0.5019608}
+  MontiorMaterial: {fileID: 2100000, guid: 990e10dfbdf7e1f49902ee233fdcf657, type: 2}
+  FuseMaterial: {fileID: 2100000, guid: 667cc448c4f947b489ae91ea1ddc9bd6, type: 2}
   FuseDurability: 100
-  AirCanisterDurability: 100
   PowerConnectorDurability: 100
   MonitorDurability: 100
   PowerSwitchDurability: 100
@@ -71,3 +72,10 @@ MonoBehaviour:
   AirCanisterPressure: 100
   FuseMaxCurrent: 2000
   PowerConnectorMaxCurrent: 2000
+  PumpAudioClips:
+  - {fileID: 8300000, guid: b9c477aebb26187419343109282eb414, type: 3}
+  - {fileID: 8300000, guid: 641697543fceb194f860ae5c9f0bed12, type: 3}
+  - {fileID: 8300000, guid: b5ef7bc05317fac4492f7a3354ef976b, type: 3}
+  PowerSwitchClips:
+  - {fileID: 8300000, guid: 8f0427b892ef4344aaf1f9d8c67ea179, type: 3}
+  - {fileID: 8300000, guid: b6d827556b55f404b9d4323e6f1c0dd7, type: 3}

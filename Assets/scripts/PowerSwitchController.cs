@@ -14,11 +14,25 @@ public class PowerSwitchController : MonoBehaviour
     [SerializeField] private GameObject GreenButton;
     [SerializeField] private GameObject RedButton;
 
+    private List<AudioClip> audioClips;
+    private AudioHandler _audioHandler;
+    public AudioHandler audioHandler
+    {
+        get { return _audioHandler; }
+        private set { _audioHandler = value; }
+    }
+
 
     public void StartUp(ObjectReferences newReferences) 
     {
         objectReferences = newReferences;
         objectReferences.GetConstructorItemReferences(ObjectType.PowerSwitch, out List<Mesh> ListOfMeshs, out Material material, out List<Color> ListOfColors);
+        objectReferences.GetConstructorAudioReferences(ObjectType.PowerSwitch, out audioClips);
+
+
+        audioHandler = this.AddComponent<AudioHandler>();
+        audioHandler.Setup(audioClips, false);
+
 
         colorList = ListOfColors;
         GreenButton = new GameObject();
@@ -53,6 +67,11 @@ public class PowerSwitchController : MonoBehaviour
     public void SetState(bool state)
     {
         
+        if (state) { audioHandler.ChangeAudioPlaying(true, audioClips[0]); }
+        if (!state) { audioHandler.ChangeAudioPlaying(true, audioClips[1]); }
+
+
+
         float durability = (float)this.GetComponent<ObjectGrabbable>().Durability;
         if (durability < 60 && Random.Range(0, 100) > durability)
         {

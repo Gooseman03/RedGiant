@@ -45,11 +45,11 @@ public class MonitorController : MonoBehaviour
     public void InstantChangeMonitorText(string value)
     {
         MonitorText.text = value;
+        NewMonitorText = value;
     }
 
     public void ChangeMonitorText(string NewText)
     {
-        
         if (this.GetComponent<ObjectGrabbable>().Durability < 60f)
         {
             char[] CharArrayText = NewText.ToCharArray();

@@ -7,6 +7,7 @@ using UnityEngine;
 public class ObjectPlace : MonoBehaviour
 {
     [SerializeField] private ObjectType _objectType;
+    [SerializeField] private bool TempStorage;
     public ObjectType objectType
     {
         get { return _objectType; }
@@ -61,9 +62,10 @@ public class ObjectPlace : MonoBehaviour
     private void OnTransformChildrenChanged()
     {
         if (!SetupComplete) { return; }
+        
         LastObjectGrabbable = objectGrabbable;
         objectGrabbable = gameObject.transform.GetComponentInChildren<ObjectGrabbable>();
-
+        
 
         if (objectGrabbable != null)
         {
@@ -86,8 +88,8 @@ public class ObjectPlace : MonoBehaviour
         }
         catch { return; }
 
-            
-        
+
+        if (TempStorage) { return; }
         if (isRegistered && objectGrabbable == null)
         {
             parentObjectRegister.UnregisterObject(LastObjectGrabbable);

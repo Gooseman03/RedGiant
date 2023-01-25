@@ -8,8 +8,11 @@ public enum ObjectType
     PowerConnector,
     PowerSwitch,
     AirCanister,
-    Pump
+    Pump,
+    Co2Canister,
+    AirFilter
 }
+
 public class ObjectReferences : MonoBehaviour
 {
     [Header("Object References")]
@@ -28,7 +31,9 @@ public class ObjectReferences : MonoBehaviour
 
     [Header("General Material Settings")]
     [Tooltip("The base color of the material when transparent")]
-    [SerializeField] private Color BaseColor;
+    [SerializeField] private Color GeneralColor;
+    [SerializeField] private Material MontiorMaterial;
+    [SerializeField] private Material FuseMaterial;
 
 
     [Header("Object Settings")]
@@ -44,21 +49,25 @@ public class ObjectReferences : MonoBehaviour
     [SerializeField] private float FuseMaxCurrent;
     [SerializeField] private float PowerConnectorMaxCurrent;
 
+    [Tooltip("First Is Starting Second Is Looping Third Is Stoping")]
+    [SerializeField] private List<AudioClip> PumpAudioClips;
+    [SerializeField] private List<AudioClip> PowerSwitchClips;
+
 
     public void GetConstructorItemReferences(ObjectType Requested, bool Transparent, out Mesh meshOut, out Material materialOut)
     {
         meshOut = GenericMesh;
         materialOut = OpaqueMaterial;
-        if (Transparent)
-        {
-            materialOut = TransparentMaterial;
-            materialOut.color = BaseColor;
-        }
         if (Requested == ObjectType.Fuse)
         {
             meshOut = FuseMesh;
+            materialOut = FuseMaterial;
         }
         if (Requested == ObjectType.AirCanister)
+        {
+            meshOut = AirCanisterMesh;
+        }
+        if (Requested == ObjectType.Co2Canister)
         {
             meshOut = AirCanisterMesh;
         }
@@ -69,10 +78,16 @@ public class ObjectReferences : MonoBehaviour
         if (Requested == ObjectType.Monitor)
         {
             meshOut = MonitorMesh;
+            materialOut = MontiorMaterial;
         }
         if (Requested == ObjectType.PowerSwitch)
         {
             meshOut = PowerSwitchMeshs[0];
+        }
+        if (Transparent)
+        {
+            materialOut = TransparentMaterial;
+            materialOut.color = GeneralColor;
         }
     }
 
@@ -90,45 +105,52 @@ public class ObjectReferences : MonoBehaviour
         }
         
     }
-
-    public void GetStatsItemReferences(ObjectType Requested, out Dictionary<string, float?> OutList)
+    public void GetConstructorAudioReferences(ObjectType Requested,out List<AudioClip> audioClipsOut)
     {
-        OutList = new Dictionary<string, float?>();
-        if (Requested == ObjectType.Fuse)
+        audioClipsOut = null;
+        if (Requested == ObjectType.Pump)
         {
-            OutList.Add("Durability", FuseDurability);
-            OutList.Add("Pressure", null);
-            OutList.Add("MaxCurrent", FuseMaxCurrent);
-        }
-        if (Requested == ObjectType.AirCanister)
-        {
-            OutList.Add("Durability", null);
-            OutList.Add("Pressure", AirCanisterPressure);
-            OutList.Add("MaxCurrent", null);
-        }
-        if (Requested == ObjectType.PowerConnector)
-        {
-            OutList.Add("Durability", PowerConnectorDurability);
-            OutList.Add("Pressure", null);
-            OutList.Add("MaxCurrent", PowerConnectorMaxCurrent);
-        }
-        if (Requested == ObjectType.Monitor)
-        {
-            OutList.Add("Durability", MonitorDurability);
-            OutList.Add("Pressure", null);
-            OutList.Add("MaxCurrent", null);
+            audioClipsOut = PumpAudioClips;
         }
         if (Requested == ObjectType.PowerSwitch)
         {
-            OutList.Add("Durability", PowerSwitchDurability);
-            OutList.Add("Pressure", null);
-            OutList.Add("MaxCurrent", null);
+            audioClipsOut = PowerSwitchClips;
+        }
+    }
+    public void GetStatsItemReferences(ObjectType Requested, out Dictionary<string, float?> OutList)
+    {
+        OutList = new Dictionary<string, float?>();
+        OutList.Add("Durability", null);
+        OutList.Add("Pressure", null);
+        OutList.Add("Dirt", null);
+
+        if (Requested == ObjectType.Fuse)
+        {
+            OutList["Durability"] = FuseDurability;
+        }
+        if (Requested == ObjectType.AirCanister)
+        {
+            OutList["Pressure"] = AirCanisterPressure;
+        }
+        if (Requested == ObjectType.PowerConnector)
+        {
+            OutList["Durability"] = PowerConnectorDurability;
+        }
+        if (Requested == ObjectType.Monitor)
+        {
+            OutList["Durability"] = MonitorDurability;
+        }
+        if (Requested == ObjectType.PowerSwitch)
+        {
+            OutList["Durability"] = PowerSwitchDurability;
         }
         if (Requested == ObjectType.Pump)
         {
-            OutList.Add("Durability", PumpDurability);
-            OutList.Add("Pressure", null);
-            OutList.Add("MaxCurrent", null);
+            OutList["Durability"] = PumpDurability;
+        }
+        if (Requested == ObjectType.Co2Canister)
+        {
+            OutList["Pressure"] = AirCanisterPressure;
         }
     }
 }

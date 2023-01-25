@@ -4,16 +4,30 @@ using UnityEngine;
 
 public class ItemRegister : MonoBehaviour
 {
+    [SerializeField]private DamageShip ship;
+    private ObjectGrabbable LastItemRemoved;
+    private void Awake()
+    {
+        ship.Register(this);
+    }
     public List<ObjectGrabbable> Objects = new List<ObjectGrabbable>();
 
     public void RegisterObject(ObjectGrabbable item)
     {
         Objects.Add(item);
+        LastItemRemoved = null;
+    }
+
+    public void ShockPlayer()
+    {
+        LastItemRemoved.SendMessage("ShockPlayer");
     }
 
     public void UnregisterObject(ObjectGrabbable item)
     {
+        LastItemRemoved = item;
         Objects.Remove(item);
+        this.SendMessage("ObjectPulled",item);
     }
 
     public bool CheckForObject(ObjectGrabbable item)
@@ -44,5 +58,10 @@ public class ItemRegister : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void ListAllObjects(out List<ObjectGrabbable> OutputList)
+    {
+        OutputList = Objects;
     }
 }
