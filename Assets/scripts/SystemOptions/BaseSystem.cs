@@ -41,7 +41,7 @@ public class BaseSystem : MonoBehaviour
 
     private void WhenPowered()
     {
-        if (itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectGrabbable> ListOfPowerSwitchs))
+        if (itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectDirector> ListOfPowerSwitchs))
         {
             bool? SwitchState = ListOfPowerSwitchs[0].GetSwitchState();
             if (SwitchState == true)

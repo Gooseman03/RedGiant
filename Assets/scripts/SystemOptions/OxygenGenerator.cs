@@ -13,8 +13,6 @@ public class OxygenGenerator : MonoBehaviour
         OxygenCalculations();
         WhenPowered();
     }
-
-    
     private void WhenPowered()
     {
         if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
@@ -33,7 +31,6 @@ public class OxygenGenerator : MonoBehaviour
             SendMessage("pumpPlayAudio", false);
         }
     }
-
     private bool CheckAirline()
     {
         if (!ErrorCodes.CheckWorking(baseSystem.itemRegister, ObjectType.Pump))
@@ -46,23 +43,21 @@ public class OxygenGenerator : MonoBehaviour
         }
         return true;
     }
-
     private void OxygenCalculations()
     {
         AircanisterPressure.Clear();
         AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 null Unless Debuging
         AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 2 null Unless Debuging
-        if (baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectGrabbable> ObjectList))
+        if (baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectDirector> ObjectList))
         {
             int i = 0;
-            foreach (ObjectGrabbable Aircanister in ObjectList)
+            foreach (ObjectDirector Aircanister in ObjectList)
             {
                 AircanisterPressure[i] = Aircanister.Pressure;
                 i++;
             }
         }
     }
-
     private void UpdateOxygenCubes()
     {
         foreach(OxygenCube cube in oxygenCubes)
@@ -73,23 +68,17 @@ public class OxygenGenerator : MonoBehaviour
             }
         }
     }
-
     private void DrainAircanisters()
     {
-        if (baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectGrabbable> ObjectList))
+        if (baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectDirector> ObjectList))
         {
-            float TotalLoss = -1 * Time.deltaTime;
-            int i = 0;
-            foreach (ObjectGrabbable Aircanister in ObjectList)
+            foreach (ObjectDirector Aircanister in ObjectList)
             {
                 if (Aircanister.Pressure > 0f)
                 {
-                    if (i == 0 && ObjectList.Count >= 2) { TotalLoss /= 2;}
-                    Aircanister.ChangePressure(TotalLoss);
+                    Aircanister.ChangePressure(- .5f * Time.deltaTime);
                 }
-                i++;
             }
         }
     }
-
 }

@@ -7,9 +7,9 @@ public class AudioOption : MonoBehaviour
     [SerializeField] private BaseSystem baseSystem;
     private void pumpPlayAudio(bool ChangeTo)
     {
-        if (baseSystem.itemRegister.HasObject(ObjectType.Pump, out List<ObjectGrabbable> PumpList))
+        if (baseSystem.itemRegister.HasObject(ObjectType.Pump, out List<ObjectDirector> PumpList))
         {
-            foreach (ObjectGrabbable Pump in PumpList)
+            foreach (ObjectDirector Pump in PumpList)
             {
                 if (ChangeTo == true && Pump.IsAudioPlaying() == false)
                 {

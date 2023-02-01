@@ -47,15 +47,24 @@ MonoBehaviour:
   GenericMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   TransparentMaterial: {fileID: 2100000, guid: badd57bff90e7684ab0cd74d1203b54b, type: 2}
   OpaqueMaterial: {fileID: 2100000, guid: 3571b5bd07190034a90c864d1ed8b18b, type: 2}
-  AirCanisterMesh: {fileID: -2432090755550338912, guid: 61e4b6c2e99d1ea4c90f8fc882ce14ad, type: 3}
-  FuseMesh: {fileID: -2432090755550338912, guid: d52ca1665fb62d84781e056c5a32010e, type: 3}
-  PowerConnectorMesh: {fileID: 8604045607132181640, guid: 5fd7013d6415ef84895432b49e01fff8, type: 3}
-  MonitorMesh: {fileID: 8604045607132181640, guid: 0360f33224c61654f91302212190339f, type: 3}
-  PumpMesh: {fileID: 0}
+  AirCanisterMeshs:
+  - {fileID: -2432090755550338912, guid: 61e4b6c2e99d1ea4c90f8fc882ce14ad, type: 3}
+  FuseMeshs:
+  - {fileID: -2432090755550338912, guid: d52ca1665fb62d84781e056c5a32010e, type: 3}
+  PowerConnectorMeshs:
+  - {fileID: 8604045607132181640, guid: 5fd7013d6415ef84895432b49e01fff8, type: 3}
+  MonitorMeshs:
+  - {fileID: 8604045607132181640, guid: 0360f33224c61654f91302212190339f, type: 3}
+  PumpMeshs:
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   PowerSwitchMeshs:
   - {fileID: 6679289703562662588, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
   - {fileID: 5358915128574053833, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
   - {fileID: 8604045607132181640, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
+  AirFilterMeshs:
+  - {fileID: 5423731134757305092, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
+  - {fileID: -8067403476912574091, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
+  DefaultPlane: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
   PowerSwitchColors:
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 0, g: 0.5, b: 0, a: 1}
@@ -64,12 +73,14 @@ MonoBehaviour:
   GeneralColor: {r: 0, g: 1, b: 0.9779241, a: 0.5019608}
   MontiorMaterial: {fileID: 2100000, guid: 990e10dfbdf7e1f49902ee233fdcf657, type: 2}
   FuseMaterial: {fileID: 2100000, guid: 667cc448c4f947b489ae91ea1ddc9bd6, type: 2}
+  AirFilterMaterial: {fileID: 2100000, guid: b8569c94daaef4647ac34a604907762a, type: 2}
   FuseDurability: 100
   PowerConnectorDurability: 100
   MonitorDurability: 100
   PowerSwitchDurability: 100
   PumpDurability: 100
   AirCanisterPressure: 100
+  AirFilterDirt: 0
   FuseMaxCurrent: 2000
   PowerConnectorMaxCurrent: 2000
   PumpAudioClips:

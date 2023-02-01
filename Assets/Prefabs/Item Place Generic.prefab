@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 0
   m_Name: Item Place Generic
   m_TagString: Untagged
-  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -45,13 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 319748169ee509a489370f51b981c799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 0
+  _objectType: 0
+  TempStorage: 0
   objectReferences: {fileID: 1666698185415828252, guid: b5b21fe53c8042f49b27680b522560d2, type: 3}
   Preplace: 0
   WillPreplace: 0
   PrefabObjectGrabbable: {fileID: 7744315431106317710, guid: 96c5d88fc196c6745aa8341cd99de379, type: 3}
-  isRegistered: 0
-  LastObjectGrabbable: {fileID: 0}
 --- !u!64 &6042397570977473
 MeshCollider:
   m_ObjectHideFlags: 0

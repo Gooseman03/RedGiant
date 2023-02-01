@@ -8,10 +8,19 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
+
+    [SerializeField] private Vector2 ShipMoveInput = Vector2.zero;
+    [SerializeField] private Vector2 ShipLookInput = Vector2.zero;
+    [SerializeField] private bool ShipExit = false;
+
     [SerializeField] private Vector2 LookInput = Vector2.zero;
     [SerializeField] private Vector2 MoveInput = Vector2.zero;
     [SerializeField] private bool PickupInput = false;
     [SerializeField] private bool InteractInput = false;
+
+    [SerializeField] private string DefaultActionMap;
+
+
     [SerializeField, Range(0f,89f)] private float UpperLimit = 10f;
     [SerializeField, Range(0f, -89f)] private float LowerLimit = -10f;
 
@@ -29,8 +38,6 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController controller;
     [SerializeField] private GameObject CameraFollow;
-
-
     [SerializeField] private Transform objectLeftGrabPointTransform;
     [SerializeField] private GameObject ItemInLeftHand;
     [SerializeField] private Transform objectRightGrabPointTransform;
@@ -53,9 +60,15 @@ public class PlayerController : MonoBehaviour
     {
         IsBeingShocked = true;
     }
-
     private void Update()
     {
+        SendMessageUpwards("ShipMove", ShipMoveInput);
+        SendMessageUpwards("ShipLook", ShipLookInput);
+        if (ShipExit)
+        {
+            this.transform.parent.BroadcastMessage("ShipExit");
+            ShipExit = false;
+        }
         if (!IsBeingShocked)
         {
             MovePlayer();
@@ -76,6 +89,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void RequestControlChange(string inputActionMap)
+    {
+        if (inputActionMap == null)
+        {
+            this.GetComponent<PlayerInput>().SwitchCurrentActionMap(DefaultActionMap);
+            return;
+        }
+        this.GetComponent<PlayerInput>().SwitchCurrentActionMap(inputActionMap);
+    }
     private void Shocked()
     {
         if (!ElectrocutionAudioSource.isPlaying)
@@ -150,7 +172,6 @@ public class PlayerController : MonoBehaviour
         }
         return true;
     }
-
     private void OnCollisionStay(Collision collision)
     {
         if (collision.transform.tag == "Ground")
@@ -158,7 +179,6 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
         }
     }
-
     private void OnCollisionExit(Collision collision)
     {
         if (collision.transform.tag == "Ground")
@@ -166,7 +186,6 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
         }
     }
-
     private void Interact()
     {
         if (InteractInput)
@@ -174,12 +193,11 @@ public class PlayerController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, 10f))
             {
-                hit.transform.gameObject.SendMessage("OnInteract", SendMessageOptions.DontRequireReceiver);
+                hit.transform.gameObject.SendMessage("OnInteract", this,SendMessageOptions.DontRequireReceiver);
             }
         }
         InteractInput = false;
     }
-
     private void UpdateUi()
     {
         if (IsBeingShocked)
@@ -189,27 +207,23 @@ public class PlayerController : MonoBehaviour
 
         UiScript.ChangeColor(new Color (0f, 0f, 0f,((-OxygenLevel+3)/100) + .97f));
     }
-
     private void Death()
     {
         RestartLevel();
     }
-
     private void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
     private void MovePlayer()
     {
         Vector3 move = MoveInput.x * transform.right + MoveInput.y * transform.forward;
         if (!CheckGrounded())
         {
-            move += -gravity * transform.up;
+            move += -gravity * Time.deltaTime * transform.up;
         }
         controller.Move(move * speed * Time.deltaTime);
     }
-
     private void LookPlayer()
     {
         if (LookInput != Vector2.zero)
@@ -218,10 +232,9 @@ public class PlayerController : MonoBehaviour
             RotationY += LookInput.x * .2f;
             RotationX = Mathf.Clamp(RotationX, LowerLimit, UpperLimit);
             CameraFollow.transform.eulerAngles = new Vector3(RotationX, RotationY, 0);
-            transform.eulerAngles = new Vector3(0, RotationY, 0);
+            transform.localEulerAngles = new Vector3(0, RotationY, 0);
         }
     }
-
     private void Pickup()
     {
         if (PickupInput)
@@ -229,14 +242,14 @@ public class PlayerController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, 10f))
             {
-                if (hit.transform.TryGetComponent(out ObjectPlace objectPlace) && ItemInLeftHand != null && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectGrabbable>().objectType || objectPlace.objectType == ObjectType.Generic))
+                if (hit.transform.TryGetComponent(out ObjectPlace objectPlace) && ItemInLeftHand != null && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectDirector>().objectType || objectPlace.objectType == ObjectType.Generic))
                 {   
-                    ItemInLeftHand.GetComponent<ObjectGrabbable>().Place(objectPlace.transform);
+                    ItemInLeftHand.GetComponent<ObjectDirector>().Place(objectPlace.transform);
                     ItemInLeftHand = null;
                     PickupInput = false;
                     return;
                 }
-                else if (hit.transform.TryGetComponent(out ObjectGrabbable objectGrabbable) && ItemInLeftHand == null)
+                else if (hit.transform.TryGetComponent(out ObjectDirector objectGrabbable) && ItemInLeftHand == null)
                 {
                     objectGrabbable.Grab(objectLeftGrabPointTransform);
                     ItemInLeftHand = hit.transform.gameObject;
@@ -245,7 +258,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (ItemInLeftHand != null)
                 {
-                    ItemInLeftHand.GetComponent<ObjectGrabbable>().Drop();
+                    ItemInLeftHand.GetComponent<ObjectDirector>().Drop(transform.parent);
                     ItemInLeftHand = null;
                     PickupInput = false;
                     return;
@@ -253,50 +266,69 @@ public class PlayerController : MonoBehaviour
             }
             else if (ItemInLeftHand != null)
             {
-                ItemInLeftHand.GetComponent<ObjectGrabbable>().Drop();
+                ItemInLeftHand.GetComponent<ObjectDirector>().Drop(transform.parent);
                 ItemInLeftHand = null;
                 return;
             }
         }
         PickupInput = false;
     }
-
     public void OnLook(InputValue value)
     {
         LookInput = value.Get<Vector2>();
     }
-
+    public void OnShipMove(InputValue value)
+    {
+        ShipMoveInput = value.Get<Vector2>();
+    }
+    public void OnShipLook(InputValue value)
+    {
+        ShipLookInput = value.Get<Vector2>();
+    }
+    public void OnExit(InputValue value)
+    {
+        ShipExit = value.isPressed;
+    }
     public void OnMove(InputValue value)
     {
         MoveInput = value.Get<Vector2>();
     }
-
     public void OnPickup(InputValue value)
     {
         PickupInput = value.isPressed;
     }
-
     public void OnInteract(InputValue value)
     {
         InteractInput = value.isPressed;
     }
-
     private void OnTriggerEnter(Collider other)
     {
+        other.transform.parent.TryGetComponent<DoorControl>(out DoorControl doorcontrol);
+        if (doorcontrol != null)
+        {
+            doorcontrol.Open = true;
+            return;
+        }
         if (other.GetComponent<OxygenCube>() != null)
         {
             CurrentOxygenArea = other.GetComponent<OxygenCube>();
+            return;
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<OxygenCube>() != null)
+        other.transform.parent.TryGetComponent<DoorControl>(out DoorControl doorcontrol);
+        if (doorcontrol != null)
+        {
+            doorcontrol.Close = true;
+            return;
+        }
+        if (other.GetComponent<OxygenCube>() != null && other == CurrentOxygenArea)
         {
             CurrentOxygenArea = null;
+            return;
         }
     }
-
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(CameraFollow.transform.position, CameraFollow.transform.forward * 10f);

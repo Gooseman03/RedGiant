@@ -5,14 +5,14 @@ using UnityEngine;
 public class ItemRegister : MonoBehaviour
 {
     [SerializeField]private DamageShip ship;
-    private ObjectGrabbable LastItemRemoved;
+    private ObjectDirector LastItemRemoved;
     private void Awake()
     {
         ship.Register(this);
     }
-    public List<ObjectGrabbable> Objects = new List<ObjectGrabbable>();
+    public List<ObjectDirector> Objects = new List<ObjectDirector>();
 
-    public void RegisterObject(ObjectGrabbable item)
+    public void RegisterObject(ObjectDirector item)
     {
         Objects.Add(item);
         LastItemRemoved = null;
@@ -23,14 +23,14 @@ public class ItemRegister : MonoBehaviour
         LastItemRemoved.SendMessage("ShockPlayer");
     }
 
-    public void UnregisterObject(ObjectGrabbable item)
+    public void UnregisterObject(ObjectDirector item)
     {
         LastItemRemoved = item;
         Objects.Remove(item);
         this.SendMessage("ObjectPulled",item);
     }
 
-    public bool CheckForObject(ObjectGrabbable item)
+    public bool CheckForObject(ObjectDirector item)
     {
         if (Objects.Contains(item))
         {
@@ -42,10 +42,10 @@ public class ItemRegister : MonoBehaviour
         }
     }
 
-    public bool HasObject(ObjectType type, out List<ObjectGrabbable> OutputList)
+    public bool HasObject(ObjectType type, out List<ObjectDirector> OutputList)
     {
-        OutputList = new List<ObjectGrabbable>();
-        foreach (ObjectGrabbable item in Objects)
+        OutputList = new List<ObjectDirector>();
+        foreach (ObjectDirector item in Objects)
         {
             if (item.objectType == type)
             {
@@ -60,7 +60,7 @@ public class ItemRegister : MonoBehaviour
         return false;
     }
 
-    public void ListAllObjects(out List<ObjectGrabbable> OutputList)
+    public void ListAllObjects(out List<ObjectDirector> OutputList)
     {
         OutputList = Objects;
     }

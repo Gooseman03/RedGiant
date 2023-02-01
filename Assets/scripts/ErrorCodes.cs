@@ -9,7 +9,8 @@ public enum ErrorTypes
     ErrorBadPowerSwitch,
     ErrorBadPump,
     ErrorLowAirCanister,
-    ErrorHighCarbonCanister
+    ErrorHighCarbonCanister,
+    ErrorLowPump
 }
 public static class ErrorCodes
 {
@@ -28,12 +29,12 @@ public static class ErrorCodes
         if (CheckForBadCompontent(ObjectType.Monitor)) { ErrorList.Add(ErrorTypes.ErrorBadMonitor); }
         if (CheckForLowCompontent(ObjectType.AirCanister)) { ErrorList.Add(ErrorTypes.ErrorLowAirCanister); }
         if (CheckForLowCompontent(ObjectType.Co2Canister)) { ErrorList.Add(ErrorTypes.ErrorHighCarbonCanister); }
-
+        if (CheckForDirtyCompontent(ObjectType.AirFilter) || CheckForBadCompontent(ObjectType.Pump) || CheckForLowCompontent(ObjectType.Co2Canister)) { ErrorList.Add(ErrorTypes.ErrorLowPump); }
         bool CheckForBadCompontent(ObjectType objectType)
         {
-            if (itemRegister.HasObject(objectType, out List<ObjectGrabbable> List))
+            if (itemRegister.HasObject(objectType, out List<ObjectDirector> List))
             {
-                foreach (ObjectGrabbable Object in List)
+                foreach (ObjectDirector Object in List)
                 {
                     if (Object.Durability < ErrorThresholdDurability)
                     {
@@ -45,11 +46,25 @@ public static class ErrorCodes
         }
         bool CheckForLowCompontent(ObjectType objectType)
         {
-            if (itemRegister.HasObject(objectType, out List<ObjectGrabbable> List))
+            if (itemRegister.HasObject(objectType, out List<ObjectDirector> List))
             {
-                foreach (ObjectGrabbable Object in List)
+                foreach (ObjectDirector Object in List)
                 {
                     if (Object.Pressure < ErrorThresholdPressure)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        bool CheckForDirtyCompontent(ObjectType objectType)
+        {
+            if (itemRegister.HasObject(objectType, out List<ObjectDirector> List))
+            {
+                foreach (ObjectDirector Object in List)
+                {
+                    if (Object.Dirt > ErrorThresholdDirt)
                     {
                         return true;
                     }
@@ -96,22 +111,55 @@ public static class ErrorCodes
             if (!Printed) { OutputString += "EDA5"; }
             else OutputString += "BadMonitor\n";
         }
+        if (ErrorList.Contains(ErrorTypes.ErrorLowPump))
+        {
+            if (!Printed) { OutputString += "CFA0"; }
+            else OutputString += "LowPump\n";
+        }
     }
-    public static bool CheckWorking(ObjectGrabbable objectIn)
+    public static bool CheckWorking(ObjectDirector objectIn)
     {
         bool HasWorking = true;
-        if (objectIn.Durability < BrokenThresholdDurability)
+        if (objectIn.objectType == ObjectType.AirFilter)
+        {
+            if (objectIn.Dirt >= 100)
+            {
+                HasWorking = false;
+            }
+        }
+        else if (objectIn.objectType == ObjectType.AirCanister || objectIn.objectType == ObjectType.Co2Canister)
+        {
+            if (objectIn.Pressure <= 100)
+            {
+                HasWorking = false;
+            }
+        }
+        else if (objectIn.Durability < BrokenThresholdDurability)
         {
             HasWorking = false;
         }
         return HasWorking;
     }
-    public static bool CheckWorking(List<ObjectGrabbable> objectsIn)
+    public static bool CheckWorking(List<ObjectDirector> objectsIn)
     {
         bool HasWorking = true; 
-        foreach(ObjectGrabbable Item in objectsIn)
+        foreach(ObjectDirector Item in objectsIn)
         {
-            if (Item.Durability < BrokenThresholdDurability) 
+            if (Item.objectType == ObjectType.AirFilter)
+            {
+                if (Item.Dirt <= 100)
+                {
+                    HasWorking = false;
+                }
+            }
+            else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
+            {
+                if (Item.Pressure >= 100)
+                {
+                    HasWorking = false;
+                }
+            }
+            else if (Item.Durability < BrokenThresholdDurability)
             {
                 HasWorking = false;
             }
@@ -120,12 +168,26 @@ public static class ErrorCodes
     }
     public static bool CheckWorking(ItemRegister register, ObjectType objectType)
     {
-        if (register.HasObject(objectType, out List<ObjectGrabbable> ListToTest))
+        if (register.HasObject(objectType, out List<ObjectDirector> ListToTest))
         {
             bool HasWorking = true;
-            foreach (ObjectGrabbable Item in ListToTest)
+            foreach (ObjectDirector Item in ListToTest)
             {
-                if (Item.Durability < BrokenThresholdDurability)
+                if (Item.objectType == ObjectType.AirFilter)
+                {
+                    if (Item.Dirt >= 100)
+                    {
+                        HasWorking = false;
+                    }
+                }
+                else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
+                {
+                    if (Item.Pressure <= 100)
+                    {
+                        HasWorking = false;
+                    }
+                }
+                else if (Item.Durability < BrokenThresholdDurability)
                 {
                     HasWorking = false;
                 }

@@ -6,7 +6,7 @@ public class DamageShip : MonoBehaviour
 {
     [SerializeField] private bool ShouldDmg;
     private List<ItemRegister> itemRegisters = new List<ItemRegister>();
-    private List<ObjectGrabbable> AllItemsInSystems = new List<ObjectGrabbable>();
+    private List<ObjectDirector> AllItemsInSystems = new List<ObjectDirector>();
 
     private float timer;
     private void Update()
@@ -29,7 +29,7 @@ public class DamageShip : MonoBehaviour
     {
         if (ShouldDmg!= true) { return; }
         ReloadAllItems();
-        ObjectGrabbable ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
+        ObjectDirector ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
         bool reset = false;
         float i = 0;
         while (ObjectToDamage.Durability == null && !reset)
@@ -57,8 +57,8 @@ public class DamageShip : MonoBehaviour
     {
         foreach (ItemRegister item in itemRegisters)
         {
-            item.ListAllObjects(out List<ObjectGrabbable> AllRegisterItems);
-            foreach (ObjectGrabbable _object in AllRegisterItems)
+            item.ListAllObjects(out List<ObjectDirector> AllRegisterItems);
+            foreach (ObjectDirector _object in AllRegisterItems)
             {
                 AllItemsInSystems.Add(_object);
             }

@@ -9,14 +9,11 @@ public class DisplayOption : MonoBehaviour
     [SerializeField] private List<string> DisplayOutputs = new List<string>();
     [SerializeField] private List<ObjectType> WantsDisplayed = new List<ObjectType>();
 
-
-
     private void FixedUpdate()
     {
         WhenPowered();
         Display();
     }
-
     private void WhenPowered()
     {
         DisplayOutputs.Clear();
@@ -31,18 +28,21 @@ public class DisplayOption : MonoBehaviour
             DisplayOutputs.Add("");
         }
     }
-
     private void DisplayOutput()
     {
         DisplayOutputs.Add("Error Display\n"); // Default Text on Display 1 
         DisplayOutputs.Add("Component Display"); // Default Text on Display 2
         foreach(ObjectType objectType in WantsDisplayed)
         {
-            if (baseSystem.itemRegister.HasObject(objectType,out List<ObjectGrabbable> ObjectList))
+            if (baseSystem.itemRegister.HasObject(objectType,out List<ObjectDirector> ObjectList))
             {
-                foreach (ObjectGrabbable Object in ObjectList)
+                foreach (ObjectDirector Object in ObjectList)
                 {
-                    if (objectType == ObjectType.AirCanister || objectType == ObjectType.Co2Canister)
+                    if (objectType == ObjectType.AirFilter)
+                    {
+                        DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.Dirt) + "%";
+                    }
+                    else if (objectType == ObjectType.AirCanister || objectType == ObjectType.Co2Canister)
                     {
                         DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.Pressure) + "%";
                     }
@@ -56,14 +56,13 @@ public class DisplayOption : MonoBehaviour
         }
         DisplayOutputs[0] += baseSystem.ErrorText;
     }
-
     private void Display()
     {
         string output;
-        if (baseSystem.itemRegister.HasObject(ObjectType.Monitor, out List<ObjectGrabbable> ObjectList))
+        if (baseSystem.itemRegister.HasObject(ObjectType.Monitor, out List<ObjectDirector> ObjectList))
         {
             int i = 0;
-            foreach (ObjectGrabbable Object in ObjectList)
+            foreach (ObjectDirector Object in ObjectList)
             {
                 output = DisplayOutputs[i];
                 Object.ChangeMonitorText(output);
@@ -71,7 +70,4 @@ public class DisplayOption : MonoBehaviour
             }
         }
     }
-
-
-
 }

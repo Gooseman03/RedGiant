@@ -6,7 +6,7 @@ public class FuseBlownOption : MonoBehaviour
 {
     [SerializeField] private BaseSystem baseSystem;
     [SerializeField] private List<ObjectType> LiveObjects;
-    private void ObjectPulled(ObjectGrabbable item)
+    private void ObjectPulled(ObjectDirector item)
     {
         if (LiveObjects.Contains(item.objectType))
         {
@@ -19,9 +19,9 @@ public class FuseBlownOption : MonoBehaviour
     private void BlowFuse()
     {
         bool ShockPlayer = false;
-        if (baseSystem.itemRegister.HasObject(ObjectType.Fuse, out List<ObjectGrabbable> ObjectList))
+        if (baseSystem.itemRegister.HasObject(ObjectType.Fuse, out List<ObjectDirector> ObjectList))
         {
-            foreach (ObjectGrabbable fuse in ObjectList)
+            foreach (ObjectDirector fuse in ObjectList)
             {
                 if (fuse.Durability > 0)
                 {

@@ -16,23 +16,22 @@ public class CarbonToOxygen : MonoBehaviour
             Exchange();
         }
     }
-
     private void Exchange()
     {
         bool HasEmptyOxygen = false;
         bool HasFullCarbon = false;
-        if (!baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectGrabbable> Aircanisters)) { return; }
-        if (!baseSystem.itemRegister.HasObject(ObjectType.Co2Canister, out List<ObjectGrabbable> Co2Canisters)) { return; }
+        if (!baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectDirector> Aircanisters)) { return; }
+        if (!baseSystem.itemRegister.HasObject(ObjectType.Co2Canister, out List<ObjectDirector> Co2Canisters)) { return; }
 
 
-        foreach (ObjectGrabbable aircanister in Aircanisters)
+        foreach (ObjectDirector aircanister in Aircanisters)
         {
             if ((float)aircanister.Pressure > 0 && (float)aircanister.Pressure <= 100)
             {
                 HasEmptyOxygen = true;
             }
         }
-        foreach (ObjectGrabbable co2canister in Co2Canisters)
+        foreach (ObjectDirector co2canister in Co2Canisters)
         {
             if ((float)co2canister.Pressure > 0 && (float)co2canister.Pressure <= 100)
             {
@@ -41,11 +40,11 @@ public class CarbonToOxygen : MonoBehaviour
         }
         if (HasEmptyOxygen && HasFullCarbon)
         {
-            foreach (ObjectGrabbable aircanister in Aircanisters)
+            foreach (ObjectDirector aircanister in Aircanisters)
             {
                 aircanister.ChangePressure(Time.deltaTime);
             }
-            foreach (ObjectGrabbable co2canister in Co2Canisters)
+            foreach (ObjectDirector co2canister in Co2Canisters)
             {
                 co2canister.ChangePressure(Time.deltaTime);
             }
