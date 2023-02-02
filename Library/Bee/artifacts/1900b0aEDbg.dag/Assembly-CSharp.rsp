@@ -422,6 +422,7 @@
 "Assets/scripts/SystemOptions/OxygenGenerator.cs"
 "Assets/scripts/SystemOptions/RepairBay.cs"
 "Assets/scripts/UiUpdate.cs"
+"Assets/SkyBoxScript.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark02.cs"

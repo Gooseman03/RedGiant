@@ -39,19 +39,19 @@ public class ShipControl : MonoBehaviour
         moveVector += ShipNewSpeed;
         Rotation += ShipNewRotation;
         transform.position += moveVector * Time.deltaTime;
-        Space.SendMessage("RotateAroundSpace", Rotation);
+        Space.BroadcastMessage("RotateAroundSpace", Rotation, SendMessageOptions.DontRequireReceiver);
         if (transform.position.x > Threshold || transform.position.y > Threshold || transform.position.z > Threshold)
         {
-            Space.SendMessage("Shift", transform.position);
+            Space.BroadcastMessage("Shift", transform.position);
             transform.position = Vector3.zero;
         }
     }
     private Vector3 Clamp(Vector3 toClamp)
     {
         Vector3 ClampedValue = new Vector3 (toClamp.x, toClamp.y, toClamp.z);
-        if (toClamp.x < .01f) { ClampedValue.x = 0; }
-        if (toClamp.y < .01f) { ClampedValue.y = 0; }
-        if (toClamp.z < .01f) { ClampedValue.z = 0; }
+        if (Mathf.Abs(toClamp.x) < .01f) { ClampedValue.x = 0; }
+        if (Mathf.Abs(toClamp.y) < .01f) { ClampedValue.y = 0; }
+        if (Mathf.Abs(toClamp.z) < .01f) { ClampedValue.z = 0; }
         return ClampedValue;
     }
 }
