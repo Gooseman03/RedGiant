@@ -11,24 +11,28 @@ public class SkyBoxScript : MonoBehaviour
     // set the sky box camera in the inspector
     public Camera SkyCamera;
 
-    public Transform Lookat;
-
     // the additional rotation to add to the skybox
-    // can be set during game play or in the inspector
-    public Vector3 SkyBoxRotation;
-    public Vector3 TempSkyBoxRotation;
+    // can be set during game play or in the
+    // inspector
+    public Quaternion SkyBoxRotation;
+    public Quaternion TempSkyBoxRotation;
 
+    private void Start()
+    {
+        SkyBoxRotation = Quaternion.identity;
+    }
     public void RotateAroundSpace(Vector3 rotation)
     {
-        TempSkyBoxRotation = rotation;
+        TempSkyBoxRotation.eulerAngles = -rotation;
+    }
+    private void Update()
+    {
+        SkyCamera.transform.rotation = SkyBoxRotation * MainCamera.transform.rotation;
     }
 
-    void FixedUpdate()
-    {
-        SkyBoxRotation += TempSkyBoxRotation;
-
-        Vector3 vector3 = SkyBoxRotation.x * SkyCamera.transform.right;
-        SkyCamera.transform.rotation = Quaternion.Euler(new Vector3(-vector3.x, -vector3.y, -SkyBoxRotation.z));
-
+    private void FixedUpdate()
+    { 
+        SkyBoxRotation = SkyBoxRotation * TempSkyBoxRotation;
+        SkyCamera.transform.rotation = SkyBoxRotation * MainCamera.transform.rotation;
     }
 }

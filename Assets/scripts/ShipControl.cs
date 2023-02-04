@@ -6,6 +6,7 @@ public class ShipControl : MonoBehaviour
 {
     public GameObject Space;
     private int Threshold = 100;
+    [SerializeField] private CommandController CommandStation;
     [SerializeField] private bool DragEnabled;
     [SerializeField] private float MoveDrag;
     [SerializeField] private float RotationDrag;
@@ -13,34 +14,64 @@ public class ShipControl : MonoBehaviour
     [SerializeField] private Vector3 Rotation = new();
     private Vector3 ShipNewSpeed = new();
     private Vector3 ShipNewRotation = new();
+    [SerializeField] private float Acceleration;
+    [SerializeField] private float RotationAcceleration;
+
+    [SerializeField] private float SpeedCap;
+    [SerializeField] private float RotationCap;
     private void ShipLook (Vector2 vectors)
     {
         vectors *= Time.deltaTime;
+
         Vector3 NewVectors = new();
-        NewVectors.x = vectors.y * 2;
-        NewVectors.z = vectors.x * 4;
+
+        vectors.Normalize();
+
+        NewVectors.x = vectors.y * RotationAcceleration;
+        NewVectors.z = vectors.x * RotationAcceleration;
 
         ShipNewRotation = NewVectors;
     }
-    private void ShipMove(Vector2 vectors)
+    private void ShipMove(Vector3 vectors)
     {
         vectors *= Time.deltaTime;
         Vector3 NewVectors = new();
         NewVectors.x = vectors.x;
-        NewVectors.z = vectors.y;
-        ShipNewSpeed = NewVectors * 100;
+        NewVectors.y = vectors.y;
+        NewVectors.z = vectors.z;
+
+        ShipNewSpeed = NewVectors;
+        ShipNewSpeed.Normalize();
+        ShipNewSpeed *= Acceleration;
     }
     void FixedUpdate()
     {
-        moveVector = Vector3.Lerp( Vector3.zero , moveVector, MoveDrag);
-        Rotation = Vector3.Lerp( Vector3.zero, Rotation, RotationDrag);
+        if (CommandStation != null && CommandStation.baseSystem.SystemPower && CommandStation.baseSystem.PowerSwitchState)
+        {
+            moveVector = Vector3.Lerp(Vector3.zero, moveVector, MoveDrag);
+            Rotation = Vector3.Lerp(Vector3.zero, Rotation, RotationDrag);
+        }
         moveVector = Clamp(moveVector);
         Rotation = Clamp(Rotation);
         moveVector += ShipNewSpeed;
         Rotation += ShipNewRotation;
+
+        if (Rotation != Vector3.zero)
+        {
+            moveVector = Quaternion.Euler(Rotation) * moveVector;
+        }
+        if (Rotation.magnitude > RotationCap)
+        {
+            Rotation = Vector2.ClampMagnitude(Rotation, RotationCap);
+        }
+        if (moveVector.magnitude > SpeedCap)
+        {
+            moveVector = Vector3.ClampMagnitude(moveVector, SpeedCap);
+        }
+        
         transform.position += moveVector * Time.deltaTime;
         Space.BroadcastMessage("RotateAroundSpace", Rotation, SendMessageOptions.DontRequireReceiver);
-        if (transform.position.x > Threshold || transform.position.y > Threshold || transform.position.z > Threshold)
+        if (Mathf.Abs(transform.position.x) > Threshold || Mathf.Abs(transform.position.y) > Threshold || Mathf.Abs(transform.position.z) > Threshold)
         {
             Space.BroadcastMessage("Shift", transform.position);
             transform.position = Vector3.zero;

@@ -65,11 +65,11 @@ MonoBehaviour:
   - {fileID: 5423731134757305092, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
   - {fileID: -8067403476912574091, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
   DefaultPlane: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
-  PowerSwitchColors:
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0.5, b: 0, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0.5, g: 0, b: 0, a: 1}
+  PowerSwitchMaterials:
+  - {fileID: 2100000, guid: 735e2e5b1c70b2545b53725a08ea0f49, type: 2}
+  - {fileID: 2100000, guid: a796c8c45aef0ff4fa0f0675122e0677, type: 2}
+  - {fileID: 2100000, guid: 4a8a716b81e0ab041ad2afef825d9914, type: 2}
+  - {fileID: 2100000, guid: 888e0b3e2c59fe1408559b4c0c77f644, type: 2}
   GeneralColor: {r: 0, g: 1, b: 0.9779241, a: 0.5019608}
   MontiorMaterial: {fileID: 2100000, guid: 990e10dfbdf7e1f49902ee233fdcf657, type: 2}
   FuseMaterial: {fileID: 2100000, guid: 667cc448c4f947b489ae91ea1ddc9bd6, type: 2}

@@ -11,7 +11,7 @@ public class AirFilterController : MonoBehaviour
     public void StartUp(ObjectReferences newReferences)
     {
         objectReferences = newReferences;
-        objectReferences.GetConstructorItemReferences(ObjectType.AirFilter, out List<Mesh> ListOfMeshs, out Material material, out List<Color> ListOfColors);
+        objectReferences.GetConstructorItemReferences(ObjectType.AirFilter, false, out List<Mesh> ListOfMeshs, out Material material);
         Filter = new GameObject();
 
         Filter.transform.parent = transform;

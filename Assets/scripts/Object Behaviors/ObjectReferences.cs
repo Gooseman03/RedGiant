@@ -30,7 +30,7 @@ public class ObjectReferences : MonoBehaviour
 
     [SerializeField] private Mesh DefaultPlane;
 
-    [SerializeField] private List<Color> PowerSwitchColors;
+    [SerializeField] private List<Material> PowerSwitchMaterials;
 
     [Header("General Material Settings")]
     [Tooltip("The base color of the material when transparent")]
@@ -98,24 +98,17 @@ public class ObjectReferences : MonoBehaviour
             materialOut.color = GeneralColor;
         }
     }
-    public void GetConstructorItemReferences(ObjectType Requested, out List<Mesh> meshsOut, out Material materialOut,out List<Color> ColorsOut)
+    public void GetConstructorItemReferences(ObjectType Requested, out List<Mesh> meshsOut, out List<Material> materialsOut)
     {
         meshsOut = new List<Mesh>();
         meshsOut.Add(GenericMesh);
-        ColorsOut = new List<Color>();
-        ColorsOut.Add(new Color (0f,0f,0f,1f));
-        materialOut = OpaqueMaterial;
+        materialsOut = new List<Material>();
+        materialsOut.Add(OpaqueMaterial);
         if (Requested == ObjectType.PowerSwitch)
         {
             meshsOut = PowerSwitchMeshs;
-            ColorsOut = PowerSwitchColors;
+            materialsOut = PowerSwitchMaterials;
         }
-        if (Requested == ObjectType.AirFilter)
-        {
-            meshsOut = AirFilterMeshs;
-            materialOut = AirFilterMaterial;
-        }
-
     }
     public void GetConstructorAudioReferences(ObjectType Requested,out List<AudioClip> audioClipsOut)
     {

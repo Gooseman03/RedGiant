@@ -6,7 +6,11 @@ using Cinemachine;
 
 public class CommandController : MonoBehaviour
 {
-    [SerializeField] private BaseSystem baseSystem;
+    [SerializeField] private BaseSystem _baseSystem;
+    public BaseSystem baseSystem
+    {
+        get { return _baseSystem; }
+    }
     [SerializeField] private string ShipActionMap;
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
     [SerializeField] private List<Material> materials = new List<Material>();

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class BaseSystem : MonoBehaviour
@@ -35,12 +34,14 @@ public class BaseSystem : MonoBehaviour
     }
     private void FixedUpdate()
     {
+
         CheckForErrors();
         WhenPowered();
     }
 
     private void WhenPowered()
     {
+        SystemPower = CheckPowerLine();
         if (itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectDirector> ListOfPowerSwitchs))
         {
             bool? SwitchState = ListOfPowerSwitchs[0].GetSwitchState();

@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
 
-    [SerializeField] private Vector2 ShipMoveInput = Vector2.zero;
+    [SerializeField] private Vector3 ShipMoveInput = Vector3.zero;
     [SerializeField] private Vector2 ShipLookInput = Vector2.zero;
     [SerializeField] private bool ShipExit = false;
 
@@ -279,7 +279,7 @@ public class PlayerController : MonoBehaviour
     }
     public void OnShipMove(InputValue value)
     {
-        ShipMoveInput = value.Get<Vector2>();
+        ShipMoveInput = value.Get<Vector3>();
     }
     public void OnShipLook(InputValue value)
     {

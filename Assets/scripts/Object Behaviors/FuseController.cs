@@ -13,7 +13,7 @@ public class FuseController : MonoBehaviour
     {
         if (objectGrabbable.Durability <= 0)
         {
-            this.GetComponent<MeshRenderer>().material.color = Color.black;
+            this.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
         }
     }
 }
