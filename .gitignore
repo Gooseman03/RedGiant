@@ -4,6 +4,4 @@ Logs
 obj
 .vs
 .vscode
-Library/ArtifactDB
-Library/Artifacts
 .csproj
