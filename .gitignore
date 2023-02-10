@@ -6,3 +6,4 @@ obj
 .vscode
 Library/ArtifactDB
 Library/Artifacts
+.csproj
