@@ -3,6 +3,8 @@ obj/
 UserSettings/
 Logs/
 obj/
-.vs
-.vscode
-.csproj
+*.vs
+*.vscode
+*.csproj
+.vsconfig
+*.sln
