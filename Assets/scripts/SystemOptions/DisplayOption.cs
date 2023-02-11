@@ -8,10 +8,14 @@ public class DisplayOption : MonoBehaviour
     [SerializeField] private BaseSystem baseSystem;
     [SerializeField] private List<string> DisplayOutputs = new List<string>();
     [SerializeField] private List<ObjectType> WantsDisplayed = new List<ObjectType>();
+    [SerializeField] private List<Material> materials = new List<Material>();
+    [SerializeField] private bool MonitorPlane;
+
 
     private void FixedUpdate()
     {
         WhenPowered();
+        if (MonitorPlane) { return; }
         Display();
     }
     private void WhenPowered()
@@ -20,10 +24,38 @@ public class DisplayOption : MonoBehaviour
         
         if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
         {
-            DisplayOutput();
+            if (MonitorPlane)
+            {
+                if (baseSystem.itemRegister.HasObject(ObjectType.Monitor, out List<ObjectDirector> ListOfMonitors))
+                {
+                    foreach (ObjectDirector monitor in ListOfMonitors)
+                    {
+                        monitor.MonitorPlaneEnable();
+                        monitor.SetMonitorPlaneMaterial(materials[0]);
+                    }
+                }
+            }
+            else
+            {
+                if (baseSystem.itemRegister.HasObject(ObjectType.Monitor, out List<ObjectDirector> ListOfMonitors))
+                {
+                    foreach (ObjectDirector monitor in ListOfMonitors)
+                    {
+                        monitor.MonitorPlaneDisable();
+                    }
+                }
+                DisplayOutput();
+            }
         }
         else
         {
+            if (baseSystem.itemRegister.HasObject(ObjectType.Monitor, out List<ObjectDirector> ListOfMonitors))
+            {
+                foreach (ObjectDirector monitor in ListOfMonitors)
+                {
+                    monitor.MonitorPlaneDisable();
+                }
+            }
             DisplayOutputs.Add("");
             DisplayOutputs.Add("");
         }

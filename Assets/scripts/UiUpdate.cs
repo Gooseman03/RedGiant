@@ -43,8 +43,15 @@ public class UiUpdate : MonoBehaviour
         DeathImage.enabled = false;
         FightImage.enabled = false;
     }
-    public void ChangeColor(Color newColor) 
+    public void ChangeColor(Color CarbonColor, Color OxygenColor) 
     {
-        color = newColor;
+        if (CarbonColor.a > OxygenColor.a)
+        {
+            color = CarbonColor;
+        }
+        else
+        {
+            color = OxygenColor;
+        }
     }
 }

@@ -4,8 +4,19 @@ using UnityEngine;
 
 public class ItemRegister : MonoBehaviour
 {
-    [SerializeField]private DamageShip ship;
+    public BaseSystem baseSystem;
+    [SerializeField] private DamageShip _ship;
     private ObjectDirector LastItemRemoved;
+
+    public DamageShip ship
+    {
+        get { return _ship; }
+        set { _ship = value; }
+    }
+    private void Start()
+    {
+        baseSystem = GetComponent<BaseSystem>();
+    }
     private void Awake()
     {
         ship.Register(this);
@@ -27,7 +38,7 @@ public class ItemRegister : MonoBehaviour
     {
         LastItemRemoved = item;
         Objects.Remove(item);
-        this.SendMessage("ObjectPulled",item);
+        this.SendMessage("ObjectPulled",item,SendMessageOptions.DontRequireReceiver);
     }
 
     public bool CheckForObject(ObjectDirector item)

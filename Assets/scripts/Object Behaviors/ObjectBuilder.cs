@@ -36,6 +36,7 @@ public class ObjectBuilder : MonoBehaviour
         }
         AddBehaviors();
         AddStats();
+        this.name = objectType.ToString();
         Destroy(this);
     }
 
@@ -98,6 +99,11 @@ public class ObjectBuilder : MonoBehaviour
         {
             AirFilterController airFilter = this.AddComponent<AirFilterController>();
             airFilter.StartUp(objectReferences);
+        }
+        if (objectType == ObjectType.Alarm)
+        {
+            AlarmController alarm = this.AddComponent<AlarmController>();
+            alarm.StartUp(objectReferences);
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,27 @@ public class BaseSystem : MonoBehaviour
     private ItemRegister _itemRegister;
     private bool _SystemPower = true;
     private bool _PowerSwitchState;
-    private List<ErrorTypes> Errors;
+    private List<ErrorTypes> _Errors;
     public string ErrorText;
+    [SerializeField] private ObjectPlace PowerSwitch;
+
+    private Dictionary<int, List<ObjectPlace>> PowerLines = new Dictionary<int, List<ObjectPlace>>();
+
+    [SerializeField] private bool Start;
+
+    [SerializeField] private bool _ReactorPower = false;
+
+    public bool ReactorPower
+    {
+        get { return _ReactorPower; }
+        set { _ReactorPower = value; }
+    }
+
+    public List<ErrorTypes> Errors
+    {
+        get { return _Errors; }
+        private set { _Errors = value; }
+    }
 
     public bool SystemPower
     {
@@ -30,6 +50,7 @@ public class BaseSystem : MonoBehaviour
 
     private void Awake()
     {
+        
         itemRegister = GetComponent<ItemRegister>();
     }
     private void FixedUpdate()
@@ -39,30 +60,53 @@ public class BaseSystem : MonoBehaviour
         WhenPowered();
     }
 
+    private void LateUpdate()
+    {
+        if (Start)
+        {
+            itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectDirector> PowerSwitchs);
+            PowerSwitchState = true;
+            foreach (ObjectDirector objectDirector in PowerSwitchs)
+            {
+                objectDirector.ChangeSwitchState(true);
+            }
+            Start = false;
+        }
+    }
+
     private void WhenPowered()
     {
         SystemPower = CheckPowerLine();
         if (itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectDirector> ListOfPowerSwitchs))
         {
-            bool? SwitchState = ListOfPowerSwitchs[0].GetSwitchState();
-            if (SwitchState == true)
+            foreach(ObjectDirector objectDirector in ListOfPowerSwitchs)
             {
-                PowerSwitchState = true;
-            }
-            else if (SwitchState == false)
-            {
-                PowerSwitchState = false;
+                if (PowerSwitch.objectGrabbable == objectDirector)
+                {
+                    bool? SwitchState = objectDirector.GetSwitchState();
+
+                    if (SwitchState == true)
+                    {
+                        PowerSwitchState = true;
+                    }
+                    else if (SwitchState == false)
+                    {
+                        PowerSwitchState = false;
+                    }
+                    break;
+                }
             }
         }
     }
 
     private void CheckForErrors()
     {
-        ErrorCodes.ErrorCheck(itemRegister, true, out ErrorText, out Errors);
-    }
+        ErrorCodes.ErrorCheck(itemRegister, out ErrorText, out _Errors);
+    } 
 
     private bool CheckPowerLine()
     {
+        if (!ReactorPower) { return false; }
         foreach (ObjectType type in RequiredForPower)
         {
             if(!ErrorCodes.CheckWorking(itemRegister, type))
@@ -72,7 +116,4 @@ public class BaseSystem : MonoBehaviour
         }
         return true;
     }
-
-
-
 }

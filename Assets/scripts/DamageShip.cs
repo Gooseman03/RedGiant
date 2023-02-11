@@ -5,7 +5,7 @@ using UnityEngine;
 public class DamageShip : MonoBehaviour
 {
     [SerializeField] private bool ShouldDmg;
-    private List<ItemRegister> itemRegisters = new List<ItemRegister>();
+    public List<ItemRegister> itemRegisters = new List<ItemRegister>();
     private List<ObjectDirector> AllItemsInSystems = new List<ObjectDirector>();
 
     private float timer;

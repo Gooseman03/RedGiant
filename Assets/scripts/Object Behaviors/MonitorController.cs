@@ -87,6 +87,11 @@ public class MonitorController : MonoBehaviour
         MonitorText.enabled = false;
         MonitorPlaneMeshRenderer.enabled = true;
     }
+    public void MonitorPlaneDisable()
+    {
+        MonitorText.enabled = true;
+        MonitorPlaneMeshRenderer.enabled = false;
+    }
     public void SetMonitorPlaneMaterial(Material material)
     {
         MonitorPlaneMeshRenderer.material = material;

@@ -56,7 +56,9 @@ MonoBehaviour:
   MonitorMeshs:
   - {fileID: 8604045607132181640, guid: 0360f33224c61654f91302212190339f, type: 3}
   PumpMeshs:
-  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 8604045607132181640, guid: e93f3267208c0da48bbc675a0eeb6c03, type: 3}
+  - {fileID: 5358915128574053833, guid: e93f3267208c0da48bbc675a0eeb6c03, type: 3}
+  - {fileID: 6679289703562662588, guid: e93f3267208c0da48bbc675a0eeb6c03, type: 3}
   PowerSwitchMeshs:
   - {fileID: 6679289703562662588, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
   - {fileID: 5358915128574053833, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
@@ -90,3 +92,5 @@ MonoBehaviour:
   PowerSwitchClips:
   - {fileID: 8300000, guid: 8f0427b892ef4344aaf1f9d8c67ea179, type: 3}
   - {fileID: 8300000, guid: b6d827556b55f404b9d4323e6f1c0dd7, type: 3}
+  AlarmClips:
+  - {fileID: 8300000, guid: 8f0427b892ef4344aaf1f9d8c67ea179, type: 3}

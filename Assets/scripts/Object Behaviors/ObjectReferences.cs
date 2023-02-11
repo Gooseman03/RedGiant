@@ -11,7 +11,8 @@ public enum ObjectType
     Pump,
     Co2Canister,
     AirFilter,
-    Keyboard
+    Keyboard,
+    Alarm
 }
 
 public class ObjectReferences : MonoBehaviour
@@ -56,6 +57,7 @@ public class ObjectReferences : MonoBehaviour
     [Tooltip("First Is Starting Second Is Looping Third Is Stoping")]
     [SerializeField] private List<AudioClip> PumpAudioClips;
     [SerializeField] private List<AudioClip> PowerSwitchClips;
+    [SerializeField] private List<AudioClip> AlarmClips;
     public void GetConstructorItemReferences(ObjectType Requested, bool Transparent, out List<Mesh> meshsOut, out Material materialOut)
     {
         meshsOut = new List<Mesh>();
@@ -92,6 +94,10 @@ public class ObjectReferences : MonoBehaviour
             meshsOut = AirFilterMeshs;
             materialOut = AirFilterMaterial;
         }
+        if (Requested == ObjectType.Pump)
+        {
+            meshsOut = PumpMeshs;
+        }
         if (Transparent)
         {
             materialOut = TransparentMaterial;
@@ -120,6 +126,10 @@ public class ObjectReferences : MonoBehaviour
         if (Requested == ObjectType.PowerSwitch)
         {
             audioClipsOut = PowerSwitchClips;
+        }
+        if (Requested == ObjectType.Alarm)
+        {
+            audioClipsOut = AlarmClips;
         }
     }
     public void GetStatsItemReferences(ObjectType Requested, out Dictionary<string, float?> OutList)

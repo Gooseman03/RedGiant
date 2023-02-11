@@ -35,7 +35,6 @@ public class ObjectDirector : MonoBehaviour
     }
     private AudioHandler audioHandler;
 
-
     private void Start()
     {
         objectBuilder = this.AddComponent<ObjectBuilder>();
@@ -73,6 +72,10 @@ public class ObjectDirector : MonoBehaviour
         if (objectType == ObjectType.Keyboard)
         {
             SendMessageUpwards("SystemInteract", playerController);
+        }
+        if (objectType == ObjectType.Alarm)
+        {
+            CancelAlarm();
         }
     }
     public void ChangePressure(float Ammount)
@@ -132,11 +135,18 @@ public class ObjectDirector : MonoBehaviour
     }
     public void ClearMonitorText()
     {
+        if (GetComponent<MonitorController>() == null) { return; }
         this.GetComponent<MonitorController>().InstantChangeMonitorText("");
     }
     public void MonitorPlaneEnable()
     {
+        if (GetComponent<MonitorController>() == null) { return; }
         this.GetComponent<MonitorController>().MonitorPlaneEnable();
+    }
+    public void MonitorPlaneDisable()
+    {
+        if (GetComponent<MonitorController>() == null) { return; }
+        this.GetComponent<MonitorController>().MonitorPlaneDisable();
     }
     public void SetMonitorPlaneMaterial(Material material)
     {
@@ -154,6 +164,21 @@ public class ObjectDirector : MonoBehaviour
         }
     }
     //Audio
+    public void AlarmUpdate()
+    {
+        if (GetComponent<AlarmController>() == null) { return; }
+        this.GetComponent<AlarmController>().AlarmUpdate();
+    }
+    public void CancelAlarm()
+    {
+        if (GetComponent<AlarmController>() == null) { return; }
+        this.GetComponent<AlarmController>().CancelAlarm();
+    }
+    public void UpdateAlarmErrors(List<ErrorTypes> ErrorsInput)
+    {
+        if (GetComponent<AlarmController>() == null) { return; }
+        this.GetComponent<AlarmController>().UpdateErrorTypes(ErrorsInput);
+    }
     public void playAudio()
     {
         if (audioHandler == null)

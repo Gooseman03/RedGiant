@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class DisplayImagesOption : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private BaseSystem _baseSystem;
+    public BaseSystem baseSystem
+    {
+        get { return _baseSystem; }
+    }
+    [SerializeField] private List<Material> materials = new List<Material>();
+
+    // Update is called once per frame
+    void FixedUpdate()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    private void WhenPowered()
     {
-        
+        if (baseSystem.itemRegister.HasObject(ObjectType.Monitor, out List<ObjectDirector> ListOfMonitors))
+        {
+            foreach (ObjectDirector monitor in ListOfMonitors)
+            {
+                monitor.MonitorPlaneEnable();
+                monitor.SetMonitorPlaneMaterial(materials[0]);
+            }
+        }
     }
 }

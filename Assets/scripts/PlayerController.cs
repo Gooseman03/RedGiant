@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
         UpdateUi();
         UpdateOxygen();
         UpdateCarbon();
+        Breathing();
         if (OxygenLevel <= 0 || CarbonLevel >= 100)
         {
             Death();
@@ -139,6 +140,7 @@ public class PlayerController : MonoBehaviour
         {
             CarbonLevel = Mathf.Lerp(CarbonLevel, 0f, .5f * Time.deltaTime);
         }
+
     }
     private void UpdateOxygen()
     {
@@ -151,17 +153,25 @@ public class PlayerController : MonoBehaviour
         {
             OxygenLevel = Mathf.Lerp(OxygenLevel, 0f, .5f*Time.deltaTime);
         }
-        if (OxygenLevel < 50f && !Audio.isPlaying)
+        
+    }
+    private void Breathing()
+    {
+        if ((OxygenLevel < 50f || CarbonLevel > 50f) && !Audio.isPlaying)
         {
             Audio.Play();
         }
-        else if(OxygenLevel > 50f)
+        else if ((OxygenLevel > 50f && CarbonLevel < 50f))
         {
             Audio.Stop();
         }
         if (OxygenLevel <= 0.1f)
         {
             OxygenLevel = 0;
+        }
+        if ( CarbonLevel >= 99.9f)
+        {
+            CarbonLevel = 100;
         }
     }
     private bool CheckGrounded()
@@ -204,8 +214,7 @@ public class PlayerController : MonoBehaviour
         {
             UiScript.ChangeShockStates(DeathTimer, FightDeathPresses);
         }
-
-        UiScript.ChangeColor(new Color (0f, 0f, 0f,((-OxygenLevel+3)/100) + .97f));
+        UiScript.ChangeColor(new Color(0f, 0f, 0f, ( CarbonLevel/100)), new Color(0f, 0f, 0f, ((-OxygenLevel + 3) / 100) + .97f));
     }
     private void Death()
     {

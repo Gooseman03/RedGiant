@@ -18,7 +18,13 @@ public static class ErrorCodes
     private const int BrokenThresholdDurability = 20;
     private const int ErrorThresholdPressure = 20;
     private const int ErrorThresholdDirt = 80;
-    public static void ErrorCheck(ItemRegister itemRegister, bool Printed, out string OutputString , out List<ErrorTypes> ErrorList)
+    private static bool _Printed;
+    public static bool Printed
+    {
+        get { return _Printed; }
+        set { _Printed = value; }
+    }
+    public static void ErrorCheck(ItemRegister itemRegister, out string OutputString , out List<ErrorTypes> ErrorList)
     {
         ErrorList = new List<ErrorTypes>();
         if (CheckForBadCompontent(ObjectType.Monitor)) { ErrorList.Add(ErrorTypes.ErrorBadMonitor); }

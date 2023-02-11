@@ -13,7 +13,6 @@ public class CommandController : MonoBehaviour
     }
     [SerializeField] private string ShipActionMap;
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
-    [SerializeField] private List<Material> materials = new List<Material>();
 
     private bool PlayerRequestedControl;
     private PlayerController playerController;
@@ -25,27 +24,20 @@ public class CommandController : MonoBehaviour
     }
     private void WhenPowered()
     {
-        
-        if(baseSystem.itemRegister.HasObject(ObjectType.Monitor, out List<ObjectDirector> ListOfMonitors))
-        {
-            foreach(ObjectDirector monitor in ListOfMonitors)
-            {
-                monitor.MonitorPlaneEnable();
-                monitor.SetMonitorPlaneMaterial(materials[0]);
-            }
-        }
 
         if (playerController == null) { return; }
-
         if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
         {
-            if(PlayerRequestedControl)
+            ErrorCodes.Printed = true;
+            if (playerController == null) { return; }
+            if (PlayerRequestedControl)
             {
                 PlayerTakeOver();
             }
         }
         else
         {
+            ErrorCodes.Printed = false;
             PlayerLoseControl();
         }
         PlayerRequestedControl = false;
