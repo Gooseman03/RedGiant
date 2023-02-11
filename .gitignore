@@ -1,8 +1,8 @@
 Library/
 obj/
-UserSettings
-Logs
-obj
+UserSettings/
+Logs/
+obj/
 .vs
 .vscode
 .csproj
