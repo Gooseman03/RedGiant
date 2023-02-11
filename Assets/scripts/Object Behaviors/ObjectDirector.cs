@@ -42,6 +42,7 @@ public class ObjectDirector : MonoBehaviour
         objectBuilder.objectType = objectType;
         objectBuilder.enabled = true;
         objectBuilder.RequestBuildMeshs = true;
+        
     }
     private void Update()
     {

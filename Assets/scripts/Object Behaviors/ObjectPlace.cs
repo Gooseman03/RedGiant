@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ObjectPlace : MonoBehaviour
 {
+    public int Number;
     [SerializeField] private ObjectType _objectType;
     [SerializeField] private bool TempStorage;
     public ObjectType objectType
@@ -45,7 +46,15 @@ public class ObjectPlace : MonoBehaviour
         meshFilter.mesh = newMeshs[0];
         this.GetComponent<MeshCollider>().sharedMesh = newMeshs[0];
         meshRenderer.material = newMaterial;
-        this.name = objectType.ToString() + " Place";
+        if (Number == 0)
+        {
+            this.name = objectType.ToString() + " Place";
+        }
+        else
+        {
+            this.name = Number.ToString() + " " + objectType.ToString() + " Place";
+        }
+        
         if (Preplace == objectType && WillPreplace)
         {
             PrefabObjectGrabbable.SetActive(false);
@@ -120,7 +129,14 @@ public class ObjectPlace : MonoBehaviour
     private void OnDrawGizmos()
     {
         objectReferences.GetConstructorItemReferences(objectType, true, out List<Mesh> newMeshs, out Material newMaterial);
-        gameObject.name = objectType.ToString();
+        if (Number == 0)
+        {
+            this.name = objectType.ToString() + " Place";
+        }
+        else
+        {
+            this.name = Number.ToString() + " " + objectType.ToString() + " Place";
+        }
         Gizmos.color = newMaterial.color;
         Gizmos.DrawMesh(newMeshs[0], 0, transform.position,transform.rotation);
     }

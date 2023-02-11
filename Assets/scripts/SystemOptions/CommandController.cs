@@ -28,7 +28,6 @@ public class CommandController : MonoBehaviour
         if (playerController == null) { return; }
         if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
         {
-            ErrorCodes.Printed = true;
             if (playerController == null) { return; }
             if (PlayerRequestedControl)
             {
@@ -37,7 +36,6 @@ public class CommandController : MonoBehaviour
         }
         else
         {
-            ErrorCodes.Printed = false;
             PlayerLoseControl();
         }
         PlayerRequestedControl = false;

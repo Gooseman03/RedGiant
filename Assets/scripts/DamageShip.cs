@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DamageShip : MonoBehaviour
 {
     [SerializeField] private bool ShouldDmg;
+    [SerializeField] private bool ElectricDamage;
+    [SerializeField] private bool TrueRandomDamage;
     public List<ItemRegister> itemRegisters = new List<ItemRegister>();
     private List<ObjectDirector> AllItemsInSystems = new List<ObjectDirector>();
 
@@ -28,30 +31,47 @@ public class DamageShip : MonoBehaviour
     public void DamageItem()
     {
         if (ShouldDmg!= true) { return; }
-        ReloadAllItems();
-        ObjectDirector ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
-        bool reset = false;
-        float i = 0;
-        while (ObjectToDamage.Durability == null && !reset)
-        { 
-            ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
-            if (ObjectToDamage.objectType == ObjectType.Monitor)
+
+        if (ElectricDamage)
+        {
+            ItemRegister ToDamage = itemRegisters[Random.Range(0, itemRegisters.Count)];
+            if (ToDamage.baseSystem.PowerSwitchState && ToDamage.baseSystem.SystemPower)
             {
-                if (Random.Range(0, 100) > 50)
+                if(ToDamage.HasObject(ObjectType.PowerConnector, out List<ObjectDirector> PowerConnectors))
                 {
-                    reset = true;
+                    foreach (ObjectDirector PowerConnector in PowerConnectors)
+                    {
+                        PowerConnector.SetDurability(0);
+                    }
+                }
+                if (ToDamage.HasObject(ObjectType.Fuse, out List<ObjectDirector> Fuses))
+                {
+                    foreach (ObjectDirector Fuse in Fuses)
+                    {
+                        Fuse.SetDurability(0);
+                    }
                 }
             }
-            if (i > 10) 
-            {
-                Debug.LogError("Damage Item Gave Up after 10 trys");
-            } 
-            i++;
+            Debug.Log(ToDamage + " Got Shocked");
         }
-        
 
-        ObjectToDamage.ChangeDurability(-Random.Range(0, 100));
-        Debug.Log(ObjectToDamage + "Got Damaged");
+        if (TrueRandomDamage)
+        {
+            ReloadAllItems();
+            ObjectDirector ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
+            float i = 0;
+            while (ObjectToDamage.Durability == null)
+            {
+                ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
+                if (i > 10)
+                {
+                    Debug.LogError("Damage Item Gave Up after 10 trys");
+                }
+                i++;
+            }
+            ObjectToDamage.ChangeDurability(-Random.Range(0, 100));
+            Debug.Log(ObjectToDamage + " Got Damaged");
+        }
     }
     private void ReloadAllItems()
     {
