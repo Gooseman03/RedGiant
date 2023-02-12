@@ -25,14 +25,22 @@ public class DoorControl : MonoBehaviour
     {
         if (Open)
         {
-            LeftToOpen = 0;
+            if (LeftToOpen >= TimeToOpen)
+            {
+                LeftToOpen = 0;
+            }
             Open = false;
+            StopCoroutine("DoorClose");
             StartCoroutine("DoorOpen");
         }
         if (Close)
         {
-            LeftToOpen = 0;
+            if (LeftToOpen >= TimeToOpen)
+            {
+                LeftToOpen = 0;
+            }
             Close = false;
+            StopCoroutine("DoorOpen");
             StartCoroutine("DoorClose");
         }
     }
@@ -40,19 +48,19 @@ public class DoorControl : MonoBehaviour
     {
         while (LeftToOpen < TimeToOpen)
         {
-            Door.transform.localScale = new Vector3(Door.transform.localScale.x, Mathf.Lerp(3.1f, 0,LeftToOpen/TimeToOpen ), Door.transform.localScale.z);
+            Door.transform.localScale = new Vector3(Door.transform.localScale.x, Mathf.Lerp(3.1f, 0.1f,LeftToOpen/TimeToOpen ), Door.transform.localScale.z);
             Door.transform.localPosition = new Vector3(Door.transform.localPosition.x, Mathf.Lerp(1, 2.5f,  LeftToOpen / TimeToOpen), Door.transform.localPosition.z);
             LeftToOpen += Time.deltaTime;
             yield return null;
         }
-        Door.transform.localScale = new Vector3(Door.transform.localScale.x, 0, Door.transform.localScale.z);
+        Door.transform.localScale = new Vector3(Door.transform.localScale.x, 0.1f, Door.transform.localScale.z);
         Door.transform.localPosition= new Vector3(Door.transform.localPosition.x, 2.5f , Door.transform.localPosition.z);
     }
     private IEnumerator DoorClose()
     {
         while (LeftToOpen < TimeToOpen)
         {
-            Door.transform.localScale = new Vector3(Door.transform.localScale.x, Mathf.Lerp(0, 3, LeftToOpen / TimeToOpen), Door.transform.localScale.z);
+            Door.transform.localScale = new Vector3(Door.transform.localScale.x, Mathf.Lerp(0.1f, 3, LeftToOpen / TimeToOpen), Door.transform.localScale.z);
             Door.transform.localPosition = new Vector3(Door.transform.localPosition.x, Mathf.Lerp(2.5f, 1,  LeftToOpen / TimeToOpen), Door.transform.localPosition.z);
             LeftToOpen += Time.deltaTime;
             yield return null;

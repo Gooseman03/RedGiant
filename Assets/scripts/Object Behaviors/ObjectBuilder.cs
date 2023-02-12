@@ -52,6 +52,7 @@ public class ObjectBuilder : MonoBehaviour
             gameObject.transform.localScale = Vector3.one;
             MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
             meshFilter.sharedMesh = mesh;
             meshRenderer.sharedMaterial = material;
             ConstructedGameObjects.Add(gameObject);
