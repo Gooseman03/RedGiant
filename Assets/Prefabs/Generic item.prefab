@@ -48,7 +48,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectReferences: {fileID: 1666698185415828252, guid: b5b21fe53c8042f49b27680b522560d2, type: 3}
   _objectType: 0
+  _StatScale: 1
   DurabilityOverride: 0
+  PressureOverride: 0
+  DirtOverride: 0
 --- !u!54 &6266249597796724405
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public enum ErrorTypes
 {
     ErrorBadFuse,
@@ -14,10 +15,10 @@ public enum ErrorTypes
 }
 public static class ErrorCodes
 {
-    private const int ErrorThresholdDurability = 60;
-    private const int BrokenThresholdDurability = 20;
-    private const int ErrorThresholdPressure = 20;
-    private const int ErrorThresholdDirt = 80;
+    private const float ErrorThresholdDurability = 0.60f;
+    private const float BrokenThresholdDurability = 0.20f;
+    private const float ErrorThresholdPressure = 0.20f;
+    private const float ErrorThresholdDirt = 0.80f;
     private static bool _Printed;
     public static bool Printed
     {
@@ -42,7 +43,7 @@ public static class ErrorCodes
             {
                 foreach (ObjectDirector Object in List)
                 {
-                    if (Object.Durability < ErrorThresholdDurability)
+                    if (Object.GetPersentDurability() < ErrorThresholdDurability)
                     {
                         return true;
                     }
@@ -56,7 +57,7 @@ public static class ErrorCodes
             {
                 foreach (ObjectDirector Object in List)
                 {
-                    if (Object.Pressure < ErrorThresholdPressure)
+                    if (Object.GetPersentPressure() < ErrorThresholdPressure)
                     {
                         return true;
                     }
@@ -70,7 +71,7 @@ public static class ErrorCodes
             {
                 foreach (ObjectDirector Object in List)
                 {
-                    if (Object.Dirt > ErrorThresholdDirt)
+                    if (Object.GetPersentDirt() > ErrorThresholdDirt)
                     {
                         return true;
                     }
@@ -128,7 +129,7 @@ public static class ErrorCodes
         bool HasWorking = true;
         if (objectIn.objectType == ObjectType.AirFilter)
         {
-            if (objectIn.Dirt >= 100)
+            if (objectIn.Dirt >= objectIn.MaxDirt)
             {
                 HasWorking = false;
             }
@@ -153,7 +154,7 @@ public static class ErrorCodes
         {
             if (Item.objectType == ObjectType.AirFilter)
             {
-                if (Item.Dirt <= 100)
+                if (Item.Dirt <= Item.MaxDirt)
                 {
                     HasWorking = false;
                 }
@@ -181,7 +182,7 @@ public static class ErrorCodes
             {
                 if (Item.objectType == ObjectType.AirFilter)
                 {
-                    if (Item.Dirt >= 100)
+                    if (Item.Dirt >= Item.MaxDirt)
                     {
                         HasWorking = false;
                     }

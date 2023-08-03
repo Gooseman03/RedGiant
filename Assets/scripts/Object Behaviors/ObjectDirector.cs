@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,6 +9,12 @@ public class ObjectDirector : MonoBehaviour
     private ObjectBuilder objectBuilder;
     [SerializeField] private ObjectReferences objectReferences;
     [SerializeField] private ObjectType _objectType;
+    [SerializeField] private float _StatScale = 1.0f;
+    public float StatScale 
+    { 
+        get { return _StatScale; } 
+        set { _StatScale = value; }
+    }
     public ObjectType objectType 
     { 
         get { return _objectType; } 
@@ -15,9 +22,29 @@ public class ObjectDirector : MonoBehaviour
     }
     private Rigidbody objectRigidbody;
     [SerializeField] private float DurabilityOverride;
+    [SerializeField] private float PressureOverride;
+    [SerializeField] private float DirtOverride;
     private float? _Durability;
     private float? _Pressure;
     private float? _Dirt;
+    private float? _MaxDurability;
+    private float? _MaxPressure;
+    private float? _MaxDirt;
+    public float? MaxDurability
+    {
+        get { return _MaxDurability; }
+        private set { _MaxDurability = value; }
+    }
+    public float? MaxPressure
+    {
+        get { return _MaxPressure; }
+        private set { _MaxPressure = value; }
+    }
+    public float? MaxDirt
+    {
+        get { return _MaxDirt; }
+        private set { _MaxDirt = value; }
+    }
     public float? Durability 
     { 
         get { return _Durability; }
@@ -33,6 +60,10 @@ public class ObjectDirector : MonoBehaviour
         get { return _Dirt; }
         private set { _Dirt = value; }
     }
+
+    
+
+
     private AudioHandler audioHandler;
 
     private void Start()
@@ -42,14 +73,38 @@ public class ObjectDirector : MonoBehaviour
         objectBuilder.objectType = objectType;
         objectBuilder.enabled = true;
         objectBuilder.RequestBuildMeshs = true;
-        
     }
     private void Update()
     {
+
+
         if (DurabilityOverride != 0)
         {
             Durability = DurabilityOverride;
         }  
+        if (PressureOverride != 0)
+        {
+            Pressure = PressureOverride;
+        }
+        if (DirtOverride != 0)
+        {
+            Dirt = DirtOverride;
+        }
+        if (Durability != null)
+        {
+            DurabilityOverride = (float)Durability;
+        }
+        if (Pressure != null)
+        {
+            PressureOverride = (float)Pressure;
+        }
+        if (Dirt != null)
+        {
+            DirtOverride = (float)Dirt;
+        }
+        
+        
+
     }
     public void ShockPlayer()
     {
@@ -104,6 +159,48 @@ public class ObjectDirector : MonoBehaviour
     {
         Dirt = Amount;
     }
+
+    public void SetMaxDurability(float? Amount)
+    {
+        MaxDurability = Amount;
+    }
+    public void SetMaxPressure(float? Amount)
+    {
+        MaxPressure = Amount;
+    }
+    public void SetMaxDirt(float? Amount)
+    {
+        MaxDirt = Amount;
+    }
+
+    public float GetPersentDurability()
+    {
+        float Persentage = 0;
+        if (Durability != null)
+        {
+            Persentage = (float)MaxDurability / (float)Durability;
+        }
+        return Persentage;
+    }
+    public float GetPersentPressure()
+    {
+        float Persentage = 0;
+        if (Pressure != null)
+        {
+            Persentage = (float)Pressure / (float)MaxPressure;
+        }
+        return Persentage;
+    }
+    public float GetPersentDirt()
+    {
+        float Persentage = 0;
+        if (Dirt != null)
+        {
+            Persentage = (float)MaxDirt / (float)Dirt;
+        }
+        return Persentage;
+    }
+
     ///Power Switch Stuff
     public bool? GetSwitchState()
     {
@@ -241,6 +338,7 @@ public class ObjectDirector : MonoBehaviour
         this.transform.SetParent(NewParent);
         this.gameObject.GetComponent<Collider>().enabled = true;
     }
+
     //Scene View Only
     private void OnDrawGizmos()
     {

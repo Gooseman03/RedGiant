@@ -72,15 +72,15 @@ public class DisplayOption : MonoBehaviour
                 {
                     if (objectType == ObjectType.AirFilter)
                     {
-                        DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.Dirt) + "%";
+                        DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.GetPersentDurability() * 100) + "%";
                     }
                     else if (objectType == ObjectType.AirCanister || objectType == ObjectType.Co2Canister)
                     {
-                        DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.Pressure) + "%";
+                        DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.GetPersentPressure() * 100) + "%";
                     }
                     else
                     {
-                        DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.Durability) + "%";
+                        DisplayOutputs[1] += "\n" + objectType + ":\t" + Mathf.FloorToInt((float)Object.GetPersentDirt() * 100) + "%";
                     }
                 }
             }

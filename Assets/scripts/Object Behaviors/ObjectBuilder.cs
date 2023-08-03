@@ -18,10 +18,12 @@ public class ObjectBuilder : MonoBehaviour
     private List<GameObject> ConstructedGameObjects;
     private Dictionary<string, float?> StatsDictionary;
 
+    private float StatScale;
 
     private void Start()
     {
         objectDirector = this.GetComponent<ObjectDirector>();
+        StatScale = objectDirector.StatScale;
         objectReferences.GetConstructorItemReferences(
             objectType,
             false,
@@ -112,15 +114,18 @@ public class ObjectBuilder : MonoBehaviour
     {
         if (StatsDictionary.ContainsKey("Durability"))
         {
-            objectDirector.SetDurability(StatsDictionary["Durability"]);
+            objectDirector.SetMaxDurability(StatsDictionary["Durability"] * StatScale);
+            objectDirector.SetDurability(StatsDictionary["Durability"] * StatScale);
         }
         if (StatsDictionary.ContainsKey("Pressure"))
         {
-            objectDirector.SetPressure(StatsDictionary["Pressure"]);
+            objectDirector.SetMaxPressure(StatsDictionary["Pressure"] * StatScale);
+            objectDirector.SetPressure(StatsDictionary["Pressure"] * StatScale);
         }
         if (StatsDictionary.ContainsKey("Dirt"))
         {
-            objectDirector.SetDirt(StatsDictionary["Dirt"]);
+            objectDirector.SetMaxDirt(100 * StatScale);
+            objectDirector.SetDirt(0);
         }
     }
 }
