@@ -73,18 +73,18 @@ public class ObjectDirector : MonoBehaviour
     }
     private void Update()
     {
-        if (DurabilityOverride != 0)
-        {
-            Durability = DurabilityOverride;
-        }  
-        if (PressureOverride != 0)
-        {
-            Pressure = PressureOverride;
-        }
-        if (DirtOverride != 0)
-        {
-            Dirt = DirtOverride;
-        }
+        //if (DurabilityOverride != 0)
+        //{
+        //    Durability = DurabilityOverride;
+        //}  
+        //if (PressureOverride != 0)
+        //{
+        //    Pressure = PressureOverride;
+        //}
+        //if (DirtOverride != 0)
+        //{
+        //    Dirt = DirtOverride;
+        //}
         if (Durability != null)
         {
             DurabilityOverride = (float)Durability;
