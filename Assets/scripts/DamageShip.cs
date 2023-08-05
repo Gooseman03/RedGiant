@@ -54,7 +54,9 @@ public class DamageShip : MonoBehaviour
             Debug.Log(ToDamage + " Got Shocked");
         }
 
-        if (TrueRandomDamage)
+        if (TrueRandomDamage) { TrueDamageCalc(); }
+
+        void TrueDamageCalc()
         {
             ReloadAllItems();
             ObjectDirector ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
@@ -65,6 +67,7 @@ public class DamageShip : MonoBehaviour
                 if (i > 10)
                 {
                     Debug.LogError("Damage Item Gave Up after 10 trys");
+                    return;
                 }
                 i++;
             }
