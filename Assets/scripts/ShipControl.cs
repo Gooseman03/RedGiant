@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShipControl : MonoBehaviour
 {
     public GameObject Space;
-    private int Threshold = 100;
+    private int Threshold = 5;
     [SerializeField] private CommandController CommandStation;
     [SerializeField] private bool DragEnabled;
     //[SerializeField] private float MoveDrag;
