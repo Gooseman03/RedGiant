@@ -7,14 +7,15 @@ public static class InputSystem
 {
     public class InputSet
     {
-        private Vector2 LookInput = Vector2.zero;
-        private Vector2 MoveInput = Vector2.zero;
-        private bool PickupInput = false;
-        private bool InteractInput = false;
+        public Vector2 MoveInput = Vector2.zero;
+        public Vector2 LookInput = Vector2.zero;
+        public bool PickupInput = false;
+        public bool InteractInput = false;
+        public Vector3 ShipMoveInput = Vector3.zero;
+        public Vector2 ShipLookInput = Vector2.zero;
+        public bool ShipExit = false;
+        public PlayerInput PlayerInput = null;
     }
-    public static InputSet PlayerInput;
-    public static void OnLook(InputValue value)
-    {
-        LookInput = value.Get<Vector2>();
-    }
+
+    public static InputSet PlayerInputs = new InputSet();
 }
