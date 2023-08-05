@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -65,7 +64,7 @@ public class ObjectDirector : MonoBehaviour
 
     private void Start()
     {
-        objectBuilder = this.AddComponent<ObjectBuilder>();
+        objectBuilder = this.gameObject.AddComponent<ObjectBuilder>();
         objectBuilder.objectReferences = objectReferences;
         objectBuilder.objectType = objectType;
         objectBuilder.enabled = true;
@@ -73,18 +72,18 @@ public class ObjectDirector : MonoBehaviour
     }
     private void Update()
     {
-        if (DurabilityOverride != 0)
-        {
-            Durability = DurabilityOverride;
-        }  
-        if (PressureOverride != 0)
-        {
-            Pressure = PressureOverride;
-        }
-        if (DirtOverride != 0)
-        {
-            Dirt = DirtOverride;
-        }
+        //if (DurabilityOverride != 0)
+        //{
+        //    Durability = DurabilityOverride;
+        //}  
+        //if (PressureOverride != 0)
+        //{
+        //    Pressure = PressureOverride;
+        //}
+        //if (DirtOverride != 0)
+        //{
+        //    Dirt = DirtOverride;
+        //}
         if (Durability != null)
         {
             DurabilityOverride = (float)Durability;

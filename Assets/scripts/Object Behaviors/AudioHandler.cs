@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioHandler : MonoBehaviour
@@ -77,7 +76,7 @@ public class AudioHandler : MonoBehaviour
     {
         canLoop = canLoopIn;
         audioClips = audioClipsIn;
-        audioSource = this.AddComponent<AudioSource>();
+        audioSource = this.gameObject.AddComponent<AudioSource>();
         audioSource.spatialBlend = 1;
         audioSource.dopplerLevel = 0;
         SetupComplete = true;

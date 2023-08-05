@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AlarmController : MonoBehaviour
@@ -17,7 +16,7 @@ public class AlarmController : MonoBehaviour
 
     public void StartUp(ObjectReferences objectReferences)
     {
-        audioSource = this.AddComponent<AudioSource>();
+        audioSource = this.gameObject.AddComponent<AudioSource>();
         objectReferences.GetConstructorAudioReferences(ObjectType.Alarm, out audioClips);
         audioSource.loop = true;
         audioSource.clip = audioClips[0];

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PumpController : MonoBehaviour
@@ -17,7 +16,7 @@ public class PumpController : MonoBehaviour
     {
         objectDirector = this.GetComponent<ObjectDirector>();
         objectReferences.GetConstructorAudioReferences(ObjectType.Pump, out audioClips);
-        audioHandler = this.AddComponent<AudioHandler>();
+        audioHandler = this.gameObject.AddComponent<AudioHandler>();
         audioHandler.Setup(audioClips, true);
     }
     private void Update()

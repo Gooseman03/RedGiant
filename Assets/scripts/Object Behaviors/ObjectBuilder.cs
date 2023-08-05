@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ObjectBuilder : MonoBehaviour
@@ -66,12 +65,12 @@ public class ObjectBuilder : MonoBehaviour
         
         if (objectType == ObjectType.Monitor)
         {
-            MonitorController monitor = this.AddComponent<MonitorController>();
+            MonitorController monitor = this.gameObject.AddComponent<MonitorController>();
             monitor.StartUp(objectReferences.GetConstructorPlane());
         }
         if (objectType == ObjectType.Fuse)
         {
-            FuseController fuse = this.AddComponent<FuseController>();
+            FuseController fuse = this.gameObject.AddComponent<FuseController>();
             fuse.Setup(objectDirector);
         }
         if (objectType == ObjectType.PowerConnector)
@@ -80,32 +79,32 @@ public class ObjectBuilder : MonoBehaviour
         }
         if (objectType == ObjectType.PowerSwitch)
         {
-            PowerSwitchController powerSwitch = this.AddComponent<PowerSwitchController>();
+            PowerSwitchController powerSwitch = this.gameObject.AddComponent<PowerSwitchController>();
             powerSwitch.StartUp(objectReferences, ConstructedGameObjects[1], ConstructedGameObjects[2]);
         }
         if (objectType == ObjectType.AirCanister)
         {
-            AirCanisterController airCanister = this.AddComponent<AirCanisterController>();
+            AirCanisterController airCanister = this.gameObject.AddComponent<AirCanisterController>();
             // No StartUp function
         }
         if (objectType == ObjectType.Pump)
         {
-            PumpController pump = this.AddComponent<PumpController>();
+            PumpController pump = this.gameObject.AddComponent<PumpController>();
             pump.StartUp(objectReferences);
         }
         if (objectType == ObjectType.Co2Canister)
         {
-            AirCanisterController airCanister = this.AddComponent<AirCanisterController>();
+            AirCanisterController airCanister = this.gameObject.AddComponent<AirCanisterController>();
             // No StartUp function
         }
         if (objectType == ObjectType.AirFilter)
         {
-            AirFilterController airFilter = this.AddComponent<AirFilterController>();
+            AirFilterController airFilter = this.gameObject.AddComponent<AirFilterController>();
             airFilter.StartUp(objectReferences);
         }
         if (objectType == ObjectType.Alarm)
         {
-            AlarmController alarm = this.AddComponent<AlarmController>();
+            AlarmController alarm = this.gameObject.AddComponent<AlarmController>();
             alarm.StartUp(objectReferences);
         }
     }

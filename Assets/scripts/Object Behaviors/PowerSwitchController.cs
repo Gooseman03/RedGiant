@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PowerSwitchController : MonoBehaviour
@@ -32,7 +31,7 @@ public class PowerSwitchController : MonoBehaviour
         materials = _materials;
         objectReferences.GetConstructorAudioReferences(ObjectType.PowerSwitch, out audioClips);
 
-        audioHandler = this.AddComponent<AudioHandler>();
+        audioHandler = this.gameObject.AddComponent<AudioHandler>();
         audioHandler.Setup(audioClips, false);
     }
 
