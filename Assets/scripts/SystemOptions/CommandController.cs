@@ -24,7 +24,6 @@ public class CommandController : MonoBehaviour
     }
     private void WhenPowered()
     {
-
         if (playerController == null) { return; }
         if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
         {
@@ -39,7 +38,6 @@ public class CommandController : MonoBehaviour
             PlayerLoseControl();
         }
         PlayerRequestedControl = false;
-        
     }
     private void ShipExit()
     {

@@ -7,21 +7,24 @@ using TMPro;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting.FullSerializer;
+using UnityEngine.InputSystem;
+using static UnityEditor.Recorder.OutputPath;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class MenuHandler : MonoBehaviour
 {
     public TextMeshProUGUI Version;
     public TextMeshProUGUI BuildType;
+    public GameObject Console;
     public TextMeshProUGUI ConsoleInput;
     public TextMeshProUGUI ConsoleOutput;
-    public prefab
     private void Start()
     {
         if (Debug.isDebugBuild)
         {
             BuildType.text = "Dev Build";
             Version.text = Application.version;
-
         }
         else
         {
@@ -29,37 +32,57 @@ public class MenuHandler : MonoBehaviour
             Destroy(Version);
         }
     }
-    public void PrintToConsole(string Message = "")
-    {
-        OnConsoleMessage(Message);
+    private void Update()
+    { 
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+        {
+            if (Console.activeSelf == true)
+            {
+                Console.SetActive(false);
+            }
+            else
+            {
+                Console.SetActive(true);
+            }
+            
+        }
+        ConsoleOutput.text = "";
+        foreach (var ConsoleMessage in MenuRequester.ConsoleMessages)
+        {
+            ConsoleOutput.text += ConsoleMessage.ToString();
+        }
     }
-    private void OnConsoleMessage(string ForcedMessage = "")
+    private void OnConsoleMessage()
     {
         string[] Parameters = ConsoleInput.text.Split(' ');
+        int lastParameter = Parameters.Length - 1;
+        Parameters[lastParameter] = Parameters[lastParameter].Remove(Parameters[lastParameter].Length-1);
         string ToPrint = "";
 
         void CheckForCommand()
         {
-            if (Parameters[0] == "print")
+            switch(Parameters[0])
             {
-                ToPrint = Parameters[1];
-                return;
-            }
-            ToPrint = "Error No Matching Command";
-        }
+                case "help":
+                    ToPrint = "Usage:\n" +
+                        "print - Will print anything after the word print";
+                    break;
 
-        if (ForcedMessage != "")
-        {
-            ToPrint = ForcedMessage;
+                case "print":
+                    ToPrint = ConsoleInput.text.Remove(0, 5);
+                    break;
+
+                default:
+                    ToPrint = "Error No Matching Command";
+                    break;
+            }
         }
-        else
-        {
-            CheckForCommand();
-        }
-        ConsoleOutput.text = ConsoleOutput.text + "[" + System.DateTime.Now.ToString("hh:mm:ss") + "] " +ToPrint+ '\n';
+        CheckForCommand();
+        MenuRequester.AddMessageToConsole(ToPrint, MessageType.Info);
     }
     private void OnPlayButtonClicked()
     {
+        MenuRequester.AddMessageToConsole("Play Button was Clicked Changing Scene", MessageType.Info);
         SceneManager.LoadScene("SampleScene");
     }
     private void OnExitButtonClicked()

@@ -61,9 +61,6 @@ public class ObjectDirector : MonoBehaviour
         private set { _Dirt = value; }
     }
 
-    
-
-
     private AudioHandler audioHandler;
 
     private void Start()
@@ -76,8 +73,6 @@ public class ObjectDirector : MonoBehaviour
     }
     private void Update()
     {
-
-
         if (DurabilityOverride != 0)
         {
             Durability = DurabilityOverride;
@@ -196,7 +191,7 @@ public class ObjectDirector : MonoBehaviour
         float Persentage = 0;
         if (Dirt != null)
         {
-            Persentage = (float)MaxDirt / (float)Dirt;
+            Persentage =  (float)Dirt / (float)MaxDirt;
         }
         return Persentage;
     }
