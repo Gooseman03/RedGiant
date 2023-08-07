@@ -230,20 +230,20 @@ public class ObjectDirector : MonoBehaviour
         if (GetComponent<MonitorController>() == null) { return; }
         this.GetComponent<MonitorController>().InstantChangeMonitorText("");
     }
-    public void MonitorPlaneEnable()
-    {
-        if (GetComponent<MonitorController>() == null) { return; }
-        this.GetComponent<MonitorController>().MonitorPlaneEnable();
-    }
-    public void MonitorPlaneDisable()
-    {
-        if (GetComponent<MonitorController>() == null) { return; }
-        this.GetComponent<MonitorController>().MonitorPlaneDisable();
-    }
-    public void SetMonitorPlaneMaterial(Material material)
-    {
-        this.GetComponent<MonitorController>().SetMonitorPlaneMaterial(material);
-    }
+    //public void MonitorPlaneEnable()
+    //{
+    //    if (GetComponent<MonitorController>() == null) { return; }
+    //    this.GetComponent<MonitorController>().MonitorPlaneEnable();
+    //}
+    //public void MonitorPlaneDisable()
+    //{
+    //    if (GetComponent<MonitorController>() == null) { return; }
+    //    this.GetComponent<MonitorController>().MonitorPlaneDisable();
+    //}
+    //public void SetMonitorPlaneMaterial(Material material)
+    //{
+    //    this.GetComponent<MonitorController>().SetMonitorPlaneMaterial(material);
+    //}
     public void Disconnect()
     {
         if (objectType == ObjectType.Monitor)

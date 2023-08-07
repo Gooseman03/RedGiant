@@ -27,6 +27,7 @@ public class SkyBoxScript : MonoBehaviour
     }
     private void Update()
     {
+        SkyCamera.fieldOfView = MainCamera.fieldOfView;
         SkyCamera.transform.rotation = SkyBoxRotation * MainCamera.transform.rotation;
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShipControl : MonoBehaviour
 {
     public GameObject Space;
-    private int Threshold = 5;
+    private float Threshold = 0.1f;
     [SerializeField] private CommandController CommandStation;
     [SerializeField] private bool DragEnabled;
     //[SerializeField] private float MoveDrag;
@@ -68,21 +68,13 @@ public class ShipControl : MonoBehaviour
         }
         Move();
 
-
-
-        if (CommandStation != null && CommandStation.baseSystem.SystemPower && CommandStation.baseSystem.PowerSwitchState)
-        {
-            //moveVector = Vector3.Lerp(Vector3.zero, moveVector, MoveDrag);
-            //Rotation = Vector3.Lerp(Vector3.zero, Rotation, RotationDrag);
-        }
-
-        
         Space.BroadcastMessage("RotateAroundSpace", Rotation, SendMessageOptions.DontRequireReceiver);
         if (Mathf.Abs(transform.position.x) > Threshold || Mathf.Abs(transform.position.y) > Threshold || Mathf.Abs(transform.position.z) > Threshold)
         {
             Space.BroadcastMessage("Shift", transform.position);
             transform.position = Vector3.zero;
         }
+
     }
     private void MoveSlow()
     {

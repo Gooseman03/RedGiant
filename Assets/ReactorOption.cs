@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ReactorOption : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ReactorOption : MonoBehaviour
     }
 
     [SerializeField] private List<ObjectPlace> PowerSwitchs = new List<ObjectPlace>();
+    [SerializeField] private List<Image> Fillbars = new List<Image>();
+    [SerializeField] private List<ObjectPlace> PowerConnectors = new List<ObjectPlace>();
     [SerializeField] private int AvailablePowerLines = 0;
     [SerializeField] private List<BaseSystem> BaseSystems;
     [SerializeField] private List<bool> PowerDelivered;
@@ -85,6 +88,30 @@ public class ReactorOption : MonoBehaviour
             {
                 itemRegister.baseSystem.ReactorPower = false;
             }
+        }
+        int x = 0;
+        foreach (ObjectPlace objectPlace in PowerConnectors)
+        {
+            Image FillImage = Fillbars[x];
+            int Maxheight = 50;
+            float height = 0;
+            if (objectPlace.objectGrabbable != null)
+            {
+                height = objectPlace.objectGrabbable.Durability.Value / 2;
+                
+            }
+            else
+            {
+                height = 0;
+            }
+            FillImage.rectTransform.sizeDelta = new Vector2(10, height);
+            FillImage.color = new Color((-height / Maxheight) + 1, height / Maxheight, 0);
+            FillImage.rectTransform.localPosition = new Vector3(
+                FillImage.rectTransform.localPosition.x,
+                (float)((height / 200) + 0.375),
+                FillImage.rectTransform.localPosition.z
+                );
+            x++;
         }
     }
 }

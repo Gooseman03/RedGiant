@@ -50,12 +50,10 @@ public class BaseSystem : MonoBehaviour
 
     private void Awake()
     {
-        
         itemRegister = GetComponent<ItemRegister>();
     }
     private void FixedUpdate()
     {
-
         CheckForErrors();
         WhenPowered();
     }
