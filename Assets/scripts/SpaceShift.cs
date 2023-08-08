@@ -5,8 +5,10 @@ using UnityEngine;
 public class SpaceShift : MonoBehaviour
 {
     [SerializeField] private GameObject Ship;
+    [SerializeField] private bool LockPosition;
     private void Shift( Vector3 ShiftDistance)
     {
+        if (LockPosition) { this.transform.position = Ship.transform.position; return; }
         this.transform.position -= ShiftDistance;
     }
     private void RotateAroundSpace(Vector3 vectors)
