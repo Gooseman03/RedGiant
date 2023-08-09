@@ -5,7 +5,6 @@ using UnityEngine;
 public class ShipControl : MonoBehaviour
 {
     public GameObject Space;
-    private float Threshold = 0.1f;
     [SerializeField] private CommandController CommandStation;
     [SerializeField] private bool DragEnabled;
     //[SerializeField] private float MoveDrag;
@@ -38,10 +37,6 @@ public class ShipControl : MonoBehaviour
         NewMoveVectors.z = vectors.z;
 
         NewMoveVectors.Normalize();
-
-        //ShipNewSpeed = NewVectors;
-        //ShipNewSpeed.Normalize();
-        //ShipNewSpeed *= Acceleration;
     }
     void FixedUpdate()
     {
@@ -69,12 +64,6 @@ public class ShipControl : MonoBehaviour
         Move();
 
         Space.BroadcastMessage("RotateAroundSpace", Rotation, SendMessageOptions.DontRequireReceiver);
-        if (Mathf.Abs(transform.position.x) > Threshold || Mathf.Abs(transform.position.y) > Threshold || Mathf.Abs(transform.position.z) > Threshold)
-        {
-            Space.BroadcastMessage("Shift", transform.position);
-            transform.position = Vector3.zero;
-        }
-
     }
     private void MoveSlow()
     {
@@ -121,7 +110,7 @@ public class ShipControl : MonoBehaviour
     }
     private void Move()
     {
-        transform.position += moveVector * Time.deltaTime;
+        Space.BroadcastMessage("Shift", moveVector * Time.deltaTime, SendMessageOptions.DontRequireReceiver);
     }
     private void Rotate()
     {
