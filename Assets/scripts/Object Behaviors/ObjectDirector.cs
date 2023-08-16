@@ -96,9 +96,6 @@ public class ObjectDirector : MonoBehaviour
         {
             DirtOverride = (float)Dirt;
         }
-        
-        
-
     }
     public void ShockPlayer()
     {
@@ -110,7 +107,7 @@ public class ObjectDirector : MonoBehaviour
     }
     public void OnInteract(PlayerController playerController)
     {
-        Debug.Log(this.name + " Has Been Interacted With");
+        MenuRequester.AddMessageToConsole(this.name + " Has Been Interacted With");
         if (objectType == ObjectType.PowerSwitch)
         {
             SwapSwitchState();
@@ -130,14 +127,21 @@ public class ObjectDirector : MonoBehaviour
     }
     public void ChangePressure(float Ammount)
     {
+        if (Pressure == null) { return; }
         Pressure += Ammount;
     }
     public void ChangeDurability(float Ammount)
     {
+        if (Durability == null) { return; }
         Durability += Ammount;
+        if (Durability < 0)
+        {
+            Durability = 0;
+        }
     }
     public void ChangeDirt(float Ammount)
     {
+        if (Dirt == null) { return; }
         Dirt += Ammount;
     }
 
@@ -167,12 +171,20 @@ public class ObjectDirector : MonoBehaviour
         MaxDirt = Amount;
     }
 
+    public float GetMaxDurability()
+    {
+        if (MaxDurability == null)
+        {
+            return 0;
+        }
+        return (float)MaxDurability;
+    }
     public float GetPersentDurability()
     {
         float Persentage = 0;
         if (Durability != null)
         {
-            Persentage = (float)MaxDurability / (float)Durability;
+            Persentage = (float)Durability / (float)MaxDurability;
         }
         return Persentage;
     }

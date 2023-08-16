@@ -24,9 +24,9 @@ public class RepairBay : MonoBehaviour
     }
     private void Repair()
     {
-        if (RepairSpot.objectGrabbable == null) { return; }
-        if (RepairSpot.objectGrabbable.Durability == null) { return; }
-        RepairSpot.objectGrabbable.ChangeDurability(100 - (float)RepairSpot.objectGrabbable.Durability);
+        if (RepairSpot.ObjectGrabbable == null) { return; }
+        if (RepairSpot.ObjectGrabbable.Durability == null) { return; }
+        RepairSpot.ObjectGrabbable.ChangeDurability(100 - (float)RepairSpot.ObjectGrabbable.Durability);
     }
 }
 

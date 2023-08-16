@@ -56,8 +56,8 @@ public class ReactorOption : MonoBehaviour
         foreach(ObjectPlace PowerSwitch in PowerSwitchs)
         {
             if (i >= PowerDelivered.Count) { break; }
-            if (PowerSwitch.objectGrabbable == null || PowerSwitch.objectGrabbable.GetSwitchState() == null) { continue; }
-            PowerDelivered[i] = (bool)PowerSwitch.objectGrabbable.GetSwitchState();
+            if (PowerSwitch.ObjectGrabbable == null || PowerSwitch.ObjectGrabbable.GetSwitchState() == null) { continue; }
+            PowerDelivered[i] = (bool)PowerSwitch.ObjectGrabbable.GetSwitchState();
             i++;
         }
 
@@ -95,20 +95,21 @@ public class ReactorOption : MonoBehaviour
             Image FillImage = Fillbars[x];
             int Maxheight = 50;
             float height = 0;
-            if (objectPlace.objectGrabbable != null)
-            {
-                height = objectPlace.objectGrabbable.Durability.Value / 2;
-                
-            }
-            else
+            if (objectPlace.ObjectGrabbable == null)
             {
                 height = 0;
             }
+            else
+            {
+                height = objectPlace.ObjectGrabbable.GetPersentDurability() * objectPlace.ObjectGrabbable.GetMaxDurability() / 2;
+            }
+            
+
             FillImage.rectTransform.sizeDelta = new Vector2(10, height);
             FillImage.color = new Color((-height / Maxheight) + 1, height / Maxheight, 0);
             FillImage.rectTransform.localPosition = new Vector3(
                 FillImage.rectTransform.localPosition.x,
-                (float)((height / 200) + 0.375),
+                (float)((height / 200) + .75),
                 FillImage.rectTransform.localPosition.z
                 );
             x++;

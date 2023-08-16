@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -11,8 +12,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float speed = 5f;
 
-    [SerializeField] private string DefaultActionMap;
+    [SerializeField] private float ReachDistance = 1.0f;
 
+    [SerializeField] private string DefaultActionMap;
 
     [SerializeField, Range(0f, 89f)] private float UpperLimit = 10f;
     [SerializeField, Range(0f, -89f)] private float LowerLimit = -10f;
@@ -55,24 +57,31 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        SendMessageUpwards("ShipMove", PlayerInputs.ShipMoveInput);
-        SendMessageUpwards("ShipLook", PlayerInputs.ShipLookInput);
-        if (PlayerInputs.ShipExit)
+        if (MenuRequester.IsConsoleOpen())
         {
-            this.transform.parent.BroadcastMessage("ShipExit");
-            PlayerInputs.ShipExit = false;
-        }
-        if (!IsBeingShocked)
-        {
-            MovePlayer();
-            LookPlayer();
-            Pickup();
-            Interact();
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Confined;
         }
         else
-        {
-            Shocked();
+        { 
+            SendMessageUpwards("ShipMove", PlayerInputs.ShipMoveInput);
+            SendMessageUpwards("ShipLook", PlayerInputs.ShipLookInput);
+            if (PlayerInputs.ShipExit)
+            {
+                this.transform.parent.BroadcastMessage("ShipExit");
+                PlayerInputs.ShipExit = false;
+            }
+            if (!IsBeingShocked)
+            {
+                MovePlayer();
+                LookPlayer();
+                Pickup();
+                Interact();
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Shocked();
+            }
         }
         UpdateUi();
         UpdateOxygen();
@@ -83,7 +92,6 @@ public class PlayerController : MonoBehaviour
             Death();
         }
     }
-
     public void RequestControlChange(string inputActionMap)
     {
         if (inputActionMap == null)
@@ -116,8 +124,6 @@ public class PlayerController : MonoBehaviour
             FightDeathPresses = LastFightDeathPresses * 2;
             ElectrocutionAudioSource.Stop();
         }
-
-
         if (DeathTimer >= 3)
         {
             Death();
@@ -195,7 +201,7 @@ public class PlayerController : MonoBehaviour
         if (PlayerInputs.InteractInput)
         {
             RaycastHit hit;
-            if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, 10f))
+            if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, ReachDistance))
             {
                 hit.transform.gameObject.SendMessage("OnInteract", this, SendMessageOptions.DontRequireReceiver);
             }
@@ -243,19 +249,23 @@ public class PlayerController : MonoBehaviour
         if (PlayerInputs.PickupInput)
         {
             RaycastHit hit;
-            if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, 10f))
+            if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, ReachDistance))
             {
-                if (hit.transform.TryGetComponent(out ObjectPlace objectPlace) && ItemInLeftHand != null && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectDirector>().objectType || objectPlace.objectType == ObjectType.Generic))
+                if (
+                    hit.collider.transform.TryGetComponent(out ObjectPlace objectPlace)
+                    && ItemInLeftHand != null
+                    && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectDirector>().objectType
+                    || objectPlace.objectType == ObjectType.Generic))
                 {
                     ItemInLeftHand.GetComponent<ObjectDirector>().Place(objectPlace.transform);
                     ItemInLeftHand = null;
                     PlayerInputs.PickupInput = false;
                     return;
                 }
-                else if (hit.transform.TryGetComponent(out ObjectDirector objectGrabbable) && ItemInLeftHand == null)
+                else if (hit.collider.transform.TryGetComponent(out ObjectDirector objectGrabbable) && ItemInLeftHand == null)
                 {
                     objectGrabbable.Grab(objectLeftGrabPointTransform);
-                    ItemInLeftHand = hit.transform.gameObject;
+                    ItemInLeftHand = hit.collider.transform.gameObject;
                     PlayerInputs.PickupInput = false;
                     return;
                 }
@@ -276,29 +286,32 @@ public class PlayerController : MonoBehaviour
         }
         PlayerInputs.PickupInput = false;
     }
+    /// <summary>
+    /// This is to grab The current Oxygen Cube
+    /// and open doors
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        other.transform.parent.TryGetComponent<DoorControl>(out DoorControl doorcontrol);
-        if (doorcontrol != null)
+        if (other.TryGetComponent<DoorControl>(out DoorControl doorcontrol) == true)
         {
             doorcontrol.Open = true;
             return;
         }
-        if (other.GetComponent<OxygenCube>() != null)
+        if (other.TryGetComponent<OxygenCube>(out OxygenCube oxygenCube) == true)
         {
-            CurrentOxygenArea = other.GetComponent<OxygenCube>();
+            CurrentOxygenArea = oxygenCube;
             return;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        other.transform.parent.TryGetComponent<DoorControl>(out DoorControl doorcontrol);
-        if (doorcontrol != null)
+        if (other.TryGetComponent<DoorControl>(out DoorControl doorcontrol) == true)
         {
             doorcontrol.Close = true;
             return;
         }
-        if (other.GetComponent<OxygenCube>() != null && other == CurrentOxygenArea)
+        if (other.TryGetComponent<OxygenCube>(out OxygenCube oxygenCube) == true && oxygenCube == CurrentOxygenArea)
         {
             CurrentOxygenArea = null;
             return;
@@ -307,6 +320,6 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(CameraFollow.transform.position, CameraFollow.transform.forward * 10f);
+        Gizmos.DrawRay(CameraFollow.transform.position, CameraFollow.transform.forward * ReachDistance);
     }
 }

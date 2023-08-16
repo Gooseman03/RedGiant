@@ -11,6 +11,7 @@ public enum MessageType
 
 public static class MenuRequester
 {
+    private static bool _IsConsoleOpen = false;
     public class ConsoleMessage
     {
         public MessageType type;
@@ -18,13 +19,21 @@ public static class MenuRequester
         public string TimeStamp;
         public override string ToString()
         {
-            string returnString = string.Format("[{0}] [{1}]: {2}\n",TimeStamp,type,message);
+            string returnString = string.Format("[{0}] [{1}]: {2}\n", TimeStamp, type, message);
             return returnString;
         }
     }
 
     private static MenuHandler MenuHandler;
     public static List<ConsoleMessage> ConsoleMessages { get; private set; } = new List<ConsoleMessage>();
+    public static void SetIsConsoleOpen(bool isConsoleOpen)
+    {
+        _IsConsoleOpen=isConsoleOpen;
+    }
+    public static bool IsConsoleOpen()
+    {
+        return _IsConsoleOpen; 
+    }
     /// <summary>
     /// Will Add a Message to the ingame Console 
     /// Usage: AddMessageToConsole(String)

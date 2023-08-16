@@ -87,15 +87,15 @@ public class ObjectBuilder : MonoBehaviour
             AirCanisterController airCanister = this.gameObject.AddComponent<AirCanisterController>();
             // No StartUp function
         }
-        if (objectType == ObjectType.Pump)
-        {
-            PumpController pump = this.gameObject.AddComponent<PumpController>();
-            pump.StartUp(objectReferences);
-        }
         if (objectType == ObjectType.Co2Canister)
         {
             AirCanisterController airCanister = this.gameObject.AddComponent<AirCanisterController>();
             // No StartUp function
+        }
+        if (objectType == ObjectType.Pump)
+        {
+            PumpController pump = this.gameObject.AddComponent<PumpController>();
+            pump.StartUp(objectReferences);
         }
         if (objectType == ObjectType.AirFilter)
         {

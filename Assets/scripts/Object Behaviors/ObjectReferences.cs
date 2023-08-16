@@ -171,6 +171,18 @@ public class ObjectReferences : MonoBehaviour
         {
             OutList["Dirt"] = AirFilterDirt;
         }
+        if (OutList["Durability"] == null)
+        {
+            OutList.Remove("Durability");
+        }
+        if (OutList["Pressure"] == null)
+        {
+            OutList.Remove("Pressure");
+        }
+        if (OutList["Dirt"] == null)
+        {
+            OutList.Remove("Dirt");
+        }
     }
     public Mesh GetConstructorPlane()
     {

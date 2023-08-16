@@ -57,7 +57,6 @@ public class BaseSystem : MonoBehaviour
         CheckForErrors();
         WhenPowered();
     }
-
     private void LateUpdate()
     {
         if (Start)
@@ -79,7 +78,7 @@ public class BaseSystem : MonoBehaviour
         {
             foreach(ObjectDirector objectDirector in ListOfPowerSwitchs)
             {
-                if (PowerSwitch.objectGrabbable == objectDirector)
+                if (PowerSwitch.ObjectGrabbable == objectDirector)
                 {
                     bool? SwitchState = objectDirector.GetSwitchState();
 

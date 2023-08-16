@@ -95,32 +95,32 @@ public static class ErrorCodes
         //Durability Errors
         if (ErrorList.Contains(ErrorTypes.ErrorBadPowerConnector))
         {
-            if (!Printed) { OutputString += "EDA1"; }
+            if (!Printed) { OutputString += "EDA1\n"; }
             else OutputString += "BadPowerConnector\n";
         }
         if (ErrorList.Contains(ErrorTypes.ErrorBadFuse))
         {
-            if(!Printed) { OutputString += "EDA2"; }
+            if(!Printed) { OutputString += "EDA2\n"; }
             else OutputString += "BadFuse\n";
         }
         if (ErrorList.Contains(ErrorTypes.ErrorBadPowerSwitch))
         {
-            if (!Printed) { OutputString += "EDA3"; }
+            if (!Printed) { OutputString += "EDA3\n"; }
             else OutputString += "BadPowerSwitch\n";
         }
         if (ErrorList.Contains(ErrorTypes.ErrorBadPump))
         {
-            if (!Printed) { OutputString += "EDA4"; }
+            if (!Printed) { OutputString += "EDA4\n"; }
             else OutputString += "BadPump\n";
         }
         if (ErrorList.Contains(ErrorTypes.ErrorBadMonitor))
         {
-            if (!Printed) { OutputString += "EDA5"; }
+            if (!Printed) { OutputString += "EDA5\n"; }
             else OutputString += "BadMonitor\n";
         }
         if (ErrorList.Contains(ErrorTypes.ErrorLowPump))
         {
-            if (!Printed) { OutputString += "CFA0"; }
+            if (!Printed) { OutputString += "CFA0\n"; }
             else OutputString += "LowPump\n";
         }
     }

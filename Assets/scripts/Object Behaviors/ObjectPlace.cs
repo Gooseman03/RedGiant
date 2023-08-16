@@ -15,21 +15,18 @@ public class ObjectPlace : MonoBehaviour
         private set { _objectType = value; }
     }
     private ObjectDirector _objectGrabbable;
-    public ObjectDirector objectGrabbable 
+    public ObjectDirector ObjectGrabbable 
     {
         get { return _objectGrabbable; } 
         private set { _objectGrabbable = value; } 
     }
     [SerializeField] protected ObjectReferences objectReferences;
     [SerializeField] private ObjectType Preplace;
-    
 
     private GameObject Appearance;
     private bool isRegistered = false;
     private ObjectDirector LastObjectGrabbable;
     bool SetupComplete = false;
-
-
 
     [SerializeField] private bool WillPreplace;
     [SerializeField] private GameObject PrefabObjectGrabbable;
@@ -72,11 +69,11 @@ public class ObjectPlace : MonoBehaviour
     {
         if (!SetupComplete) { return; }
         
-        LastObjectGrabbable = objectGrabbable;
-        objectGrabbable = gameObject.transform.GetComponentInChildren<ObjectDirector>();
+        LastObjectGrabbable = ObjectGrabbable;
+        ObjectGrabbable = gameObject.transform.GetComponentInChildren<ObjectDirector>();
         
 
-        if (objectGrabbable != null)
+        if (ObjectGrabbable != null)
         {
             this.GetComponent<Collider>().enabled = false;
             Appearance.GetComponent<MeshRenderer>().enabled = false;
@@ -88,41 +85,35 @@ public class ObjectPlace : MonoBehaviour
         }
 
         ItemRegister parentObjectRegister;
-        try
+        if (this.transform.parent.TryGetComponent<ItemRegister>(out parentObjectRegister) != true)
         {
-            if (this.transform.parent.TryGetComponent<ItemRegister>(out parentObjectRegister) != true)
-            {
-                return;
-            }
+            return;
         }
-        catch { return; }
-
-
         if (TempStorage) { return; }
-        if (isRegistered && objectGrabbable == null)
+        if (isRegistered && ObjectGrabbable == null)
         {
             parentObjectRegister.UnregisterObject(LastObjectGrabbable);
             LastObjectGrabbable.Disconnect();
             isRegistered = false;
-            Debug.Log(
+            MenuRequester.AddMessageToConsole(
                 "ObjectPlace.OnTransformChildrenChanged() Unregistered object: "
                     + LastObjectGrabbable.name
             );
             return;
         }
-        if (!isRegistered && parentObjectRegister.CheckForObject(objectGrabbable) == false)
+        if (!isRegistered && parentObjectRegister.CheckForObject(ObjectGrabbable) == false)
         {
-            parentObjectRegister.RegisterObject(objectGrabbable);
+            parentObjectRegister.RegisterObject(ObjectGrabbable);
             isRegistered = true;
-            Debug.Log(
+            MenuRequester.AddMessageToConsole(
                 "ObjectPlace.OnTransformChildrenChanged() Registered object: "
-                    + objectGrabbable.name
+                    + ObjectGrabbable.name
             );
             return;
         }
 
-        Debug.LogError(
-            "Error: ObjectPlace.OnTransformChildrenChanged() isRegistered is neither true nor false"
+        MenuRequester.AddMessageToConsole(
+            "Error: ObjectPlace.OnTransformChildrenChanged() isRegistered is neither true nor false", MessageType.Error
         );
     }
 

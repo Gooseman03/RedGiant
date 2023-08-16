@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -45,13 +46,13 @@ public class AudioHandler : MonoBehaviour
         if(HoldRequests) { return; }
         if (value == true && !IsAudioPlaying)
         {
-            Debug.Log(this.name + "Was Requested To Start Playing");
+            MenuRequester.AddMessageToConsole(this.name + "Was Requested To Start Playing");
             RequestStart = true;
         }
         else
         if (value == false && IsAudioPlaying)
         {
-            Debug.Log(this.name + "Was Requested To Stop Playing");
+            MenuRequester.AddMessageToConsole(this.name + "Was Requested To Stop Playing");
             RequestStop = true;
         }
     }
@@ -61,13 +62,11 @@ public class AudioHandler : MonoBehaviour
         if (HoldRequests) { return; }
         if (value == true && !IsAudioPlaying)
         {
-            
             RequestStart = true;
         }
         else
         if (value == false && IsAudioPlaying)
         {
-            
             RequestStop = true;
         }
     }
@@ -94,13 +93,13 @@ public class AudioHandler : MonoBehaviour
                 if (TempAudioClip != null)
                 {
                     audioSource.PlayOneShot(TempAudioClip);
-                    Debug.Log(this.name + "Is Playing" + TempAudioClip);
+                    MenuRequester.AddMessageToConsole(this.name + " Is Playing " + TempAudioClip);
                     TempAudioClip = null;
                 }
                 else
                 {
                     audioSource.PlayOneShot(audioClips[0]);
-                    Debug.Log(this.name + "Is Playing" + audioClips[0]);
+                    MenuRequester.AddMessageToConsole(this.name + " Is Playing " + audioClips[0]);
                 }
                 HoldRequests = true;
                 return;
@@ -119,7 +118,7 @@ public class AudioHandler : MonoBehaviour
                 IsAudioPlaying = true;
                 RequestStart = false;
                 audioSource.PlayOneShot(audioClips[0]);
-                Debug.Log(this.name + "Is Playing" + audioClips[0]);
+                MenuRequester.AddMessageToConsole(this.name + " Is Playing " + audioClips[0]);
                 HoldRequests = true;
                 return;
             }
@@ -127,7 +126,7 @@ public class AudioHandler : MonoBehaviour
             {
                 audioSource.loop = true;
                 audioSource.clip = audioClips[1];
-                Debug.Log(this.name + "Is Playing" + audioClips[1]);
+                MenuRequester.AddMessageToConsole(this.name + " Is Playing " + audioClips[1]);
                 audioSource.Play();
                 HoldRequests = false;
                 return;
@@ -138,7 +137,7 @@ public class AudioHandler : MonoBehaviour
                 RequestStop = false;
                 audioSource.Stop();
                 audioSource.PlayOneShot(audioClips[2]);
-                Debug.Log(this.name + "Is Playing" + audioClips[2]);
+                MenuRequester.AddMessageToConsole(this.name + " Is Playing " + audioClips[2]);
                 return;
             }
         }

@@ -7,8 +7,6 @@ public class ShipControl : MonoBehaviour
     public GameObject Space;
     [SerializeField] private CommandController CommandStation;
     [SerializeField] private bool DragEnabled;
-    //[SerializeField] private float MoveDrag;
-    //[SerializeField] private float RotationDrag;
     [SerializeField] private Vector3 moveVector = new();
     [SerializeField] private Vector3 Rotation = new();
     private Vector3 ShipNewSpeed = new();
@@ -19,7 +17,7 @@ public class ShipControl : MonoBehaviour
     private Vector3 NewRotationVectors = new();
     [SerializeField] private float SpeedCap;
     [SerializeField] private float RotationCap;
-
+    [SerializeField] private DamageShip DamageShip;
     [SerializeField] private List<Thruster> thrusters = new List<Thruster>();
     private void ShipLook (Vector2 vectors)
     {
@@ -37,6 +35,27 @@ public class ShipControl : MonoBehaviour
         NewMoveVectors.z = vectors.z;
 
         NewMoveVectors.Normalize();
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent<SpaceShift>(out SpaceShift spaceShift))
+        {
+            moveVector = -moveVector * 2;
+            ShipCollision(moveVector);
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent<SpaceShift>(out SpaceShift spaceShift))
+        {
+            moveVector = -moveVector * 2;
+        }
+    }
+
+    private void ShipCollision(Vector3 vector3)
+    {
+        int ItemsToDamage = ((int)vector3.magnitude) / 5;
+        DamageShip.DamageRandomItem(ItemsToDamage);
     }
     void FixedUpdate()
     {
@@ -56,7 +75,6 @@ public class ShipControl : MonoBehaviour
         {
             RotateSlow();
         }
-
         if (Rotation != Vector3.zero)
         {
             moveVector = Quaternion.Euler(Rotation) * moveVector;

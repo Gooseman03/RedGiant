@@ -7,7 +7,6 @@ using TMPro;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine.InputSystem;
-using static UnityEditor.Recorder.OutputPath;
 using UnityEngine.UI;
 
 public class MenuHandler : MonoBehaviour
@@ -37,10 +36,12 @@ public class MenuHandler : MonoBehaviour
             if (Console.activeSelf == true)
             {
                 Console.SetActive(false);
+                MenuRequester.SetIsConsoleOpen(false);
             }
             else
             {
                 Console.SetActive(true);
+                MenuRequester.SetIsConsoleOpen(true);
             }
             
         }
@@ -87,7 +88,7 @@ public class MenuHandler : MonoBehaviour
     {
         if (Debug.isDebugBuild)
         {
-            Debug.Log("Exit Pressed");
+            MenuRequester.AddMessageToConsole("Exit Pressed");
         }
         Application.Quit();
     }

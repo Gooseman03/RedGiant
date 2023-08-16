@@ -4,79 +4,76 @@ using UnityEngine;
 
 public class DamageShip : MonoBehaviour
 {
-    [SerializeField] private bool ShouldDmg;
-    [SerializeField] private bool ElectricDamage;
-    [SerializeField] private bool TrueRandomDamage;
     public List<ItemRegister> itemRegisters = new List<ItemRegister>();
     private List<ObjectDirector> AllItemsInSystems = new List<ObjectDirector>();
-
-    private float timer;
-    private void Update()
-    {
-        timer += Time.deltaTime;
-        if (timer > 10)
-        {
-            timer = 0;
-            DamageItem();
-        }
-    }
-
     public void Register(ItemRegister value)
     {
         itemRegisters.Add(value);
     }
 
-
-    public void DamageItem()
+    public void ElecticalDamage()
     {
-        if (ShouldDmg!= true) { return; }
-
-        if (ElectricDamage)
+        ReloadAllItems();
+        ItemRegister ToDamage = itemRegisters[Random.Range(0, itemRegisters.Count)];
+        if (ToDamage.baseSystem.PowerSwitchState && ToDamage.baseSystem.SystemPower)
         {
-            ItemRegister ToDamage = itemRegisters[Random.Range(0, itemRegisters.Count)];
-            if (ToDamage.baseSystem.PowerSwitchState && ToDamage.baseSystem.SystemPower)
+            if (ToDamage.HasObject(ObjectType.PowerConnector, out List<ObjectDirector> PowerConnectors))
             {
-                if(ToDamage.HasObject(ObjectType.PowerConnector, out List<ObjectDirector> PowerConnectors))
+                foreach (ObjectDirector PowerConnector in PowerConnectors)
                 {
-                    foreach (ObjectDirector PowerConnector in PowerConnectors)
-                    {
-                        PowerConnector.SetDurability(0);
-                    }
-                }
-                if (ToDamage.HasObject(ObjectType.Fuse, out List<ObjectDirector> Fuses))
-                {
-                    foreach (ObjectDirector Fuse in Fuses)
-                    {
-                        Fuse.SetDurability(0);
-                    }
+                    PowerConnector.SetDurability(0);
                 }
             }
-            Debug.Log(ToDamage + " Got Shocked");
+            if (ToDamage.HasObject(ObjectType.Fuse, out List<ObjectDirector> Fuses))
+            {
+                foreach (ObjectDirector Fuse in Fuses)
+                {
+                    Fuse.SetDurability(0);
+                }
+            }
         }
-
-        if (TrueRandomDamage) { TrueDamageCalc(); }
-
-        void TrueDamageCalc()
+        MenuRequester.AddMessageToConsole(ToDamage + " Got Shocked");
+    }
+    public void DamageRandomItem(int Ammount = 1, float DamageAmmout = 0)
+    {
+            
+        bool IsDamageRandom = false;
+        if (DamageAmmout == 0)
         {
-            ReloadAllItems();
+            IsDamageRandom = true;
+        }
+        ReloadAllItems();
+
+        for (int i = 0; i < Ammount; i++)
+        {
+            if (IsDamageRandom)
+            {
+                DamageAmmout = Random.Range(10, 100);
+            }
+            TryDamageItem();
+        }
+        void TryDamageItem()
+        {
             ObjectDirector ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
             float i = 0;
-            while (ObjectToDamage.Durability == null)
+            while (ObjectToDamage.Durability == null || ObjectToDamage.Durability < 0)
             {
                 ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
                 if (i > 10)
                 {
-                    Debug.LogError("Damage Item Gave Up after 10 trys");
+                    MenuRequester.AddMessageToConsole("Damage Item Gave Up after 10 trys", MessageType.Warn);
                     return;
                 }
                 i++;
             }
-            ObjectToDamage.ChangeDurability(-Random.Range(0, 100));
-            Debug.Log(ObjectToDamage + " Got Damaged");
+            ObjectToDamage.ChangeDurability(-DamageAmmout);
+            MenuRequester.AddMessageToConsole(ObjectToDamage + " Got Damaged");
         }
+        
     }
     private void ReloadAllItems()
     {
+        AllItemsInSystems.Clear();
         foreach (ItemRegister item in itemRegisters)
         {
             item.ListAllObjects(out List<ObjectDirector> AllRegisterItems);

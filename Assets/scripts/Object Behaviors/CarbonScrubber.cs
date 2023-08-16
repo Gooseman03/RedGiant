@@ -58,12 +58,10 @@ public class CarbonScrubber : MonoBehaviour
     {
         if (!ErrorCodes.CheckWorking(baseSystem.itemRegister, ObjectType.Pump))
         {
-            Debug.Log("Pump Not Working");
             return false;
         }
         if (!ErrorCodes.CheckWorking(baseSystem.itemRegister, ObjectType.AirFilter))
         {
-            Debug.Log("AirFilter Not Working");
             return false;
         }
         if (CarbonCanisterPressure[0] <= 0)
