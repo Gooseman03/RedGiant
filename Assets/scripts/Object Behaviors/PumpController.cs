@@ -46,15 +46,17 @@ public class PumpController : ObjectDirector , IDurable , IAudio
     }
     public void playAudio()
     {
-        //audioHandler.ChangeAudioPlaying(true);
+        if (audioHandler == null) { return; }
+        audioHandler.ChangeAudioPlaying(true);
     }
     public void stopAudio()
     {
-        //audioHandler.ChangeAudioPlaying(false);
+        if (audioHandler == null) { return; }
+        audioHandler.ChangeAudioPlaying(false);
     }
     public bool IsAudioPlaying()
     {
-        return true;//audioHandler.IsAudioPlaying;
+        return audioHandler.IsAudioPlaying;
     }
 
     public void Start()

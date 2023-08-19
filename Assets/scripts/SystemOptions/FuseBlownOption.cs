@@ -6,18 +6,16 @@ public class FuseBlownOption : MonoBehaviour
 {
     [SerializeField] private BaseSystem baseSystem;
     [SerializeField] private List<ObjectType> LiveObjects;
-    
-    //TODO
-    //private void ObjectPulled(ObjectDirector item)
-    //{
-    //    if (LiveObjects.Contains(item.objectType))
-    //    {
-    //        if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
-    //        {
-    //            BlowFuse();
-    //        }
-    //    }
-    //}
+    private void ObjectPulled(ObjectDirector item)
+    {
+        if (LiveObjects.Contains(item.objectType))
+        {
+            if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
+            {
+                BlowFuse();
+            }
+        }
+    }
     private void BlowFuse()
     {
         bool ShockPlayer = false;
@@ -27,7 +25,7 @@ public class FuseBlownOption : MonoBehaviour
             {
                 if (fuse.Durability > 0)
                 {
-                    fuse.ChangeDurability(-(float)fuse.Durability);
+                    fuse.SetDurability(0);
                 }
                 else { ShockPlayer = true; }
             }

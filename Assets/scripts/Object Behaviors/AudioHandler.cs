@@ -46,14 +46,12 @@ public class AudioHandler : MonoBehaviour
         if (HoldRequests) { return; }
         if (value == true && !IsAudioPlaying)
         {
-            Debug.Log("playing");
             MenuRequester.AddMessageToConsole(this.name + "Was Requested To Start Playing");
             RequestStart = true;
         }
         else
         if (value == false && IsAudioPlaying)
         {
-            Debug.Log("stopping");
             MenuRequester.AddMessageToConsole(this.name + "Was Requested To Stop Playing");
             RequestStop = true;
         }

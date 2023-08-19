@@ -20,7 +20,7 @@ public class FuseController : ObjectDirector , IDurable
     public void ChangeDurability(float ammount)
     {
         Durability += ammount;
-        if (Durability < 0)
+        if (Durability <= 0)
         {
             this.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
             Durability = 0;
@@ -29,6 +29,11 @@ public class FuseController : ObjectDirector , IDurable
     public void SetDurability(float durability)
     {
         Durability = durability;
+        if (Durability <= 0)
+        {
+            this.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
+            Durability = 0;
+        }
     }
     public void SetMaxDurability(float durability)
     {

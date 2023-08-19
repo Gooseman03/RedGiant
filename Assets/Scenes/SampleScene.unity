@@ -6742,7 +6742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16d95730139c584688d85d66a915ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequiredForPower: 03000000
+  RequiredForPower: 0300000001000000
   ErrorText: 
   PowerSwitch: {fileID: 881736506}
   Start: 1

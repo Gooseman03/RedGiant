@@ -20,20 +20,14 @@ public class OxygenGenerator : MonoBehaviour
             {
                 UpdateOxygenCubes();
                 DrainAircanisters();
-                if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
-                {
-                    pumps[0].playAudio();
-                }
+                SendMessage("pumpPlayAudio", true);
             }
         }
         else
         {
             AircanisterPressure.Add(0f);
             AircanisterPressure.Add(0f);
-            if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
-            {
-                pumps[0].stopAudio();
-            }
+            SendMessage("pumpPlayAudio", false);
         }
     }
     private bool CheckAirline()
