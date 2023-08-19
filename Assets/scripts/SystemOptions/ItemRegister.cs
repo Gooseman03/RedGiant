@@ -52,15 +52,14 @@ public class ItemRegister : MonoBehaviour
             return false;
         }
     }
-
-    public bool HasObject(ObjectType type, out List<ObjectDirector> OutputList)
+    public bool HasObject<T>(out List<T> OutputList)
     {
-        OutputList = new List<ObjectDirector>();
+        OutputList = new List<T>();
         foreach (ObjectDirector item in Objects)
         {
-            if (item.objectType == type)
+            if (item is T listItem)
             {
-                OutputList.Add(item);
+                OutputList.Add(listItem);
             }
         }
 

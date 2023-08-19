@@ -41,9 +41,9 @@ public class ReactorOption : MonoBehaviour
         }
 
         AvailablePowerLines = 0;
-        if (baseSystem.itemRegister.HasObject(ObjectType.PowerConnector,out List<ObjectDirector> powerConnectors))
+        if (baseSystem.itemRegister.HasObject<PowerConnectorController>(out List<PowerConnectorController> powerConnectors))
         {
-            foreach(ObjectDirector powerConnector in powerConnectors)
+            foreach(PowerConnectorController powerConnector in powerConnectors)
             {
                 if (ErrorCodes.CheckWorking(powerConnector))
                 {
@@ -56,9 +56,12 @@ public class ReactorOption : MonoBehaviour
         foreach(ObjectPlace PowerSwitch in PowerSwitchs)
         {
             if (i >= PowerDelivered.Count) { break; }
-            if (PowerSwitch.ObjectGrabbable == null || PowerSwitch.ObjectGrabbable.GetSwitchState() == null) { continue; }
-            PowerDelivered[i] = (bool)PowerSwitch.ObjectGrabbable.GetSwitchState();
-            i++;
+            if (PowerSwitch.ObjectGrabbable == null) { continue; }
+            if (PowerSwitch.ObjectGrabbable is PowerSwitchController powerSwitch)
+            {
+                PowerDelivered[i] = powerSwitch.GetSwitchState();
+                i++;
+            }
         }
 
         if (baseSystem.PowerSwitchState == true)
@@ -89,6 +92,7 @@ public class ReactorOption : MonoBehaviour
                 itemRegister.baseSystem.ReactorPower = false;
             }
         }
+
         int x = 0;
         foreach (ObjectPlace objectPlace in PowerConnectors)
         {
@@ -99,9 +103,14 @@ public class ReactorOption : MonoBehaviour
             {
                 height = 0;
             }
-            else
+            else 
             {
-                height = objectPlace.ObjectGrabbable.GetPersentDurability() * objectPlace.ObjectGrabbable.GetMaxDurability() / 2;
+                if (objectPlace.ObjectGrabbable is IDurable durableObject)
+                {
+                    //NOTE WAS MUILTPLIED BY GETMAXDURABILITY
+                    height = durableObject.GetPercentDurability() * 50 / 2;
+                }
+                
             }
             
 

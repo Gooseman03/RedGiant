@@ -9,22 +9,22 @@ public class AlarmOption : MonoBehaviour
     {
         if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
         {
-            if (baseSystem.itemRegister.HasObject(ObjectType.Alarm, out List<ObjectDirector> Alarms))
+            if (baseSystem.itemRegister.HasObject<AlarmController>(out List<AlarmController> Alarms))
             {
-                foreach (ObjectDirector alarm in Alarms)
+                foreach (AlarmController alarm in Alarms)
                 {
-                    alarm.UpdateAlarmErrors(baseSystem.Errors);
+                    alarm.UpdateErrorTypes(baseSystem.Errors);
                     alarm.AlarmUpdate();
                 }
             }
         }
         else
         {
-            if (baseSystem.itemRegister.HasObject(ObjectType.Alarm, out List<ObjectDirector> Alarms))
+            if (baseSystem.itemRegister.HasObject<AlarmController>(out List<AlarmController> Alarms))
             {
-                foreach (ObjectDirector alarm in Alarms)
+                foreach (AlarmController alarm in Alarms)
                 {
-                    alarm.UpdateAlarmErrors(new List<ErrorTypes>());
+                    alarm.UpdateErrorTypes(new List<ErrorTypes>());
                     alarm.AlarmUpdate();
                 }
             }

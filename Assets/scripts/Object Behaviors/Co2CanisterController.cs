@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
-public class AirCanisterController : ObjectDirector , ICapacity
+public class Co2CanisterController : ObjectDirector , ICapacity
 {
-    private float _Pressure = 100;
-    private float _MaxPressure = 100;
+    private float _Pressure;
+    private float _MaxPressure;
     public float Pressure
     {
         get { return _Pressure; }
@@ -43,7 +42,7 @@ public class AirCanisterController : ObjectDirector , ICapacity
     private Canvas canvas;
     private Image FillImage;
     private float _height;
-   
+
     private float _Maxheight;
     public float height
     {
@@ -56,6 +55,7 @@ public class AirCanisterController : ObjectDirector , ICapacity
         set { _Maxheight = value; }
     }
 
+
     //private void Start()
     //{
     //    //FillObject = new GameObject();
@@ -65,16 +65,26 @@ public class AirCanisterController : ObjectDirector , ICapacity
     //    //FillObject.name = "FillBar";
     //    //FillImage = FillObject.AddComponent<Image>();
     //    //FillImage.rectTransform.localPosition = new Vector3(-0.251f, 0, 0);
-    //    //FillImage.rectTransform.localScale = Vector3.one/100;
+    //    //FillImage.rectTransform.localScale = Vector3.one / 100;
     //    //FillImage.rectTransform.localEulerAngles = new Vector3(0, 90, 0);
     //}
 
     //private void Update()
     //{
+    //    //TODO: FIX ME
     //    //Maxheight = 50;
     //    //height = GetPercentPressure() * Maxheight;
-    //    //FillImage.rectTransform.sizeDelta = new Vector2(30, height);
-    //    //FillImage.color = new Color((-height / Maxheight) + 1, height / Maxheight, 0);
-    //    //FillImage.rectTransform.localPosition = new Vector3(-0.251f, (height / 200) - .25f, 0);
+    //    //if (objectDirector.objectType == ObjectType.AirCanister)
+    //    //{
+    //    //    FillImage.rectTransform.sizeDelta = new Vector2(30, height);
+    //    //    FillImage.color = new Color((-height / Maxheight) + 1, height / Maxheight, 0);
+    //    //    FillImage.rectTransform.localPosition = new Vector3(-0.251f, (height / 200) - .25f, 0);
+    //    //}
+    //    //else if(objectDirector.objectType == ObjectType.Co2Canister)
+    //    //{
+    //    //    FillImage.rectTransform.sizeDelta = new Vector2(30, -height+50);
+    //    //    FillImage.color = new Color((-height / 50) + 1, height / 50, 0);
+    //    //    FillImage.rectTransform.localPosition = new Vector3(-0.251f, (-height / 200), 0);
+    //    //}
     //}
 }

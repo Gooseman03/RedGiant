@@ -1,8 +1,42 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MonitorController : MonoBehaviour
+public class MonitorController : ObjectDirector , IDurable, IDisconnect
 {
+    private float _Durability;
+    private float _MaxDurability;
+    public float Durability
+    {
+        get { return _Durability; }
+        set { _Durability = value; }
+    }
+    public float MaxDurability
+    {
+        get { return _MaxDurability; }
+        set { _MaxDurability = value; }
+    }
+    public void ChangeDurability(float ammount)
+    {
+        Durability += ammount;
+        if (Durability < 0)
+        {
+            Durability = 0;
+        }
+    }
+    public void SetDurability(float durability)
+    {
+        Durability = durability;
+    }
+    public void SetMaxDurability(float durability)
+    {
+        MaxDurability = durability;
+    }
+    public float GetPercentDurability()
+    {
+        return Durability / MaxDurability;
+    }
+
     private GameObject MonitorTextObject;
     private TextMeshPro MonitorText;
     private string NewMonitorText;
@@ -11,7 +45,7 @@ public class MonitorController : MonoBehaviour
     private MeshRenderer MonitorPlaneMeshRenderer;
     private Font font;
     private float Timer;
-    public void StartUp(Mesh Plane)
+    public void Start()
     {
         MonitorTextObject = new GameObject();
         MonitorTextObject.name = "MonitorText";
@@ -22,15 +56,6 @@ public class MonitorController : MonoBehaviour
         MonitorText.rectTransform.localScale = Vector3.one / 50;
         MonitorText.rectTransform.sizeDelta = new Vector2(86, 58);
         MonitorText.faceColor = Color.green;
-        //MonitorPlane = new GameObject("RenderPlane");
-        //MonitorPlane.transform.parent = transform;
-        //MonitorPlane.transform.localPosition = new Vector3(0, 0, -.121f);
-        //MonitorPlane.transform.localEulerAngles = new Vector3(90, 180, 0);
-        //MonitorPlane.transform.localScale = new Vector3(.172f, 1, .116f);
-        //MonitorPlaneMeshFilter = MonitorPlane.AddComponent<MeshFilter>();
-        //MonitorPlaneMeshRenderer = MonitorPlane.AddComponent<MeshRenderer>();
-        //MonitorPlaneMeshFilter.mesh = Plane;
-        //MonitorPlaneMeshRenderer.enabled = false;
      }
     private void Update()
     {
@@ -40,6 +65,10 @@ public class MonitorController : MonoBehaviour
             Timer = 0;
         }
         Timer += Time.deltaTime;
+    }
+    public void Disconnect()
+    {
+        InstantChangeMonitorText("");
     }
     public GameObject GetMonitorTextGameobject()
     {
@@ -58,15 +87,16 @@ public class MonitorController : MonoBehaviour
     }
     public void ChangeMonitorText(string NewText)
     {
+        if (MonitorText == null) { return; }
         MonitorText.enabled = true;
-        if (this.GetComponent<ObjectDirector>().Durability < 60f)
+        if (Durability < 60f)
         {
             char[] CharArrayText = NewText.ToCharArray();
             int i = 0;
             
             foreach(char Character in CharArrayText)
             { 
-                if (CharArrayText[i] != '\n' && Random.Range(0, 100) < 100 - (float)this.GetComponent<ObjectDirector>().Durability)
+                if (CharArrayText[i] != '\n' && Random.Range(0, 100) < 100 - Durability)
                 { 
                     CharArrayText[i] = '\u25A1'; 
                 }
@@ -76,18 +106,8 @@ public class MonitorController : MonoBehaviour
         }
         NewMonitorText = NewText;
     }
-    //public void MonitorPlaneEnable()
-    //{
-    //    MonitorText.enabled = false;
-    //    MonitorPlaneMeshRenderer.enabled = true;
-    //}
-    //public void MonitorPlaneDisable()
-    //{
-    //    MonitorText.enabled = true;
-    //    MonitorPlaneMeshRenderer.enabled = false;
-    //}
-    //public void SetMonitorPlaneMaterial(Material material)
-    //{
-    //    MonitorPlaneMeshRenderer.material = material;
-    //}
+    public void ClearMonitorText()
+    {
+        InstantChangeMonitorText("");
+    }
 }

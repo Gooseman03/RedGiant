@@ -28,22 +28,21 @@ public static class ErrorCodes
     public static void ErrorCheck(ItemRegister itemRegister, out string OutputString , out List<ErrorTypes> ErrorList)
     {
         ErrorList = new List<ErrorTypes>();
-        if (CheckForBadCompontent(ObjectType.Monitor)) { ErrorList.Add(ErrorTypes.ErrorBadMonitor); }
-        if (CheckForBadCompontent(ObjectType.Fuse)) { ErrorList.Add(ErrorTypes.ErrorBadFuse); }
-        if (CheckForBadCompontent(ObjectType.PowerConnector)) { ErrorList.Add(ErrorTypes.ErrorBadPowerConnector); }
-        if (CheckForBadCompontent(ObjectType.PowerSwitch)) { ErrorList.Add(ErrorTypes.ErrorBadPowerSwitch); }
-        if (CheckForBadCompontent(ObjectType.Pump)) { ErrorList.Add(ErrorTypes.ErrorBadPump); }
-        if (CheckForBadCompontent(ObjectType.Monitor)) { ErrorList.Add(ErrorTypes.ErrorBadMonitor); }
-        if (CheckForLowCompontent(ObjectType.AirCanister)) { ErrorList.Add(ErrorTypes.ErrorLowAirCanister); }
-        if (CheckForLowCompontent(ObjectType.Co2Canister)) { ErrorList.Add(ErrorTypes.ErrorHighCarbonCanister); }
-        if (CheckForDirtyCompontent(ObjectType.AirFilter) || CheckForBadCompontent(ObjectType.Pump) || CheckForLowCompontent(ObjectType.Co2Canister)) { ErrorList.Add(ErrorTypes.ErrorLowPump); }
-        bool CheckForBadCompontent(ObjectType objectType)
+        if (CheckForBadCompontent<MonitorController>()) { ErrorList.Add(ErrorTypes.ErrorBadMonitor); }
+        if (CheckForBadCompontent<FuseController>()) { ErrorList.Add(ErrorTypes.ErrorBadFuse); }
+        if (CheckForBadCompontent<PowerConnectorController>()) { ErrorList.Add(ErrorTypes.ErrorBadPowerConnector); }
+        if (CheckForBadCompontent<PowerSwitchController>()) { ErrorList.Add(ErrorTypes.ErrorBadPowerSwitch); }
+        if (CheckForBadCompontent<PumpController>()) { ErrorList.Add(ErrorTypes.ErrorBadPump); }
+        if (CheckForLowCompontent<AirCanisterController>()) { ErrorList.Add(ErrorTypes.ErrorLowAirCanister); }
+        if (CheckForLowCompontent<Co2CanisterController>()) { ErrorList.Add(ErrorTypes.ErrorHighCarbonCanister); }
+        if (CheckForDirtyCompontent<AirFilterController>() || CheckForBadCompontent<PumpController>() || CheckForLowCompontent<Co2CanisterController>()) { ErrorList.Add(ErrorTypes.ErrorLowPump); }
+        bool CheckForBadCompontent<T>()
         {
-            if (itemRegister.HasObject(objectType, out List<ObjectDirector> List))
+            if (itemRegister.HasObject<T>(out List<T> List))
             {
-                foreach (ObjectDirector Object in List)
+                foreach (T Object in List)
                 {
-                    if (Object.GetPersentDurability() < ErrorThresholdDurability)
+                    if (Object is IDurable durableObject && durableObject.GetPercentDurability() < ErrorThresholdDurability)
                     {
                         return true;
                     }
@@ -51,13 +50,13 @@ public static class ErrorCodes
             }
             return false;
         }
-        bool CheckForLowCompontent(ObjectType objectType)
+        bool CheckForLowCompontent<T>()
         {
-            if (itemRegister.HasObject(objectType, out List<ObjectDirector> List))
+            if (itemRegister.HasObject<T>(out List<T> List))
             {
-                foreach (ObjectDirector Object in List)
+                foreach (T Object in List)
                 {
-                    if (Object.GetPersentPressure() < ErrorThresholdPressure)
+                    if (Object is ICapacity capacityObject && capacityObject.GetPercentPressure() < ErrorThresholdPressure)
                     {
                         return true;
                     }
@@ -65,13 +64,13 @@ public static class ErrorCodes
             }
             return false;
         }
-        bool CheckForDirtyCompontent(ObjectType objectType)
+        bool CheckForDirtyCompontent<T>()
         {
-            if (itemRegister.HasObject(objectType, out List<ObjectDirector> List))
+            if (itemRegister.HasObject<T>(out List<T> List))
             {
-                foreach (ObjectDirector Object in List)
+                foreach (T Object in List)
                 {
-                    if (Object.GetPersentDirt() > ErrorThresholdDirt)
+                    if (Object is IDirt dirtObject && dirtObject.GetPercentDirt() > ErrorThresholdDirt)
                     {
                         return true;
                     }
@@ -127,78 +126,81 @@ public static class ErrorCodes
     public static bool CheckWorking(ObjectDirector objectIn)
     {
         bool HasWorking = true;
-        if (objectIn.objectType == ObjectType.AirFilter)
-        {
-            if (objectIn.Dirt >= objectIn.MaxDirt)
-            {
-                HasWorking = false;
-            }
-        }
-        else if (objectIn.objectType == ObjectType.AirCanister || objectIn.objectType == ObjectType.Co2Canister)
-        {
-            if (objectIn.Pressure <= 100)
-            {
-                HasWorking = false;
-            }
-        }
-        else if (objectIn.Durability < BrokenThresholdDurability)
-        {
-            HasWorking = false;
-        }
+        //TODO: FIX THIS
+        //if (objectIn.objectType == ObjectType.AirFilter)
+        //{
+        //    if (objectIn.Dirt >= objectIn.MaxDirt)
+        //    {
+        //        HasWorking = false;
+        //    }
+        //}
+        //else if (objectIn.objectType == ObjectType.AirCanister || objectIn.objectType == ObjectType.Co2Canister)
+        //{
+        //    if (objectIn.Pressure <= 100)
+        //    {
+        //        HasWorking = false;
+        //    }
+        //}
+        //else if (objectIn.Durability < BrokenThresholdDurability)
+        //{
+        //    HasWorking = false;
+        //}
         return HasWorking;
     }
     public static bool CheckWorking(List<ObjectDirector> objectsIn)
     {
         bool HasWorking = true; 
-        foreach(ObjectDirector Item in objectsIn)
-        {
-            if (Item.objectType == ObjectType.AirFilter)
-            {
-                if (Item.Dirt <= Item.MaxDirt)
-                {
-                    HasWorking = false;
-                }
-            }
-            else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
-            {
-                if (Item.Pressure >= 100)
-                {
-                    HasWorking = false;
-                }
-            }
-            else if (Item.Durability < BrokenThresholdDurability)
-            {
-                HasWorking = false;
-            }
-        }
+        //TODO: FIX THIS
+        //foreach(ObjectDirector Item in objectsIn)
+        //{
+        //    if (Item.objectType == ObjectType.AirFilter)
+        //    {
+        //        if (Item.Dirt <= Item.MaxDirt)
+        //        {
+        //            HasWorking = false;
+        //        }
+        //    }
+        //    else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
+        //    {
+        //        if (Item.Pressure >= 100)
+        //        {
+        //            HasWorking = false;
+        //        }
+        //    }
+        //    else if (Item.Durability < BrokenThresholdDurability)
+        //    {
+        //        HasWorking = false;
+        //    }
+        //}
         return HasWorking;
     }
-    public static bool CheckWorking(ItemRegister register, ObjectType objectType)
+    public static bool CheckWorking<T>(ItemRegister register)
     {
-        if (register.HasObject(objectType, out List<ObjectDirector> ListToTest))
+        if (register.HasObject<T>(out List<T> ListToTest))
         {
             bool HasWorking = true;
-            foreach (ObjectDirector Item in ListToTest)
-            {
-                if (Item.objectType == ObjectType.AirFilter)
-                {
-                    if (Item.Dirt >= Item.MaxDirt)
-                    {
-                        HasWorking = false;
-                    }
-                }
-                else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
-                {
-                    if (Item.Pressure <= 100)
-                    {
-                        HasWorking = false;
-                    }
-                }
-                else if (Item.Durability < BrokenThresholdDurability)
-                {
-                    HasWorking = false;
-                }
-            }
+            //TODO: FIX THIS
+            //foreach (ObjectDirector Item in ListToTest)
+            //{
+            //    if (Item.objectType == ObjectType.AirFilter)
+            //    {
+            //        if (Item.Dirt >= Item.MaxDirt)
+            //        {
+            //            HasWorking = false;
+            //        }
+            //    }
+            //    else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
+            //    {
+            //        if (Item.Pressure <= 100)
+            //        {
+            //            HasWorking = false;
+            //        }
+            //    }
+            //    else if (Item.Durability < BrokenThresholdDurability)
+            //    {
+            //        HasWorking = false;
+            //    }
+            //}
             return HasWorking;
         }
         return false;

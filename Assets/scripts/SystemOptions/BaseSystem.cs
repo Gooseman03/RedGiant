@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using UnityEngine;
 
 public class BaseSystem : MonoBehaviour
@@ -12,8 +13,6 @@ public class BaseSystem : MonoBehaviour
     private List<ErrorTypes> _Errors;
     public string ErrorText;
     [SerializeField] private ObjectPlace PowerSwitch;
-
-    private Dictionary<int, List<ObjectPlace>> PowerLines = new Dictionary<int, List<ObjectPlace>>();
 
     [SerializeField] private bool Start;
 
@@ -61,9 +60,9 @@ public class BaseSystem : MonoBehaviour
     {
         if (Start)
         {
-            itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectDirector> PowerSwitchs);
+            itemRegister.HasObject<PowerSwitchController>(out List<PowerSwitchController> PowerSwitchs);
             PowerSwitchState = true;
-            foreach (ObjectDirector objectDirector in PowerSwitchs)
+            foreach (PowerSwitchController objectDirector in PowerSwitchs)
             {
                 objectDirector.ChangeSwitchState(true);
             }
@@ -74,9 +73,9 @@ public class BaseSystem : MonoBehaviour
     private void WhenPowered()
     {
         SystemPower = CheckPowerLine();
-        if (itemRegister.HasObject(ObjectType.PowerSwitch, out List<ObjectDirector> ListOfPowerSwitchs))
+        if (itemRegister.HasObject<PowerSwitchController>(out List<PowerSwitchController> ListOfPowerSwitchs))
         {
-            foreach(ObjectDirector objectDirector in ListOfPowerSwitchs)
+            foreach(PowerSwitchController objectDirector in ListOfPowerSwitchs)
             {
                 if (PowerSwitch.ObjectGrabbable == objectDirector)
                 {
@@ -106,7 +105,15 @@ public class BaseSystem : MonoBehaviour
         if (!ReactorPower) { return false; }
         foreach (ObjectType type in RequiredForPower)
         {
-            if(!ErrorCodes.CheckWorking(itemRegister, type))
+            if (type == ObjectType.Fuse && !ErrorCodes.CheckWorking<FuseController>(itemRegister))
+            {
+                return false;
+            }
+            if (type == ObjectType.PowerConnector && !ErrorCodes.CheckWorking<PowerConnectorController>(itemRegister))
+            {
+                return false;
+            }
+            if (type == ObjectType.Pump && !ErrorCodes.CheckWorking<PumpController>(itemRegister))
             {
                 return false;
             }

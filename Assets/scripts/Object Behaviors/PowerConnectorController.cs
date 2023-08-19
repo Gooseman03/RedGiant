@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static TMPro.Examples.TMP_ExampleScript_01;
 
-public class FuseController : ObjectDirector , IDurable
+public class PowerConnectorController : ObjectDirector , IDurable
 {
     private float _Durability;
     private float _MaxDurability;
@@ -22,7 +21,6 @@ public class FuseController : ObjectDirector , IDurable
         Durability += ammount;
         if (Durability < 0)
         {
-            this.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
             Durability = 0;
         }
     }

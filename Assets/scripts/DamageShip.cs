@@ -17,16 +17,16 @@ public class DamageShip : MonoBehaviour
         ItemRegister ToDamage = itemRegisters[Random.Range(0, itemRegisters.Count)];
         if (ToDamage.baseSystem.PowerSwitchState && ToDamage.baseSystem.SystemPower)
         {
-            if (ToDamage.HasObject(ObjectType.PowerConnector, out List<ObjectDirector> PowerConnectors))
+            if (ToDamage.HasObject<PowerConnectorController>(out List<PowerConnectorController> PowerConnectors))
             {
-                foreach (ObjectDirector PowerConnector in PowerConnectors)
+                foreach (PowerConnectorController PowerConnector in PowerConnectors)
                 {
                     PowerConnector.SetDurability(0);
                 }
             }
-            if (ToDamage.HasObject(ObjectType.Fuse, out List<ObjectDirector> Fuses))
+            if (ToDamage.HasObject<FuseController>(out List<FuseController> Fuses))
             {
-                foreach (ObjectDirector Fuse in Fuses)
+                foreach (FuseController Fuse in Fuses)
                 {
                     Fuse.SetDurability(0);
                 }
@@ -50,24 +50,17 @@ public class DamageShip : MonoBehaviour
             {
                 DamageAmmout = Random.Range(10, 100);
             }
-            TryDamageItem();
+            while (!TryDamageItem()) { }
         }
-        void TryDamageItem()
+        bool TryDamageItem()
         {
-            ObjectDirector ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
-            float i = 0;
-            while (ObjectToDamage.Durability == null || ObjectToDamage.Durability < 0)
+            if (AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)] is IDurable ObjectToDamage)
             {
-                ObjectToDamage = AllItemsInSystems[Random.Range(0, AllItemsInSystems.Count)];
-                if (i > 10)
-                {
-                    MenuRequester.AddMessageToConsole("Damage Item Gave Up after 10 trys", MessageType.Warn);
-                    return;
-                }
-                i++;
+                ObjectToDamage.ChangeDurability(-DamageAmmout);
+                MenuRequester.AddMessageToConsole(ObjectToDamage + " Got Damaged");
+                return true;
             }
-            ObjectToDamage.ChangeDurability(-DamageAmmout);
-            MenuRequester.AddMessageToConsole(ObjectToDamage + " Got Damaged");
+            return false;
         }
         
     }

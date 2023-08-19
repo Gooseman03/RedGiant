@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class ObjectPlace : MonoBehaviour
@@ -43,6 +44,8 @@ public class ObjectPlace : MonoBehaviour
         meshFilter.mesh = newMeshs[0];
         this.GetComponent<MeshCollider>().sharedMesh = newMeshs[0];
         meshRenderer.material = newMaterial;
+
+
         if (Number == 0)
         {
             this.name = objectType.ToString() + " Place";
@@ -57,8 +60,70 @@ public class ObjectPlace : MonoBehaviour
             PrefabObjectGrabbable.SetActive(false);
             GameObject gameObject = Instantiate(PrefabObjectGrabbable);
             SetupComplete = true;
-            PrefabObjectGrabbable.SetActive(true);
-            gameObject.GetComponent<ObjectDirector>().ChangeObjectType(Preplace);
+            if (objectType == ObjectType.Monitor)
+            {
+                MonitorController newObject = gameObject.AddComponent<MonitorController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.Monitor;
+            }
+            if (objectType == ObjectType.Fuse)
+            {
+                FuseController newObject = gameObject.AddComponent<FuseController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.Fuse;
+            }
+            if (objectType == ObjectType.PowerConnector)
+            {
+                PowerConnectorController newObject = gameObject.AddComponent<PowerConnectorController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.PowerConnector;
+            }
+            if (objectType == ObjectType.PowerSwitch)
+            {
+                PowerSwitchController newObject = gameObject.AddComponent<PowerSwitchController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.PowerSwitch;
+            }
+            if (objectType == ObjectType.AirCanister)
+            {
+                AirCanisterController newObject = gameObject.AddComponent<AirCanisterController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.AirCanister;
+            }
+            if (objectType == ObjectType.Co2Canister)
+            {
+                Co2CanisterController newObject = gameObject.AddComponent<Co2CanisterController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.Co2Canister;
+            }
+            if (objectType == ObjectType.Pump)
+            {
+                PumpController newObject = gameObject.AddComponent<PumpController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.Pump;
+            }
+            if (objectType == ObjectType.AirFilter)
+            {
+                AirFilterController newObject = gameObject.AddComponent<AirFilterController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.AirFilter;
+            }
+            if (objectType == ObjectType.Alarm)
+            {
+                AlarmController newObject = gameObject.AddComponent<AlarmController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.Alarm;
+            }
+            if (objectType == ObjectType.Keyboard)
+            {
+                KeyboardController newObject = gameObject.AddComponent<KeyboardController>();
+                newObject.objectReferences = objectReferences;
+                newObject.objectType = ObjectType.Keyboard;
+            }
+            if (objectType == ObjectType.Generic)
+            {
+                MenuRequester.AddMessageToConsole("Cannot Spawn Generic item", MessageType.Error);
+            }
             gameObject.SetActive(true);
             gameObject.GetComponent<ObjectDirector>().Place(this.transform);
         }
@@ -93,7 +158,7 @@ public class ObjectPlace : MonoBehaviour
         if (isRegistered && ObjectGrabbable == null)
         {
             parentObjectRegister.UnregisterObject(LastObjectGrabbable);
-            LastObjectGrabbable.Disconnect();
+            if (LastObjectGrabbable is IDisconnect disconnectObject) { disconnectObject.Disconnect(); }
             isRegistered = false;
             MenuRequester.AddMessageToConsole(
                 "ObjectPlace.OnTransformChildrenChanged() Unregistered object: "

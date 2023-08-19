@@ -255,8 +255,7 @@ public class PlayerController : MonoBehaviour
                 if (
                     hit.collider.transform.TryGetComponent(out ObjectPlace objectPlace)
                     && ItemInLeftHand != null
-                    && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectDirector>().objectType
-                    || objectPlace.objectType == ObjectType.Generic))
+                    && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectDirector>().objectType || objectPlace.objectType == ObjectType.Generic))
                 {
                     ItemInLeftHand.GetComponent<ObjectDirector>().Place(objectPlace.transform);
                     ItemInLeftHand = null;

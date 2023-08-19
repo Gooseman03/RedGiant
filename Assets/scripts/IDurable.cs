@@ -1,28 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static TMPro.Examples.TMP_ExampleScript_01;
 
-public class FuseController : ObjectDirector , IDurable
+public interface IDurable
 {
-    private float _Durability;
-    private float _MaxDurability;
-    public float Durability
-    {
-        get { return _Durability; }
-        set { _Durability = value; }
-    }
-    public float MaxDurability
-    {
-        get { return _MaxDurability; }
-        set { _MaxDurability = value; }
-    }
+    public float Durability { get; set; }
+    public float MaxDurability { get; set; }
     public void ChangeDurability(float ammount)
     {
         Durability += ammount;
         if (Durability < 0)
         {
-            this.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
             Durability = 0;
         }
     }

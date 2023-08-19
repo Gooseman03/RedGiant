@@ -29,8 +29,6 @@ public class ObjectReferences : MonoBehaviour
     [SerializeField] private List<Mesh> PowerSwitchMeshs;
     [SerializeField] private List<Mesh> AirFilterMeshs;
 
-    [SerializeField] private Mesh DefaultPlane;
-
     [SerializeField] private List<Material> PowerSwitchMaterials;
 
     [Header("General Material Settings")]
@@ -54,7 +52,7 @@ public class ObjectReferences : MonoBehaviour
     [SerializeField] private float FuseMaxCurrent;
     [SerializeField] private float PowerConnectorMaxCurrent;
 
-    [Tooltip("First Is Starting Second Is Looping Third Is Stoping")]
+    [Tooltip("First Is Starting Second Is Looping Third Is Stopping")]
     [SerializeField] private List<AudioClip> PumpAudioClips;
     [SerializeField] private List<AudioClip> PowerSwitchClips;
     [SerializeField] private List<AudioClip> AlarmClips;
@@ -183,9 +181,5 @@ public class ObjectReferences : MonoBehaviour
         {
             OutList.Remove("Dirt");
         }
-    }
-    public Mesh GetConstructorPlane()
-    {
-        return DefaultPlane;
     }
 }

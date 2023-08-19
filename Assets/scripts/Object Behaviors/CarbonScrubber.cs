@@ -23,20 +23,26 @@ public class CarbonScrubber : MonoBehaviour
                 UpdateOxygenCubes();
                 DirtyFilters();
                 FillCarbonCanisters();
-                SendMessage("pumpPlayAudio",true);
+                if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
+                {
+                    pumps[0].playAudio();
+                }
             }
         }
         else
         {
             CarbonCanisterPressure.Add(0f);
-            SendMessage("pumpPlayAudio", false);
+            if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
+            {
+                pumps[0].stopAudio();
+            }
         }
     }
     private void DirtyFilters()
     {
-        if (baseSystem.itemRegister.HasObject(ObjectType.AirFilter, out List<ObjectDirector> ObjectList))
+        if (baseSystem.itemRegister.HasObject<AirFilterController>(out List<AirFilterController> ObjectList))
         {
-            foreach (ObjectDirector Filter in ObjectList)
+            foreach (AirFilterController Filter in ObjectList)
             {
                 Filter.ChangeDirt(Time.deltaTime);
             }
@@ -44,10 +50,10 @@ public class CarbonScrubber : MonoBehaviour
     }
     private void FillCarbonCanisters()
     {
-        if (baseSystem.itemRegister.HasObject(ObjectType.Co2Canister, out List<ObjectDirector> ObjectList))
+        if (baseSystem.itemRegister.HasObject<Co2CanisterController>(out List<Co2CanisterController> ObjectList))
         {
             int i = 0;
-            foreach (ObjectDirector Co2Canister in ObjectList)
+            foreach (Co2CanisterController Co2Canister in ObjectList)
             {
                 Co2Canister.ChangePressure(-.5f * Time.deltaTime);
                 i++;
@@ -56,11 +62,11 @@ public class CarbonScrubber : MonoBehaviour
     }
     private bool CheckAirline()
     {
-        if (!ErrorCodes.CheckWorking(baseSystem.itemRegister, ObjectType.Pump))
+        if (!ErrorCodes.CheckWorking<PumpController>(baseSystem.itemRegister))
         {
             return false;
         }
-        if (!ErrorCodes.CheckWorking(baseSystem.itemRegister, ObjectType.AirFilter))
+        if (!ErrorCodes.CheckWorking<AirFilterController>(baseSystem.itemRegister))
         {
             return false;
         }
@@ -74,10 +80,10 @@ public class CarbonScrubber : MonoBehaviour
     {
         CarbonCanisterPressure.Clear();
         CarbonCanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 null Unless Debuging
-        if (baseSystem.itemRegister.HasObject(ObjectType.Co2Canister, out List<ObjectDirector> ObjectList))
+        if (baseSystem.itemRegister.HasObject<Co2CanisterController>(out List<Co2CanisterController> ObjectList))
         {
             int i = 0;
-            foreach (ObjectDirector Co2Canister in ObjectList)
+            foreach (Co2CanisterController Co2Canister in ObjectList)
             {
                 CarbonCanisterPressure[i] = Co2Canister.Pressure;
                 i++;

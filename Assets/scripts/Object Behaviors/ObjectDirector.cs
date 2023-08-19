@@ -1,312 +1,83 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static TMPro.Examples.TMP_ExampleScript_01;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ObjectDirector : MonoBehaviour
 {
-    private ObjectBuilder objectBuilder;
-    [SerializeField] private ObjectReferences objectReferences;
-    [SerializeField] private ObjectType _objectType;
+    public ObjectReferences objectReferences;
     [SerializeField] private float _StatScale = 1.0f;
     public float StatScale 
     { 
         get { return _StatScale; } 
         set { _StatScale = value; }
     }
-    public ObjectType objectType 
-    { 
-        get { return _objectType; } 
-        set { _objectType = value; }
-    }
+
     private Rigidbody objectRigidbody;
-    [SerializeField] private float DurabilityOverride;
-    [SerializeField] private float PressureOverride;
-    [SerializeField] private float DirtOverride;
-    private float? _Durability;
-    private float? _Pressure;
-    private float? _Dirt;
-    private float? _MaxDurability;
-    private float? _MaxPressure;
-    private float? _MaxDirt;
-    public float? MaxDurability
-    {
-        get { return _MaxDurability; }
-        private set { _MaxDurability = value; }
-    }
-    public float? MaxPressure
-    {
-        get { return _MaxPressure; }
-        private set { _MaxPressure = value; }
-    }
-    public float? MaxDirt
-    {
-        get { return _MaxDirt; }
-        private set { _MaxDirt = value; }
-    }
-    public float? Durability 
-    { 
-        get { return _Durability; }
-        private set { _Durability = value; } 
-    }
-    public float? Pressure   
-    {
-        get { return _Pressure; }
-        private set { _Pressure = value; }
-    }
-    public float? Dirt
-    {
-        get { return _Dirt; }
-        private set { _Dirt = value; }
-    }
 
-    private AudioHandler audioHandler;
+    protected List<Mesh> MeshList;
+    protected Material material;
+    protected List<GameObject> ConstructedGameObjects;
+    protected Dictionary<string, float?> StatsDictionary;
+    public ObjectType objectType;
 
-    private void Start()
+    
+    private void Awake()
     {
-        objectBuilder = this.gameObject.AddComponent<ObjectBuilder>();
-        objectBuilder.objectReferences = objectReferences;
-        objectBuilder.objectType = objectType;
-        objectBuilder.enabled = true;
-        objectBuilder.RequestBuildMeshs = true;
+        objectReferences.GetConstructorItemReferences(
+            objectType,
+            false,
+            out MeshList,
+            out material
+            );
+        objectReferences.GetStatsItemReferences(objectType, out StatsDictionary);
+        GetComponent<MeshCollider>().sharedMesh = MeshList[0];
+        ConstructMeshs();
+        AddStats();
+        this.name = objectType.ToString();
     }
-    private void Update()
+    public void ConstructMeshs()
     {
-        //if (DurabilityOverride != 0)
-        //{
-        //    Durability = DurabilityOverride;
-        //}  
-        //if (PressureOverride != 0)
-        //{
-        //    Pressure = PressureOverride;
-        //}
-        //if (DirtOverride != 0)
-        //{
-        //    Dirt = DirtOverride;
-        //}
-        if (Durability != null)
+        ConstructedGameObjects = new List<GameObject>();
+        foreach (Mesh mesh in MeshList)
         {
-            DurabilityOverride = (float)Durability;
+            GameObject gameObject = new GameObject(mesh.name);
+            gameObject.transform.parent = this.transform;
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.localRotation = Quaternion.identity;
+            gameObject.transform.localScale = Vector3.one;
+            MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
+            meshFilter.sharedMesh = mesh;
+            meshRenderer.sharedMaterial = material;
+            ConstructedGameObjects.Add(gameObject);
         }
-        if (Pressure != null)
+    }
+    public void AddStats()
+    {
+        if (StatsDictionary.ContainsKey("Durability") && this is IDurable durableObject)
         {
-            PressureOverride = (float)Pressure;
+            durableObject.SetMaxDurability((float)StatsDictionary["Durability"] * StatScale);
+            durableObject.SetDurability((float)StatsDictionary["Durability"] * StatScale);
         }
-        if (Dirt != null)
+        if (StatsDictionary.ContainsKey("Pressure") && this is ICapacity capacityObject)
         {
-            DirtOverride = (float)Dirt;
+            capacityObject.SetMaxPressure((float)StatsDictionary["Pressure"] * StatScale);
+            capacityObject.SetPressure((float)StatsDictionary["Pressure"] * StatScale);
+        }
+        if (StatsDictionary.ContainsKey("Dirt") && this is IDirt dirtObject)
+        {
+            dirtObject.SetMaxDirt(100 * StatScale);
+            dirtObject.SetDirt(0);
         }
     }
     public void ShockPlayer()
     {
         PlayerMessaging.ShockPlayer();
     }
-    public void ChangeObjectType(ObjectType newObjectType)
-    {
-        objectType = newObjectType;
-    }
-    public void OnInteract(PlayerController playerController)
-    {
-        MenuRequester.AddMessageToConsole(this.name + " Has Been Interacted With");
-        if (objectType == ObjectType.PowerSwitch)
-        {
-            SwapSwitchState();
-        }
-        if (objectType == ObjectType.AirFilter)
-        {
-            Dirt = 0;
-        }
-        if (objectType == ObjectType.Keyboard)
-        {
-            SendMessageUpwards("SystemInteract", playerController);
-        }
-        if (objectType == ObjectType.Alarm)
-        {
-            CancelAlarm();
-        }
-    }
-    public void ChangePressure(float Ammount)
-    {
-        if (Pressure == null) { return; }
-        Pressure += Ammount;
-    }
-    public void ChangeDurability(float Ammount)
-    {
-        if (Durability == null) { return; }
-        Durability += Ammount;
-        if (Durability < 0)
-        {
-            Durability = 0;
-        }
-    }
-    public void ChangeDirt(float Ammount)
-    {
-        if (Dirt == null) { return; }
-        Dirt += Ammount;
-    }
 
-    public void SetDurability(float? Amount)
-    {
-        Durability = Amount;
-    }
-    public void SetPressure(float? Amount)
-    {
-        Pressure = Amount;
-    }
-    public void SetDirt(float? Amount)
-    {
-        Dirt = Amount;
-    }
-
-    public void SetMaxDurability(float? Amount)
-    {
-        MaxDurability = Amount;
-    }
-    public void SetMaxPressure(float? Amount)
-    {
-        MaxPressure = Amount;
-    }
-    public void SetMaxDirt(float? Amount)
-    {
-        MaxDirt = Amount;
-    }
-
-    public float GetMaxDurability()
-    {
-        if (MaxDurability == null)
-        {
-            return 0;
-        }
-        return (float)MaxDurability;
-    }
-    public float GetPersentDurability()
-    {
-        float Persentage = 0;
-        if (Durability != null)
-        {
-            Persentage = (float)Durability / (float)MaxDurability;
-        }
-        return Persentage;
-    }
-    public float GetPersentPressure()
-    {
-        float Persentage = 0;
-        if (Pressure != null)
-        {
-            Persentage = (float)Pressure / (float)MaxPressure;
-        }
-        return Persentage;
-    }
-    public float GetPersentDirt()
-    {
-        float Persentage = 0;
-        if (Dirt != null)
-        {
-            Persentage =  (float)Dirt / (float)MaxDirt;
-        }
-        return Persentage;
-    }
-
-    ///Power Switch Stuff
-    public bool? GetSwitchState()
-    {
-        if (this.GetComponent<PowerSwitchController>() == null)
-        {
-            return null;
-        }
-        return this.GetComponent<PowerSwitchController>().GetState();
-    }
-    public void ChangeSwitchState(bool newState)
-    {
-        this.GetComponent<PowerSwitchController>().SetState(newState);
-    }
-    public void SwapSwitchState()
-    {
-        this.GetComponent<PowerSwitchController>().SetState(!this.GetComponent<PowerSwitchController>().GetState());
-    }
-    //Monitor Stuff
-    public string GetMonitorText()
-    {
-        return this.GetComponent<MonitorController>().GetMonitorText();
-    }
-    public void ChangeMonitorText(string NewText) 
-    {
-        if (this.GetComponent<MonitorController>() == null)
-        {
-            return;
-        }
-        this.GetComponent<MonitorController>().ChangeMonitorText(NewText);
-    }
-    public void ClearMonitorText()
-    {
-        if (GetComponent<MonitorController>() == null) { return; }
-        this.GetComponent<MonitorController>().InstantChangeMonitorText("");
-    }
-    //public void MonitorPlaneEnable()
-    //{
-    //    if (GetComponent<MonitorController>() == null) { return; }
-    //    this.GetComponent<MonitorController>().MonitorPlaneEnable();
-    //}
-    //public void MonitorPlaneDisable()
-    //{
-    //    if (GetComponent<MonitorController>() == null) { return; }
-    //    this.GetComponent<MonitorController>().MonitorPlaneDisable();
-    //}
-    //public void SetMonitorPlaneMaterial(Material material)
-    //{
-    //    this.GetComponent<MonitorController>().SetMonitorPlaneMaterial(material);
-    //}
-    public void Disconnect()
-    {
-        if (objectType == ObjectType.Monitor)
-        {
-            ClearMonitorText();
-        }
-        if (objectType == ObjectType.Pump)
-        {
-            stopAudio();
-        }
-    }
-    //Audio
-    public void AlarmUpdate()
-    {
-        if (GetComponent<AlarmController>() == null) { return; }
-        this.GetComponent<AlarmController>().AlarmUpdate();
-    }
-    public void CancelAlarm()
-    {
-        if (GetComponent<AlarmController>() == null) { return; }
-        this.GetComponent<AlarmController>().CancelAlarm();
-    }
-    public void UpdateAlarmErrors(List<ErrorTypes> ErrorsInput)
-    {
-        if (GetComponent<AlarmController>() == null) { return; }
-        this.GetComponent<AlarmController>().UpdateErrorTypes(ErrorsInput);
-    }
-    public void playAudio()
-    {
-        if (audioHandler == null)
-        {
-            return;
-        }
-        audioHandler.ChangeAudioPlaying(true);
-    }
-    public void stopAudio()
-    {
-        if (audioHandler == null)
-        {
-            return;
-        }
-        audioHandler.ChangeAudioPlaying(false);
-    }
-    public bool? IsAudioPlaying()
-    {
-        if (audioHandler == null)
-        {
-            return null;
-        }
-        return audioHandler.IsAudioPlaying;
-    }
     //Inventory System
     public void Grab(Transform objectGrabPointTransform)
     {
@@ -344,8 +115,6 @@ public class ObjectDirector : MonoBehaviour
         this.transform.SetParent(NewParent);
         this.gameObject.GetComponent<Collider>().enabled = true;
     }
-
-    //Scene View Only
     private void OnDrawGizmos()
     {
         objectReferences.GetConstructorItemReferences(objectType, false, out List<Mesh> newMesh, out Material newMaterial);

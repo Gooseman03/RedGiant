@@ -20,19 +20,25 @@ public class OxygenGenerator : MonoBehaviour
             {
                 UpdateOxygenCubes();
                 DrainAircanisters();
-                SendMessage("pumpPlayAudio",true);
+                if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
+                {
+                    pumps[0].playAudio();
+                }
             }
         }
         else
         {
             AircanisterPressure.Add(0f);
             AircanisterPressure.Add(0f);
-            SendMessage("pumpPlayAudio", false);
+            if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
+            {
+                pumps[0].stopAudio();
+            }
         }
     }
     private bool CheckAirline()
     {
-        if (!ErrorCodes.CheckWorking(baseSystem.itemRegister, ObjectType.Pump))
+        if (!ErrorCodes.CheckWorking<PumpController>(baseSystem.itemRegister))
         {
             return false;
         }
@@ -47,10 +53,10 @@ public class OxygenGenerator : MonoBehaviour
         AircanisterPressure.Clear();
         AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 null Unless Debuging
         AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 2 null Unless Debuging
-        if (baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectDirector> ObjectList))
+        if (baseSystem.itemRegister.HasObject<AirCanisterController>(out List<AirCanisterController> ObjectList))
         {
             int i = 0;
-            foreach (ObjectDirector Aircanister in ObjectList)
+            foreach (AirCanisterController Aircanister in ObjectList)
             {
                 AircanisterPressure[i] = Aircanister.Pressure;
                 i++;
@@ -69,9 +75,9 @@ public class OxygenGenerator : MonoBehaviour
     }
     private void DrainAircanisters()
     {
-        if (baseSystem.itemRegister.HasObject(ObjectType.AirCanister, out List<ObjectDirector> ObjectList))
+        if (baseSystem.itemRegister.HasObject<AirCanisterController>(out List<AirCanisterController> ObjectList))
         {
-            foreach (ObjectDirector Aircanister in ObjectList)
+            foreach (AirCanisterController Aircanister in ObjectList)
             {
                 if (Aircanister.Pressure > 0f)
                 {

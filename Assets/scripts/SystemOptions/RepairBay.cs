@@ -24,9 +24,11 @@ public class RepairBay : MonoBehaviour
     }
     private void Repair()
     {
-        if (RepairSpot.ObjectGrabbable == null) { return; }
-        if (RepairSpot.ObjectGrabbable.Durability == null) { return; }
-        RepairSpot.ObjectGrabbable.ChangeDurability(100 - (float)RepairSpot.ObjectGrabbable.Durability);
+        if (RepairSpot.ObjectGrabbable is IDurable durableObject) 
+        {
+            durableObject.SetDurability(durableObject.MaxDurability);
+        }
+        
     }
 }
 
