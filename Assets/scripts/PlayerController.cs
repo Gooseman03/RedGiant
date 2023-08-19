@@ -49,9 +49,10 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        PlayerMessaging.PlayerRegister(this);
         controller = GetComponent<CharacterController>();
     }
-    private void ShockPlayer()
+    public void ShockPlayer()
     {
         IsBeingShocked = true;
     }

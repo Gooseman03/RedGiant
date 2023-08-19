@@ -99,7 +99,7 @@ public class ObjectDirector : MonoBehaviour
     }
     public void ShockPlayer()
     {
-        SendMessageUpwards("ShockPlayer");
+        PlayerMessaging.ShockPlayer();
     }
     public void ChangeObjectType(ObjectType newObjectType)
     {
