@@ -7,7 +7,7 @@ public static class InputSystem
 {
     public class InputSet
     {
-        public Vector2 MoveInput = Vector2.zero;
+        public Vector3 MoveInput = Vector3.zero;
         public Vector2 LookInput = Vector2.zero;
         public bool PickupInput = false;
         public bool InteractInput = false;

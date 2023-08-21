@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource Audio;
     [SerializeField] private AudioSource ElectrocutionAudioSource;
 
+    private Vector3 movement = Vector3.zero;
 
     private float RotationX = 0.0f;
     private float RotationY = 0.0f;
@@ -227,16 +228,39 @@ public class PlayerController : MonoBehaviour
     }
     private void MovePlayer()
     {
-        Vector3 move = PlayerInputs.MoveInput.x * transform.right + PlayerInputs.MoveInput.y * transform.forward;
-        if (!CheckGrounded())
+        if (CurrentOxygenArea == null)
         {
-            move += -gravity * Time.deltaTime * transform.up;
+            movement += PlayerInputs.MoveInput.x * transform.right * speed * Time.deltaTime;
+            movement += PlayerInputs.MoveInput.y * transform.up * speed * Time.deltaTime;
+            movement += PlayerInputs.MoveInput.z * transform.forward * speed * Time.deltaTime;
+            controller.Move(movement * Time.deltaTime);
+            return;
         }
-        controller.Move(move * speed * Time.deltaTime);
+
+        movement.x = 0;
+        movement.z = 0;
+        movement += PlayerInputs.MoveInput.x * transform.right * speed;
+        movement += PlayerInputs.MoveInput.z * transform.forward * speed;
+        if (controller.isGrounded)
+        {
+            movement.y = 0;
+        }
+        else
+        {
+            movement.y = movement.y + (-gravity * Time.deltaTime);
+        }
+        controller.Move(movement * Time.deltaTime);
     }
     private void LookPlayer()
     {
-        if (PlayerInputs.LookInput != Vector2.zero)
+        if (CurrentOxygenArea == null)
+        {
+            RotationX -= PlayerInputs.LookInput.y * .2f;
+            RotationY += PlayerInputs.LookInput.x * .2f;
+            RotationX = Mathf.Clamp(RotationX, LowerLimit, UpperLimit);
+            transform.localEulerAngles = new Vector3(RotationX, RotationY, 0);
+        }
+        else if (PlayerInputs.LookInput != Vector2.zero)
         {
             RotationX -= PlayerInputs.LookInput.y * .2f;
             RotationY += PlayerInputs.LookInput.x * .2f;
@@ -257,21 +281,24 @@ public class PlayerController : MonoBehaviour
                     && ItemInLeftHand != null
                     && (objectPlace.objectType == ItemInLeftHand.GetComponent<ObjectDirector>().objectType || objectPlace.objectType == ObjectType.Generic))
                 {
-                    ItemInLeftHand.GetComponent<ObjectDirector>().Place(objectPlace.transform);
+                    ItemInLeftHand.GetComponent<IGrabbable>().Place(objectPlace.transform);
                     ItemInLeftHand = null;
                     PlayerInputs.PickupInput = false;
                     return;
                 }
-                else if (hit.collider.transform.TryGetComponent(out ObjectDirector objectGrabbable) && ItemInLeftHand == null)
+                else if (hit.collider.transform.TryGetComponent(out IGrabbable objectGrabbable) && ItemInLeftHand == null)
                 {
-                    objectGrabbable.Grab(objectLeftGrabPointTransform);
+                    if (objectGrabbable.Grab(objectLeftGrabPointTransform) == false)
+                    {
+                        return;
+                    }
                     ItemInLeftHand = hit.collider.transform.gameObject;
                     PlayerInputs.PickupInput = false;
                     return;
                 }
                 else if (ItemInLeftHand != null)
                 {
-                    ItemInLeftHand.GetComponent<ObjectDirector>().Drop(transform.parent);
+                    ItemInLeftHand.GetComponent<IGrabbable>().Drop(transform.parent);
                     ItemInLeftHand = null;
                     PlayerInputs.PickupInput = false;
                     return;
@@ -279,7 +306,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (ItemInLeftHand != null)
             {
-                ItemInLeftHand.GetComponent<ObjectDirector>().Drop(transform.parent);
+                ItemInLeftHand.GetComponent<IGrabbable>().Drop(transform.parent);
                 ItemInLeftHand = null;
                 return;
             }

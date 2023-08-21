@@ -14,7 +14,7 @@ public class InputCaller : MonoBehaviour
     }
     public void OnMove(InputValue value)
     {
-        PlayerInputs.MoveInput = value.Get<Vector2>();
+        PlayerInputs.MoveInput = value.Get<Vector3>();
     }
     public void OnLook(InputValue value)
     {

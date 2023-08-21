@@ -125,7 +125,7 @@ public class ObjectPlace : MonoBehaviour
                 MenuRequester.AddMessageToConsole("Cannot Spawn Generic item", MessageType.Error);
             }
             gameObject.SetActive(true);
-            gameObject.GetComponent<ObjectDirector>().Place(this.transform);
+            gameObject.GetComponent<IGrabbable>().Place(this.transform);
         }
         SetupComplete = true;
     }

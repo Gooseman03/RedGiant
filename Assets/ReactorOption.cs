@@ -107,8 +107,7 @@ public class ReactorOption : MonoBehaviour
             {
                 if (objectPlace.ObjectGrabbable is IDurable durableObject)
                 {
-                    //NOTE WAS MUILTPLIED BY GETMAXDURABILITY
-                    height = durableObject.GetPercentDurability() * 50 / 2;
+                    height = durableObject.GetPercentDurability() * 100 / 2;
                 }
                 
             }
