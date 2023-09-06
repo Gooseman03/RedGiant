@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(BaseSystem))]
 
 public class FuseBlownOption : MonoBehaviour
 {
-    [SerializeField] private BaseSystem baseSystem;
+    private BaseSystem baseSystem;
     [SerializeField] private List<ObjectType> LiveObjects;
+    private void Awake()
+    {
+        baseSystem = GetComponent<BaseSystem>();
+    }
     private void ObjectPulled(ObjectDirector item)
     {
         if (LiveObjects.Contains(item.objectType))

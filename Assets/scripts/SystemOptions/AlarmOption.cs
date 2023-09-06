@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(BaseSystem))]
 public class AlarmOption : MonoBehaviour
 {
-    [SerializeField] private BaseSystem baseSystem;
+    private BaseSystem baseSystem;
+    private void Awake()
+    {
+        baseSystem = GetComponent<BaseSystem>();
+    }
     void Update()
     {
         if (baseSystem.SystemPower && baseSystem.PowerSwitchState)

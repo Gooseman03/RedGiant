@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class AudioOption : MonoBehaviour
 {
-    [SerializeField] private BaseSystem baseSystem;
+    private BaseSystem baseSystem;
+    private void Start()
+    {
+        baseSystem = GetComponent<BaseSystem>();
+    }
     private void pumpPlayAudio(bool ChangeTo)
     {
         if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> PumpList))
         {
             foreach (PumpController Pump in PumpList)
             {
-                if (ChangeTo == true && Pump.IsAudioPlaying() == false)
+                if (Pump == null)
                 {
-                    Pump.playAudio();
+                    return;
+                }
+                if (ChangeTo == true && Pump.IsAudioPlaying == false)
+                {
+                    Pump.ChangeAudioPlaying(true);
                 }
                 else if (!ChangeTo)
                 {
-                    Pump.stopAudio();
+                    Pump.ChangeAudioPlaying(false);
                 }
             }
         }

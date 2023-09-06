@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3de44bd7d8b42154d9bb21336a2ef338, type: 3}
+  m_Name: Monitor
+  m_EditorClassIdentifier: 
+  ObjectType: 9
+  Prefab: {fileID: 5092900295460365591, guid: cb7835b2ac67a7e479854cb0b13d3356, type: 3}
+  AudioClipList: []
+  Durability: 100
+  Dirt: 0
+  Pressure: 0
+  MaxDurability: 100
+  MaxDirt: 0
+  MaxPressure: 0
+  ColisionMesh: {fileID: 8604045607132181640, guid: 0360f33224c61654f91302212190339f, type: 3}
+  GizmoMeshs:
+  - {fileID: 8604045607132181640, guid: 0360f33224c61654f91302212190339f, type: 3}

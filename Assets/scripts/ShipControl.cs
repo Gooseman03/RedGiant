@@ -1,6 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public static class Ship
+{
+    public static GameObject ShipObject { get; private set; } 
+    public static void Register(GameObject gameObject)
+    {
+        ShipObject = gameObject;
+    }
+}
 
 public class ShipControl : MonoBehaviour
 {
@@ -19,6 +27,10 @@ public class ShipControl : MonoBehaviour
     [SerializeField] private float RotationCap;
     [SerializeField] private DamageShip DamageShip;
     [SerializeField] private List<Thruster> thrusters = new List<Thruster>();
+    private void Start()
+    {
+        Ship.Register(this.gameObject);
+    }
     private void ShipLook (Vector2 vectors)
     {
         vectors *= Time.deltaTime;
@@ -29,11 +41,9 @@ public class ShipControl : MonoBehaviour
     private void ShipMove(Vector3 vectors)
     {
         vectors *= Time.deltaTime;
-        
         NewMoveVectors.x = vectors.x;
         NewMoveVectors.y = vectors.y;
         NewMoveVectors.z = vectors.z;
-
         NewMoveVectors.Normalize();
     }
     private void OnCollisionEnter(Collision collision)
@@ -51,76 +61,53 @@ public class ShipControl : MonoBehaviour
             moveVector = -moveVector * 2;
         }
     }
-
     private void ShipCollision(Vector3 vector3)
     {
         int ItemsToDamage = ((int)vector3.magnitude) / 5;
         DamageShip.DamageRandomItem(ItemsToDamage);
     }
-    void FixedUpdate()
+    void Update()
     {
-        if (NewMoveVectors != Vector3.zero)
+        GetThrustAmmounts();
+        MoveSetup();
+
+        Rotate();
+        if ( DragEnabled && NewRotationVectors == Vector3.zero)
         {
-            MoveSetup();
+            RotateSlowDown();
         }
-        if ( DragEnabled && NewMoveVectors == Vector3.zero)
-        { 
-            MoveSlow();
-        }
-        if (NewRotationVectors != Vector3.zero)
-        {
-            Rotate();
-        }
-        if (DragEnabled && NewRotationVectors == Vector3.zero)
-        {
-            RotateSlow();
-        }
-        if (Rotation != Vector3.zero)
-        {
-            moveVector = Quaternion.Euler(Rotation) * moveVector;
-        }
+        
+
+        moveVector = Quaternion.Euler(Rotation) * moveVector;
+
         Move();
+        if (DragEnabled && NewMoveVectors == Vector3.zero)
+        {
+            MoveSlowDown();
+        }
+        
 
         Space.BroadcastMessage("RotateAroundSpace", Rotation, SendMessageOptions.DontRequireReceiver);
     }
-    private void MoveSlow()
+    private void GetThrustAmmounts()
     {
         AccelerationVectors = Vector3.zero;
+        RotationAcceleration = Vector3.zero;
         foreach (Thruster thruster in thrusters)
         {
             AccelerationVectors += thruster.ThrustDirections * thruster.ThrustPersentAvailable;
+            RotationAcceleration += thruster.ThrustRotationDirections * thruster.ThrustRotationPersentAvailable;
         }
-        NewMoveVectors = -moveVector.normalized;
-        if (AccelerationVectors.x > Mathf.Abs(moveVector.x))
-        {
-            NewMoveVectors.x = 0;
-            moveVector.x = 0;
-        }
-        if (AccelerationVectors.y > Mathf.Abs(moveVector.y))
-        {
-            NewMoveVectors.y = 0;
-            moveVector.y = 0;
-        }
-        if (AccelerationVectors.z > Mathf.Abs(moveVector.z))
-        {
-            NewMoveVectors.z = 0;
-            moveVector.z = 0;
-        }
-        ShipNewSpeed = new Vector3(NewMoveVectors.x * AccelerationVectors.x, NewMoveVectors.y * AccelerationVectors.y, NewMoveVectors.z * AccelerationVectors.z);
-        moveVector += ShipNewSpeed;
     }
     private void MoveSetup()
     {
-        AccelerationVectors = Vector3.zero;
-        foreach (Thruster thruster in thrusters)
-        {
-            AccelerationVectors += thruster.ThrustDirections * thruster.ThrustPersentAvailable;
-        }
-
-        ShipNewSpeed = new Vector3(NewMoveVectors.x * AccelerationVectors.x, NewMoveVectors.y * AccelerationVectors.y, NewMoveVectors.z * AccelerationVectors.z);
-
-        moveVector += ShipNewSpeed;
-
+        ShipNewSpeed = new Vector3
+        (
+            NewMoveVectors.x * AccelerationVectors.x,
+            NewMoveVectors.y * AccelerationVectors.y,
+            NewMoveVectors.z * AccelerationVectors.z
+        );
+        moveVector += ShipNewSpeed * Time.deltaTime;
         if (moveVector.magnitude > SpeedCap)
         {
             moveVector = Vector3.ClampMagnitude(moveVector, SpeedCap);
@@ -132,46 +119,70 @@ public class ShipControl : MonoBehaviour
     }
     private void Rotate()
     {
-        RotationAcceleration = Vector3.zero;
-        foreach (Thruster thruster in thrusters)
-        {
-            RotationAcceleration += thruster.ThrustRotationDirections * thruster.ThrustRotationPersentAvailable;
-        }
-        ShipNewRotation = new Vector3( NewRotationVectors.x * RotationAcceleration.x, NewRotationVectors.y * RotationAcceleration.y, NewRotationVectors.z * RotationAcceleration.z);
-
-        Rotation += ShipNewRotation;
-
+        ShipNewRotation = new Vector3
+        (
+            NewRotationVectors.x * RotationAcceleration.x,
+            NewRotationVectors.y * RotationAcceleration.y,
+            NewRotationVectors.z * RotationAcceleration.z
+        );
+        Rotation += ShipNewRotation * Time.deltaTime;
         if (Rotation.magnitude > RotationCap)
         {
             Rotation = Vector3.ClampMagnitude(Rotation, RotationCap);
         }
     }
-    private void RotateSlow()
+    private void RotateSlowDown()
     {
-        RotationAcceleration = Vector3.zero;
-        foreach (Thruster thruster in thrusters)
-        {
-            RotationAcceleration += thruster.ThrustRotationDirections * thruster.ThrustRotationPersentAvailable;
-        }
         NewRotationVectors = -Rotation.normalized;
-        if (RotationAcceleration.x > Mathf.Abs(Rotation.x))
-        {
-            NewRotationVectors.x = 0;
-            Rotation.x = 0;
-        }
-        if (RotationAcceleration.y > Mathf.Abs(Rotation.y))
-        {
-            NewRotationVectors.y = 0;
-            Rotation.y = 0;
-        }
-        if (RotationAcceleration.z > Mathf.Abs(Rotation.z))
-        {
-            NewRotationVectors.z = 0;
-            Rotation.z = 0;
-        }
-        ShipNewRotation = new Vector3(NewRotationVectors.x * RotationAcceleration.x, NewRotationVectors.y * RotationAcceleration.y, NewRotationVectors.z * RotationAcceleration.z);
+        //if (Mathf.Abs(Rotation.x) < 0.000001)
+        //{
+        //    NewRotationVectors.x = 0;
+        //    Rotation.x = 0;
+        //}
+        //if (Mathf.Abs(Rotation.y) < 0.000001)
+        //{
+        //    NewRotationVectors.y = 0;
+        //    Rotation.y = 0;
+        //}
+        //if (Mathf.Abs(Rotation.z) < 0.000001)
+        //{
+        //    NewRotationVectors.z = 0;
+        //    Rotation.z = 0;
+        //}
+        ShipNewRotation = new Vector3
+        (
+            NewRotationVectors.x * RotationAcceleration.x,
+            NewRotationVectors.y * RotationAcceleration.y,
+            NewRotationVectors.z * RotationAcceleration.z
+        );
 
-        Rotation += ShipNewRotation;
+        Rotation += ShipNewRotation * Time.deltaTime;
+    }
+    private void MoveSlowDown()
+    {
+        NewMoveVectors = -moveVector.normalized;
+        //if (Mathf.Abs(moveVector.x) < 0.0001)
+        //{
+        //    NewMoveVectors.x = 0;
+        //    moveVector.x = 0;
+        //}
+        //if (Mathf.Abs(moveVector.y) < 0.0001)
+        //{
+        //    NewMoveVectors.y = 0;
+        //    moveVector.y = 0;
+        //}
+        //if (Mathf.Abs(moveVector.z) < 0.0001)
+        //{
+        //    NewMoveVectors.z = 0;
+        //    moveVector.z = 0;
+        //}
+        ShipNewSpeed = new Vector3
+        (
+            NewMoveVectors.x * AccelerationVectors.x,
+            NewMoveVectors.y * AccelerationVectors.y,
+            NewMoveVectors.z * AccelerationVectors.z
+        );
+        moveVector += ShipNewSpeed * Time.deltaTime;
     }
     private Vector3 Clamp(Vector3 toClamp)
     {

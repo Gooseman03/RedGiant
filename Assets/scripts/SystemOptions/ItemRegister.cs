@@ -1,46 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(BaseSystem))]
 
 public class ItemRegister : MonoBehaviour
 {
-    public BaseSystem baseSystem;
+    private BaseSystem _baseSystem;
+    public BaseSystem baseSystem { private set { _baseSystem = value; } get { return _baseSystem; }}
     [SerializeField] private DamageShip _ship;
+    public DamageShip ship { get { return _ship; } }
     private ObjectDirector LastItemRemoved;
-
-    public DamageShip ship
-    {
-        get { return _ship; }
-        set { _ship = value; }
-    }
-    private void Start()
-    {
-        baseSystem = GetComponent<BaseSystem>();
-    }
     private void Awake()
     {
+        baseSystem = GetComponent<BaseSystem>();
         ship.Register(this);
     }
     public List<ObjectDirector> Objects = new List<ObjectDirector>();
-
     public void RegisterObject(ObjectDirector item)
     {
         Objects.Add(item);
         LastItemRemoved = null;
     }
-
     public void ShockPlayer()
     {
         LastItemRemoved.SendMessage("ShockPlayer");
     }
-
     public void UnregisterObject(ObjectDirector item)
     {
         LastItemRemoved = item;
         Objects.Remove(item);
         this.SendMessage("ObjectPulled",item,SendMessageOptions.DontRequireReceiver);
     }
-
     public bool CheckForObject(ObjectDirector item)
     {
         if (Objects.Contains(item))
@@ -69,7 +59,6 @@ public class ItemRegister : MonoBehaviour
         }
         return false;
     }
-
     public void ListAllObjects(out List<ObjectDirector> OutputList)
     {
         OutputList = Objects;

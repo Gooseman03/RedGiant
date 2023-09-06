@@ -4,14 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class ReactorOption : MonoBehaviour
+public class ReactorOption : BaseSystem
 {
-    [SerializeField] private BaseSystem _baseSystem;
-    public BaseSystem baseSystem
-    {
-        get { return _baseSystem; }
-    }
-
     [SerializeField] private List<ObjectPlace> PowerSwitchs = new List<ObjectPlace>();
     [SerializeField] private List<Image> Fillbars = new List<Image>();
     [SerializeField] private List<ObjectPlace> PowerConnectors = new List<ObjectPlace>();
@@ -19,18 +13,7 @@ public class ReactorOption : MonoBehaviour
     [SerializeField] private List<BaseSystem> BaseSystems;
     [SerializeField] private List<bool> PowerDelivered;
     private Dictionary<BaseSystem, bool> PowerToSystems = new Dictionary<BaseSystem, bool>();
-
-    private void Start()
-    {
-        int i = 0;
-        foreach(BaseSystem system in BaseSystems)
-        {
-            PowerDelivered.Add(false);
-            PowerToSystems.Add(system, PowerDelivered[i]);
-            i++;
-        }
-    }
-    void FixedUpdate()
+    void Update()
     {
         int i = 0;
         PowerToSystems.Clear();
@@ -41,7 +24,7 @@ public class ReactorOption : MonoBehaviour
         }
 
         AvailablePowerLines = 0;
-        if (baseSystem.itemRegister.HasObject<PowerConnectorController>(out List<PowerConnectorController> powerConnectors))
+        if (itemRegister.HasObject<PowerConnectorController>(out List<PowerConnectorController> powerConnectors))
         {
             foreach(PowerConnectorController powerConnector in powerConnectors)
             {
@@ -64,12 +47,12 @@ public class ReactorOption : MonoBehaviour
             }
         }
 
-        if (baseSystem.PowerSwitchState == true)
+        if (PowerSwitchState == true)
         {
             i = 0;
-            foreach (ItemRegister itemRegister in baseSystem.itemRegister.ship.itemRegisters)
+            foreach (ItemRegister itemRegister in itemRegister.ship.itemRegisters)
             {
-                if (itemRegister.baseSystem == baseSystem)
+                if (itemRegister.baseSystem == this)
                 {
                     itemRegister.baseSystem.ReactorPower = true;
                     continue;
@@ -87,7 +70,7 @@ public class ReactorOption : MonoBehaviour
         }
         else
         {
-            foreach (ItemRegister itemRegister in baseSystem.itemRegister.ship.itemRegisters)
+            foreach (ItemRegister itemRegister in itemRegister.ship.itemRegisters)
             {
                 itemRegister.baseSystem.ReactorPower = false;
             }
@@ -97,7 +80,7 @@ public class ReactorOption : MonoBehaviour
         foreach (ObjectPlace objectPlace in PowerConnectors)
         {
             Image FillImage = Fillbars[x];
-            int Maxheight = 50;
+            float Maxheight = 50;
             float height = 0;
             if (objectPlace.ObjectGrabbable == null)
             {
@@ -111,15 +94,10 @@ public class ReactorOption : MonoBehaviour
                 }
                 
             }
-            
 
             FillImage.rectTransform.sizeDelta = new Vector2(10, height);
             FillImage.color = new Color((-height / Maxheight) + 1, height / Maxheight, 0);
-            FillImage.rectTransform.localPosition = new Vector3(
-                FillImage.rectTransform.localPosition.x,
-                (float)((height / 200) + .75),
-                FillImage.rectTransform.localPosition.z
-                );
+            FillImage.rectTransform.localPosition = new Vector3( FillImage.rectTransform.localPosition.x, (height / 200) + .75f, FillImage.rectTransform.localPosition.z );
             x++;
         }
     }

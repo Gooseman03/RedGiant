@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3de44bd7d8b42154d9bb21336a2ef338, type: 3}
+  m_Name: Keyboard
+  m_EditorClassIdentifier: 
+  ObjectType: 8
+  Prefab: {fileID: 9136623061588328928, guid: 82c2007f059df054b87d30b89200e7c9, type: 3}
+  AudioClipList: []
+  Durability: 0
+  Dirt: 0
+  Pressure: 0
+  ColisionMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  GizmoMeshs:
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

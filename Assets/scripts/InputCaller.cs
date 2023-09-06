@@ -14,7 +14,7 @@ public class InputCaller : MonoBehaviour
     }
     public void OnMove(InputValue value)
     {
-        PlayerInputs.MoveInput = value.Get<Vector3>();
+        PlayerInputs.MoveInput = value.Get<Vector3>().normalized;
     }
     public void OnLook(InputValue value)
     {
@@ -39,5 +39,13 @@ public class InputCaller : MonoBehaviour
     public void OnExit(InputValue value)
     {
         PlayerInputs.ShipExit = value.isPressed;
+    }
+    public void OnWeaponRotate(InputValue value)
+    {
+        PlayerInputs.WeaponRotate = value.Get<Vector2>().normalized;
+    }
+    public void OnFire(InputValue value)
+    {
+        PlayerInputs.Fire = value.isPressed;
     }
 }

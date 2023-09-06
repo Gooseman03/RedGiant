@@ -1,42 +1,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OxygenGenerator : MonoBehaviour
+public class OxygenGenerator : BaseSystem
 {
-    [SerializeField] private BaseSystem baseSystem;
     [SerializeField] private List<float?> AircanisterPressure = new List<float?>();
     [SerializeField] List<OxygenCube> oxygenCubes = new List<OxygenCube>();
 
-    private void FixedUpdate()
+    private void Update()
     {
         OxygenCalculations();
         WhenPowered();
     }
     private void WhenPowered()
     {
-        if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
+        if (SystemPower && PowerSwitchState)
         {
             if (CheckAirline())
             {
                 UpdateOxygenCubes();
                 DrainAircanisters();
-                SendMessage("pumpPlayAudio", true);
+                if (itemRegister.HasObject(out List<PumpController> pumps))
+                {
+                    pumps[0].ChangeAudioPlaying(true);
+                }
             }
         }
         else
         {
             AircanisterPressure.Add(0f);
             AircanisterPressure.Add(0f);
-            SendMessage("pumpPlayAudio", false);
+            if (itemRegister.HasObject(out List<PumpController> pumps))
+            {
+                pumps[0].ChangeAudioPlaying(false);
+            }
         }
     }
     private bool CheckAirline()
     {
-        if (!ErrorCodes.CheckWorking<PumpController>(baseSystem.itemRegister))
+        if (!ErrorCodes.CheckWorking<PumpController>(itemRegister))
         {
             return false;
         }
-        if (AircanisterPressure[0] + AircanisterPressure[1] < 0f)
+        if (AircanisterPressure[0] + AircanisterPressure[1] <= 0f)
         {
             return false;
         }
@@ -47,7 +52,7 @@ public class OxygenGenerator : MonoBehaviour
         AircanisterPressure.Clear();
         AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 null Unless Debuging
         AircanisterPressure.Add(null); // Default Air Pressure on Aircanister 2 null Unless Debuging
-        if (baseSystem.itemRegister.HasObject<AirCanisterController>(out List<AirCanisterController> ObjectList))
+        if (itemRegister.HasObject(out List<AirCanisterController> ObjectList))
         {
             int i = 0;
             foreach (AirCanisterController Aircanister in ObjectList)
@@ -69,13 +74,13 @@ public class OxygenGenerator : MonoBehaviour
     }
     private void DrainAircanisters()
     {
-        if (baseSystem.itemRegister.HasObject<AirCanisterController>(out List<AirCanisterController> ObjectList))
+        if (itemRegister.HasObject(out List<AirCanisterController> ObjectList))
         {
             foreach (AirCanisterController Aircanister in ObjectList)
             {
                 if (Aircanister.Pressure > 0f)
                 {
-                    Aircanister.ChangePressure(- .5f * Time.deltaTime);
+                    Aircanister.ChangePressure(-.5f * Time.deltaTime);
                 }
             }
         }

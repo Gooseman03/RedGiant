@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class ChangeErrorDisplay : MonoBehaviour
 {
-    [SerializeField] private BaseSystem baseSystem;
-    private void FixedUpdate()
+    private BaseSystem baseSystem;
+    private void Start()
+    {
+        baseSystem = GetComponent<BaseSystem>();
+    }
+    private void Update()
     {
         WhenPowered();
     }

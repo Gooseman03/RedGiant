@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3de44bd7d8b42154d9bb21336a2ef338, type: 3}
+  m_Name: Alarm
+  m_EditorClassIdentifier: 
+  ObjectType: 4
+  Prefab: {fileID: 5151445092563692128, guid: fec89d9527f811e498438b8a1b70f8f9, type: 3}
+  AudioClipList:
+  - {fileID: 8300000, guid: 8f0427b892ef4344aaf1f9d8c67ea179, type: 3}
+  Durability: 100
+  Dirt: 0
+  Pressure: 0
+  MaxDurability: 100
+  MaxDirt: 0
+  MaxPressure: 0
+  ColisionMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  GizmoMeshs:
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

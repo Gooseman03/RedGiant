@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class OxygenCube : MonoBehaviour
 {
-
     [SerializeField] private float _Oxygen = 100;
     [SerializeField] private float _Carbon = 0;
     

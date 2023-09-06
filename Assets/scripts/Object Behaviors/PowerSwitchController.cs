@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerSwitchController : ObjectDirector , IDurable, IInteract, IGrabbable
+public class PowerSwitchController : ObjectDirector , IDurable, IInteract, IAudio
 {
     private float _Durability;
     private float _MaxDurability;
+    private AudioSource audioSource;
+    private List<AudioClip> _audioClips;
     public float Durability
     {
         get { return _Durability; }
@@ -15,6 +17,11 @@ public class PowerSwitchController : ObjectDirector , IDurable, IInteract, IGrab
     {
         get { return _MaxDurability; }
         set { _MaxDurability = value; }
+    }
+    public List<AudioClip> audioClips
+    {
+        get { return _audioClips; }
+        set { _audioClips = value; }
     }
     public void ChangeDurability(float ammount)
     {
@@ -41,33 +48,24 @@ public class PowerSwitchController : ObjectDirector , IDurable, IInteract, IGrab
 
     [SerializeField] private GameObject GreenButton;
     [SerializeField] private GameObject RedButton;
-    private List<AudioClip> audioClips;
-    private AudioHandler _audioHandler;
-    public AudioHandler audioHandler
+    [SerializeField] private List<Material> materials;
+
+    private void Start()
     {
-        get { return _audioHandler; }
-        private set { _audioHandler = value; }
+        audioSource = GetComponent<AudioSource>();
     }
-    private List<Material> materials;
     public bool GetState()
     {
         return Activated;
     }
-    public void Start()
-    {
-        GreenButton = ConstructedGameObjects[1];
-        RedButton = ConstructedGameObjects[2];
-        objectReferences.GetConstructorItemReferences(ObjectType.PowerSwitch, out List<Mesh> ListOfMeshs, out List<Material> _materials);
-        materials = _materials;
-        objectReferences.GetConstructorAudioReferences(ObjectType.PowerSwitch, out audioClips);
-
-        audioHandler = this.gameObject.AddComponent<AudioHandler>();
-        audioHandler.Setup(audioClips, false);
-    }
     public void SetState(bool state)
     {
-        //if (state) { audioHandler.ChangeAudioPlaying(true, audioClips[0]); }
-        //if (!state) { audioHandler.ChangeAudioPlaying(true, audioClips[1]); }
+        if(audioSource != null) 
+        {
+            if (state) { audioSource.PlayOneShot(audioClips[0]); }
+            if (!state) { audioSource.PlayOneShot(audioClips[1]); }
+        }
+        
         if (Durability < 60 && Random.Range(0, 100) > Durability)
         {
             return;
@@ -93,10 +91,6 @@ public class PowerSwitchController : ObjectDirector , IDurable, IInteract, IGrab
     {
         return GetState();
     }
-    public void ChangeSwitchState(bool newState)
-    {
-        SetState(newState);
-    }
     public void SwapSwitchState()
     {
         SetState(!GetState());
@@ -104,45 +98,6 @@ public class PowerSwitchController : ObjectDirector , IDurable, IInteract, IGrab
     public void OnInteract(PlayerController playerController)
     {
         MenuRequester.AddMessageToConsole(this.name + " Has Been Interacted With");
-        if (objectType == ObjectType.PowerSwitch)
-        {
-            SwapSwitchState();
-        }
-    }
-    public void Grab(Transform objectGrabPointTransform)
-    {
-        GetComponent<Rigidbody>().isKinematic = true;
-        gameObject.GetComponent<Collider>().enabled = false;
-        gameObject.layer = 6;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 6;
-        }
-        transform.position = objectGrabPointTransform.position;
-        transform.SetParent(objectGrabPointTransform);
-    }
-    public void Place(Transform objectPlacePointTransform)
-    {
-        transform.SetParent(objectPlacePointTransform);
-        GetComponent<Rigidbody>().isKinematic = true;
-        gameObject.layer = 0;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 0;
-        }
-        transform.position = objectPlacePointTransform.position;
-        transform.rotation = objectPlacePointTransform.rotation;
-        gameObject.GetComponent<Collider>().enabled = true;
-    }
-    public void Drop(Transform NewParent)
-    {
-        this.GetComponent<Rigidbody>().isKinematic = false;
-        this.gameObject.layer = 0;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 0;
-        }
-        this.transform.SetParent(NewParent);
-        this.gameObject.GetComponent<Collider>().enabled = true;
+        SwapSwitchState();
     }
 }

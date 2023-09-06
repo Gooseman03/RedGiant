@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarbonScrubber : MonoBehaviour
+public class CarbonScrubber : BaseSystem
 {
-    [SerializeField] private BaseSystem baseSystem;
     [SerializeField] private List<float?> CarbonCanisterPressure = new List<float?>();
     [SerializeField] List<OxygenCube> oxygenCubes = new List<OxygenCube>();
 
-    private void FixedUpdate()
+    private void Update()
     {
         LoadCarbonCanister();
         WhenPowered();
@@ -16,31 +15,31 @@ public class CarbonScrubber : MonoBehaviour
 
     private void WhenPowered()
     {
-        if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
+        if (SystemPower && PowerSwitchState)
         {
             if (CheckAirline())
             {
                 UpdateOxygenCubes();
                 DirtyFilters();
                 FillCarbonCanisters();
-                if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
+                if (itemRegister.HasObject(out List<PumpController> pumps))
                 {
-                    pumps[0].playAudio();
+                    pumps[0].ChangeAudioPlaying(true);
                 }
             }
         }
         else
         {
             CarbonCanisterPressure.Add(0f);
-            if (baseSystem.itemRegister.HasObject<PumpController>(out List<PumpController> pumps))
+            if (itemRegister.HasObject(out List<PumpController> pumps))
             {
-                pumps[0].stopAudio();
+                pumps[0].ChangeAudioPlaying(false);
             }
         }
     }
     private void DirtyFilters()
     {
-        if (baseSystem.itemRegister.HasObject<AirFilterController>(out List<AirFilterController> ObjectList))
+        if (itemRegister.HasObject(out List<AirFilterController> ObjectList))
         {
             foreach (AirFilterController Filter in ObjectList)
             {
@@ -50,7 +49,7 @@ public class CarbonScrubber : MonoBehaviour
     }
     private void FillCarbonCanisters()
     {
-        if (baseSystem.itemRegister.HasObject<Co2CanisterController>(out List<Co2CanisterController> ObjectList))
+        if (itemRegister.HasObject(out List<Co2CanisterController> ObjectList))
         {
             int i = 0;
             foreach (Co2CanisterController Co2Canister in ObjectList)
@@ -62,11 +61,11 @@ public class CarbonScrubber : MonoBehaviour
     }
     private bool CheckAirline()
     {
-        if (!ErrorCodes.CheckWorking<PumpController>(baseSystem.itemRegister))
+        if (!ErrorCodes.CheckWorking<PumpController>(itemRegister))
         {
             return false;
         }
-        if (!ErrorCodes.CheckWorking<AirFilterController>(baseSystem.itemRegister))
+        if (!ErrorCodes.CheckWorking<AirFilterController>(itemRegister))
         {
             return false;
         }
@@ -80,7 +79,7 @@ public class CarbonScrubber : MonoBehaviour
     {
         CarbonCanisterPressure.Clear();
         CarbonCanisterPressure.Add(null); // Default Air Pressure on Aircanister 1 null Unless Debuging
-        if (baseSystem.itemRegister.HasObject<Co2CanisterController>(out List<Co2CanisterController> ObjectList))
+        if (itemRegister.HasObject(out List<Co2CanisterController> ObjectList))
         {
             int i = 0;
             foreach (Co2CanisterController Co2Canister in ObjectList)

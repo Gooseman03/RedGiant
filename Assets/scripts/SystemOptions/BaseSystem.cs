@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using UnityEngine;
 
+[RequireComponent(typeof(ItemRegister))]
 public class BaseSystem : MonoBehaviour
 {
     [SerializeField] private List<ObjectType> RequiredForPower = new List<ObjectType>();
@@ -14,7 +15,7 @@ public class BaseSystem : MonoBehaviour
     public string ErrorText;
     [SerializeField] private ObjectPlace PowerSwitch;
 
-    [SerializeField] private bool Start;
+    [SerializeField] private bool StartWithPower;
 
     [SerializeField] private bool _ReactorPower = false;
 
@@ -51,35 +52,44 @@ public class BaseSystem : MonoBehaviour
     {
         itemRegister = GetComponent<ItemRegister>();
     }
-    private void FixedUpdate()
+    private void Start()
     {
-        CheckForErrors();
-        WhenPowered();
-    }
-    private void LateUpdate()
-    {
-        if (Start)
-        {
+        if (StartWithPower) {
             itemRegister.HasObject<PowerSwitchController>(out List<PowerSwitchController> PowerSwitchs);
             PowerSwitchState = true;
             foreach (PowerSwitchController objectDirector in PowerSwitchs)
             {
-                objectDirector.ChangeSwitchState(true);
+                objectDirector.SetState(true);
             }
-            Start = false;
+            StartWithPower = false;
         }
+        else
+        {
+            itemRegister.HasObject<PowerSwitchController>(out List<PowerSwitchController> PowerSwitchs);
+            PowerSwitchState = false;
+            foreach (PowerSwitchController objectDirector in PowerSwitchs)
+            {
+                objectDirector.SetState(false);
+            }
+            StartWithPower = false;
+        }
+    }
+    private void LateUpdate()
+    {
+        WhenPowered();
+        CheckForErrors();
     }
 
     private void WhenPowered()
     {
         SystemPower = CheckPowerLine();
-        if (itemRegister.HasObject<PowerSwitchController>(out List<PowerSwitchController> ListOfPowerSwitchs))
+        if (itemRegister.HasObject(out List<PowerSwitchController> ListOfPowerSwitchs))
         {
             foreach(PowerSwitchController objectDirector in ListOfPowerSwitchs)
             {
                 if (PowerSwitch.ObjectGrabbable == objectDirector)
                 {
-                    bool? SwitchState = objectDirector.GetSwitchState();
+                    bool SwitchState = objectDirector.GetSwitchState();
 
                     if (SwitchState == true)
                     {

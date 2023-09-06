@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarbonToOxygen : MonoBehaviour
+public class CarbonToOxygen : BaseSystem
 {
-    [SerializeField] private BaseSystem baseSystem;
-    private void FixedUpdate()
+    private void Update()
     {
         WhenPowered();
     }
     private void WhenPowered()
     {
-        if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
+        if (SystemPower && PowerSwitchState)
         {
             Exchange();
         }
@@ -20,8 +19,8 @@ public class CarbonToOxygen : MonoBehaviour
     {
         bool HasEmptyOxygen = false;
         bool HasFullCarbon = false;
-        if (!baseSystem.itemRegister.HasObject<AirCanisterController>(out List<AirCanisterController> Aircanisters)) { return; }
-        if (!baseSystem.itemRegister.HasObject<Co2CanisterController>(out List<Co2CanisterController> Co2Canisters)) { return; }
+        if (!itemRegister.HasObject<AirCanisterController>(out List<AirCanisterController> Aircanisters)) { return; }
+        if (!itemRegister.HasObject<Co2CanisterController>(out List<Co2CanisterController> Co2Canisters)) { return; }
 
 
         foreach (AirCanisterController aircanister in Aircanisters)

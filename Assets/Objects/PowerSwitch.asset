@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3de44bd7d8b42154d9bb21336a2ef338, type: 3}
+  m_Name: PowerSwitch
+  m_EditorClassIdentifier: 
+  ObjectType: 6
+  Prefab: {fileID: 5921225719487792772, guid: 97e6361d0e3e7e74ca6a2387d4c978fe, type: 3}
+  AudioClipList:
+  - {fileID: 8300000, guid: 8f0427b892ef4344aaf1f9d8c67ea179, type: 3}
+  - {fileID: 8300000, guid: b6d827556b55f404b9d4323e6f1c0dd7, type: 3}
+  Durability: 100
+  Dirt: 0
+  Pressure: 0
+  MaxDurability: 100
+  MaxDirt: 0
+  MaxPressure: 0
+  ColisionMesh: {fileID: 6679289703562662588, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
+  GizmoMeshs:
+  - {fileID: 6679289703562662588, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
+  - {fileID: 8604045607132181640, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
+  - {fileID: 5358915128574053833, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}

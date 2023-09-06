@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thruster : MonoBehaviour
+public class Thruster : BaseSystem
 {
-    [SerializeField] private BaseSystem baseSystem;
     [SerializeField] private Vector3 _ThrustDirections;
     [SerializeField] private float _ThrustPersentAvailable;
     [SerializeField] private Vector3 _ThrustRotationDirections;
@@ -31,14 +30,14 @@ public class Thruster : MonoBehaviour
         set { _ThrustRotationPersentAvailable = value; }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         WhenPowered();
     }
 
     private void WhenPowered()
     {
-        if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
+        if (SystemPower && PowerSwitchState)
         {
             ThrustPersentAvailable = 1;
             ThrustRotationPersentAvailable = 1;

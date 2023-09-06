@@ -14,6 +14,9 @@ public static class InputSystem
         public Vector3 ShipMoveInput = Vector3.zero;
         public Vector2 ShipLookInput = Vector2.zero;
         public bool ShipExit = false;
+        public Vector2 WeaponRotate = Vector2.zero;
+        public bool WeaponExit = false;
+        public bool Fire = false;
         public PlayerInput PlayerInput = null;
     }
 

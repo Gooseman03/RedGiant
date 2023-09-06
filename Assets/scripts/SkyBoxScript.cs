@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
-public class SkyBoxScript : MonoBehaviour
+public class SkyBoxScript : CameraSync
 {
 
     // set the main camera in the inspector
-    public Camera MainCamera;
+    public Camera MainCameraObject;
+    public CinemachineVirtualCamera MainCamera;
 
     // set the sky box camera in the inspector
-    public Camera SkyCamera;
+    public CinemachineVirtualCamera SkyCamera;
+
+    [SerializeField] private GameObject CameraFollowObj;
 
     // the additional rotation to add to the skybox
     // can be set during game play or in the
@@ -25,15 +29,10 @@ public class SkyBoxScript : MonoBehaviour
     {
         TempSkyBoxRotation.eulerAngles = -rotation;
     }
-    private void Update()
+    protected override void OnCameraUpdate()
     {
-        SkyCamera.fieldOfView = MainCamera.fieldOfView;
-        SkyCamera.transform.rotation = SkyBoxRotation * MainCamera.transform.rotation;
-    }
-
-    private void FixedUpdate()
-    { 
+        SkyCamera.m_Lens.FieldOfView = MainCameraObject.fieldOfView;
         SkyBoxRotation = SkyBoxRotation * TempSkyBoxRotation;
-        SkyCamera.transform.rotation = SkyBoxRotation * MainCamera.transform.rotation;
+        CameraFollowObj.transform.rotation = SkyBoxRotation * MainCameraObject.transform.rotation;
     }
 }

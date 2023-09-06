@@ -6,7 +6,7 @@ using UnityEngine;
 
 public interface IGrabbable
 {
-    public bool Grab(Transform objectGrabPointTransform)
+    public void Grab(Transform objectGrabPointTransform)
     {
         //GetComponent<Rigidbody>().isKinematic = true;
         //gameObject.GetComponent<Collider>().enabled = false;
@@ -17,7 +17,6 @@ public interface IGrabbable
         //}
         //transform.position = objectGrabPointTransform.position;
         //transform.SetParent(objectGrabPointTransform);
-        return false;
     }
     public void Place(Transform objectPlacePointTransform)
     {

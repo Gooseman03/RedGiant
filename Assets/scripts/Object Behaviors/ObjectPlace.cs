@@ -5,8 +5,15 @@ using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshCollider))]
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
 public class ObjectPlace : MonoBehaviour
 {
+    
+
+    [SerializeField] private ObjectSpawner objectSpawner;
+    [SerializeField] private Material material;
     public int Number;
     [SerializeField] private ObjectType _objectType;
     [SerializeField] private bool TempStorage;
@@ -21,31 +28,13 @@ public class ObjectPlace : MonoBehaviour
         get { return _objectGrabbable; } 
         private set { _objectGrabbable = value; } 
     }
-    [SerializeField] protected ObjectReferences objectReferences;
-    [SerializeField] private ObjectType Preplace;
 
-    private GameObject Appearance;
     private bool isRegistered = false;
     private ObjectDirector LastObjectGrabbable;
-    bool SetupComplete = false;
 
     [SerializeField] private bool WillPreplace;
-    [SerializeField] private GameObject PrefabObjectGrabbable;
-    private void Start()
+    private void Awake()
     {
-        Appearance = new GameObject();
-        Appearance.transform.parent = this.transform;
-        Appearance.transform.localPosition = Vector3.zero;
-        Appearance.transform.localRotation = Quaternion.identity;
-        Appearance.name = "Look";
-        MeshFilter meshFilter = Appearance.AddComponent<MeshFilter>();
-        MeshRenderer meshRenderer = Appearance.AddComponent<MeshRenderer>();
-        objectReferences.GetConstructorItemReferences(objectType, true, out List<Mesh> newMeshs, out Material newMaterial);
-        meshFilter.mesh = newMeshs[0];
-        this.GetComponent<MeshCollider>().sharedMesh = newMeshs[0];
-        meshRenderer.material = newMaterial;
-
-
         if (Number == 0)
         {
             this.name = objectType.ToString() + " Place";
@@ -55,85 +44,15 @@ public class ObjectPlace : MonoBehaviour
             this.name = Number.ToString() + " " + objectType.ToString() + " Place";
         }
         
-        if (Preplace == objectType && WillPreplace)
+        if (WillPreplace)
         {
-            PrefabObjectGrabbable.SetActive(false);
-            GameObject gameObject = Instantiate(PrefabObjectGrabbable);
-            SetupComplete = true;
-            if (objectType == ObjectType.Monitor)
-            {
-                MonitorController newObject = gameObject.AddComponent<MonitorController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.Monitor;
-            }
-            if (objectType == ObjectType.Fuse)
-            {
-                FuseController newObject = gameObject.AddComponent<FuseController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.Fuse;
-            }
-            if (objectType == ObjectType.PowerConnector)
-            {
-                PowerConnectorController newObject = gameObject.AddComponent<PowerConnectorController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.PowerConnector;
-            }
-            if (objectType == ObjectType.PowerSwitch)
-            {
-                PowerSwitchController newObject = gameObject.AddComponent<PowerSwitchController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.PowerSwitch;
-            }
-            if (objectType == ObjectType.AirCanister)
-            {
-                AirCanisterController newObject = gameObject.AddComponent<AirCanisterController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.AirCanister;
-            }
-            if (objectType == ObjectType.Co2Canister)
-            {
-                Co2CanisterController newObject = gameObject.AddComponent<Co2CanisterController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.Co2Canister;
-            }
-            if (objectType == ObjectType.Pump)
-            {
-                PumpController newObject = gameObject.AddComponent<PumpController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.Pump;
-            }
-            if (objectType == ObjectType.AirFilter)
-            {
-                AirFilterController newObject = gameObject.AddComponent<AirFilterController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.AirFilter;
-            }
-            if (objectType == ObjectType.Alarm)
-            {
-                AlarmController newObject = gameObject.AddComponent<AlarmController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.Alarm;
-            }
-            if (objectType == ObjectType.Keyboard)
-            {
-                KeyboardController newObject = gameObject.AddComponent<KeyboardController>();
-                newObject.objectReferences = objectReferences;
-                newObject.objectType = ObjectType.Keyboard;
-            }
-            if (objectType == ObjectType.Generic)
-            {
-                MenuRequester.AddMessageToConsole("Cannot Spawn Generic item", MessageType.Error);
-            }
-            gameObject.SetActive(true);
-            gameObject.GetComponent<IGrabbable>().Place(this.transform);
+            GameObject SpawnedObject = objectSpawner.Spawn(this.transform , objectType);
+            SpawnedObject.GetComponent<IGrabbable>().Place(this.transform);
+            OnTransformChildrenChanged();
         }
-        SetupComplete = true;
     }
-
     private void OnTransformChildrenChanged()
     {
-        if (!SetupComplete) { return; }
-        
         LastObjectGrabbable = ObjectGrabbable;
         ObjectGrabbable = gameObject.transform.GetComponentInChildren<ObjectDirector>();
         
@@ -141,12 +60,12 @@ public class ObjectPlace : MonoBehaviour
         if (ObjectGrabbable != null)
         {
             this.GetComponent<Collider>().enabled = false;
-            Appearance.GetComponent<MeshRenderer>().enabled = false;
+            this.GetComponent<Renderer>().enabled = false;
         }
         else
         {
             this.GetComponent<Collider>().enabled = true;
-            Appearance.GetComponent<MeshRenderer>().enabled = true;
+            this.GetComponent<Renderer>().enabled = true;
         }
 
         ItemRegister parentObjectRegister;
@@ -181,19 +100,29 @@ public class ObjectPlace : MonoBehaviour
             "Error: ObjectPlace.OnTransformChildrenChanged() isRegistered is neither true nor false", MessageType.Error
         );
     }
-
-    private void OnDrawGizmos()
+    public void Setup() 
     {
-        objectReferences.GetConstructorItemReferences(objectType, true, out List<Mesh> newMeshs, out Material newMaterial);
-        if (Number == 0)
+        if (objectSpawner == null)
         {
-            this.name = objectType.ToString() + " Place";
+            Debug.LogWarning("Define ObjectSpawner");
+            return;
         }
-        else
+        Mesh mesh1 = objectSpawner.GetColliderMesh(objectType);
+        MeshCollider meshCollider = this.GetComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh1;
+        meshCollider.convex = true;
+        this.GetComponent<MeshFilter>().sharedMesh = mesh1;
+        this.GetComponent<MeshRenderer>().sharedMaterial = material;
+        this.gameObject.name = objectType.ToString() + " Place";
+
+    }
+    void OnDrawGizmos()
+    {
+        if (objectSpawner == null) { return; }
+        Gizmos.color = new Color(0,0,0.75f,0.1f);
+        foreach (Mesh mesh in objectSpawner.GetMeshes(objectType))
         {
-            this.name = Number.ToString() + " " + objectType.ToString() + " Place";
+            Gizmos.DrawMesh(mesh,transform.position,transform.rotation);
         }
-        Gizmos.color = newMaterial.color;
-        Gizmos.DrawMesh(newMeshs[0], 0, transform.position,transform.rotation);
     }
 }

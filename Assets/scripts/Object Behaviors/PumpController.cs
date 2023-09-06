@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PumpController : ObjectDirector , IDurable , IAudio , IGrabbable
+public class PumpController : ObjectDirector, IDurable, IAudio, IGrabbable
 {
     private float _Durability;
     private float _MaxDurability;
@@ -36,42 +36,84 @@ public class PumpController : ObjectDirector , IDurable , IAudio , IGrabbable
     {
         return Durability / MaxDurability;
     }
-    private List<AudioClip> audioClips;
-    private AudioHandler _audioHandler;
-    public AudioHandler audioHandler
+
+    private List<AudioClip> _audioClips;
+    private AudioSource _audioSource;
+    public List<AudioClip> audioClips
     {
-        get { return _audioHandler; }
-        set { _audioHandler = value; }
+        get { return _audioClips; }
+        set { _audioClips = value; }
     }
-    public void playAudio()
+    public AudioSource audioSource
     {
-        if (audioHandler == null) { return; }
-        audioHandler.ChangeAudioPlaying(true);
-    }
-    public void stopAudio()
-    {
-        if (audioHandler == null) { return; }
-        audioHandler.ChangeAudioPlaying(false);
-    }
-    public bool IsAudioPlaying()
-    {
-        return audioHandler.IsAudioPlaying;
+        get { return _audioSource; }
+        set { _audioSource = value; }
     }
 
+    private bool _IsAudioPlaying;
+    private bool HoldRequests;
+    private bool RequestStart;
+    private bool RequestStop;
+
+    public bool IsAudioPlaying
+    {
+        get { return _IsAudioPlaying; }
+        private set { _IsAudioPlaying = value; }
+    }
     public void Start()
     {
-        objectReferences.GetConstructorAudioReferences(ObjectType.Pump, out audioClips);
-        audioHandler = this.gameObject.AddComponent<AudioHandler>();
-        audioHandler.Setup(audioClips, true);
+        audioSource = this.GetComponent<AudioSource>();
     }
     private void Update()
     {
         if (!ErrorCodes.CheckWorking(this))
         {
-            audioHandler.ChangeAudioPlaying(false);
+            ChangeAudioPlaying(false);
+        }
+        if (RequestStart == true)
+        {
+            IsAudioPlaying = true;
+            RequestStart = false;
+            audioSource.PlayOneShot(audioClips[0]);
+            MenuRequester.AddMessageToConsole(this.name + " Is Playing " + audioClips[0]);
+            HoldRequests = true;
+            return;
+        }
+        if (!audioSource.isPlaying && HoldRequests)
+        {
+            audioSource.loop = true;
+            audioSource.clip = audioClips[1];
+            MenuRequester.AddMessageToConsole(this.name + " Is Playing " + audioClips[1]);
+            audioSource.Play();
+            HoldRequests = false;
+            return;
+        }
+        if (RequestStop)
+        {
+            IsAudioPlaying = false;
+            RequestStop = false;
+            audioSource.Stop();
+            audioSource.PlayOneShot(audioClips[2]);
+            MenuRequester.AddMessageToConsole(this.name + " Is Playing " + audioClips[2]);
+            return;
         }
     }
-    public bool Grab(Transform objectGrabPointTransform)
+    public void ChangeAudioPlaying(bool value)
+    {
+        if (HoldRequests) { return; }
+        if (value == true && !IsAudioPlaying)
+        {
+            MenuRequester.AddMessageToConsole(this.name + "Was Requested To Start Playing");
+            RequestStart = true;
+        }
+        else
+        if (value == false && IsAudioPlaying)
+        {
+            MenuRequester.AddMessageToConsole(this.name + "Was Requested To Stop Playing");
+            RequestStop = true;
+        }
+    }
+    public new void Grab(Transform objectGrabPointTransform)
     {
         GetComponent<Rigidbody>().isKinematic = true;
         gameObject.GetComponent<Collider>().enabled = false;
@@ -82,30 +124,6 @@ public class PumpController : ObjectDirector , IDurable , IAudio , IGrabbable
         }
         transform.position = objectGrabPointTransform.position;
         transform.SetParent(objectGrabPointTransform);
-        return true;
-    }
-    public void Place(Transform objectPlacePointTransform)
-    {
-        transform.SetParent(objectPlacePointTransform);
-        GetComponent<Rigidbody>().isKinematic = true;
-        gameObject.layer = 0;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 0;
-        }
-        transform.position = objectPlacePointTransform.position;
-        transform.rotation = objectPlacePointTransform.rotation;
-        gameObject.GetComponent<Collider>().enabled = true;
-    }
-    public void Drop(Transform NewParent)
-    {
-        this.GetComponent<Rigidbody>().isKinematic = false;
-        this.gameObject.layer = 0;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 0;
-        }
-        this.transform.SetParent(NewParent);
-        this.gameObject.GetComponent<Collider>().enabled = true;
+        ChangeAudioPlaying(false);
     }
 }

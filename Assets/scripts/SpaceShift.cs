@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class SpaceShift : MonoBehaviour
 {
-    [SerializeField] private GameObject Ship;
     [SerializeField] private bool LockPosition;
     private void Shift( Vector3 ShiftDistance)
     {
-        if (LockPosition) { this.transform.position = Ship.transform.position; return; }
+        if (LockPosition) { this.transform.position = Ship.ShipObject.transform.position; return; }
         this.transform.position -= ShiftDistance;
     }
     private void RotateAroundSpace(Vector3 vectors)
     {
 
-        this.transform.RotateAround(Ship.transform.position, new Vector3(1, 0, 0), vectors.x);
-        this.transform.RotateAround(Ship.transform.position, new Vector3(0, 1, 0), vectors.y);
-        this.transform.RotateAround(Ship.transform.position, new Vector3(0, 0, 1), vectors.z);
+        this.transform.RotateAround(Ship.ShipObject.transform.position, new Vector3(1, 0, 0), vectors.x);
+        this.transform.RotateAround(Ship.ShipObject.transform.position, new Vector3(0, 1, 0), vectors.y);
+        this.transform.RotateAround(Ship.ShipObject.transform.position, new Vector3(0, 0, 1), vectors.z);
     }
 }

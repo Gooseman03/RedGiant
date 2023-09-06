@@ -2,22 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RepairBay : MonoBehaviour
+public class RepairBay : BaseSystem
 {
-    [SerializeField] private BaseSystem baseSystem;
-    
-
     [SerializeField] ObjectPlace RepairSpot;
 
 
-    private void FixedUpdate()
+    private void Update()
     {
         WhenPowered();
     }
 
     private void WhenPowered()
     {
-        if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
+        if (SystemPower && PowerSwitchState)
         {
             Repair();
         }

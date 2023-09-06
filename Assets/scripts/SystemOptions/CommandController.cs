@@ -4,13 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
-public class CommandController : MonoBehaviour
+public class CommandController : BaseSystem
 {
-    [SerializeField] private BaseSystem _baseSystem;
-    public BaseSystem baseSystem
-    {
-        get { return _baseSystem; }
-    }
     [SerializeField] private string ShipActionMap;
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
 
@@ -18,37 +13,37 @@ public class CommandController : MonoBehaviour
     private PlayerController playerController;
     
 
-    private void FixedUpdate()
+    private void Update()
     {
         WhenPowered();
     }
     private void WhenPowered()
     {
         if (playerController == null) { return; }
-        if (baseSystem.SystemPower && baseSystem.PowerSwitchState)
+        if (SystemPower && PowerSwitchState)
         {
             if (playerController == null) { return; }
             if (PlayerRequestedControl)
             {
-                PlayerTakeOver();
+                PlayerTakeOver(playerController);
             }
         }
         else
         {
-            PlayerLoseControl();
+            PlayerLoseControl(playerController);
         }
         PlayerRequestedControl = false;
     }
-    private void ShipExit()
+    private void ShipExit(PlayerController playerController)
     {
-        PlayerLoseControl();
+        PlayerLoseControl(playerController);
     }
-    private void PlayerTakeOver()
+    private void PlayerTakeOver(PlayerController playerController)
     {
         cinemachineVirtualCamera.gameObject.SetActive(true);
         playerController.RequestControlChange(ShipActionMap);
     }
-    private void PlayerLoseControl()
+    private void PlayerLoseControl(PlayerController playerController)
     {
         cinemachineVirtualCamera.gameObject.SetActive(false);
         playerController.RequestControlChange(null);

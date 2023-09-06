@@ -16,9 +16,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private string DefaultActionMap;
 
-    [SerializeField, Range(0f, 89f)] private float UpperLimit = 10f;
-    [SerializeField, Range(0f, -89f)] private float LowerLimit = -10f;
-
     [SerializeField] private bool IsBeingShocked = false;
     [SerializeField] private float DeathTimer = 0;
     [SerializeField] private int FightDeathPresses = 20;
@@ -26,13 +23,13 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField, Range(0f, 100f)] private float OxygenLevel;
     [SerializeField, Range(0f, 100f)] private float CarbonLevel;
-    [SerializeField] private OxygenCube CurrentOxygenArea;
+    [SerializeField] public OxygenCube CurrentOxygenArea;
 
     [SerializeField] private bool isGrounded;
     [SerializeField] private float gravity;
 
     private CharacterController controller;
-    [SerializeField] private GameObject CameraFollow;
+    [SerializeField] private GameObject _cameraFollow;
     [SerializeField] private Transform objectLeftGrabPointTransform;
     [SerializeField] private GameObject ItemInLeftHand;
     [SerializeField] private Transform objectRightGrabPointTransform;
@@ -44,10 +41,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource ElectrocutionAudioSource;
 
     private Vector3 movement = Vector3.zero;
-
-    private float RotationX = 0.0f;
-    private float RotationY = 0.0f;
-
+    public GameObject CameraFollow { get => _cameraFollow; private set => _cameraFollow = value; }
     private void Start()
     {
         PlayerMessaging.PlayerRegister(this);
@@ -69,13 +63,13 @@ public class PlayerController : MonoBehaviour
             SendMessageUpwards("ShipLook", PlayerInputs.ShipLookInput);
             if (PlayerInputs.ShipExit)
             {
-                this.transform.parent.BroadcastMessage("ShipExit");
+                this.transform.parent.BroadcastMessage("ShipExit",playerController,SendMessageOptions.DontRequireReceiver);
                 PlayerInputs.ShipExit = false;
             }
             if (!IsBeingShocked)
             {
                 MovePlayer();
-                LookPlayer();
+                //LookPlayer();
                 Pickup();
                 Interact();
                 Cursor.lockState = CursorLockMode.Locked;
@@ -251,29 +245,30 @@ public class PlayerController : MonoBehaviour
         }
         controller.Move(movement * Time.deltaTime);
     }
-    private void LookPlayer()
-    {
-        if (CurrentOxygenArea == null)
-        {
-            RotationX -= PlayerInputs.LookInput.y * .2f;
-            RotationY += PlayerInputs.LookInput.x * .2f;
-            RotationX = Mathf.Clamp(RotationX, LowerLimit, UpperLimit);
-            transform.localEulerAngles = new Vector3(RotationX, RotationY, 0);
-        }
-        else if (PlayerInputs.LookInput != Vector2.zero)
-        {
-            RotationX -= PlayerInputs.LookInput.y * .2f;
-            RotationY += PlayerInputs.LookInput.x * .2f;
-            RotationX = Mathf.Clamp(RotationX, LowerLimit, UpperLimit);
-            CameraFollow.transform.eulerAngles = new Vector3(RotationX, RotationY, 0);
-            transform.localEulerAngles = new Vector3(0, RotationY, 0);
-        }
-    }
+    //private void LookPlayer()
+    //{
+    //    if (CurrentOxygenArea == null)
+    //    {
+    //        RotationX -= PlayerInputs.LookInput.y * .2f;
+    //        RotationY += PlayerInputs.LookInput.x * .2f;
+    //        RotationX = Mathf.Clamp(RotationX, LowerLimit, UpperLimit);
+    //        transform.localEulerAngles = new Vector3(RotationX, RotationY, 0);
+    //    }
+    //    else if (PlayerInputs.LookInput != Vector2.zero)
+    //    {
+    //        RotationX -= PlayerInputs.LookInput.y * .2f;
+    //        RotationY += PlayerInputs.LookInput.x * .2f;
+    //        RotationX = Mathf.Clamp(RotationX, LowerLimit, UpperLimit);
+    //        CameraFollow.transform.eulerAngles = new Vector3(RotationX, RotationY, 0);
+    //        transform.localEulerAngles = new Vector3(0, RotationY, 0);
+    //    }
+    //}
     private void Pickup()
     {
         if (PlayerInputs.PickupInput)
         {
             RaycastHit hit;
+            
             if (Physics.Raycast(CameraFollow.transform.position, CameraFollow.transform.forward, out hit, ReachDistance))
             {
                 if (
@@ -288,11 +283,8 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (hit.collider.transform.TryGetComponent(out IGrabbable objectGrabbable) && ItemInLeftHand == null)
                 {
-                    if (objectGrabbable.Grab(objectLeftGrabPointTransform) == false)
-                    {
-                        return;
-                    }
                     ItemInLeftHand = hit.collider.transform.gameObject;
+                    objectGrabbable.Grab(objectLeftGrabPointTransform);
                     PlayerInputs.PickupInput = false;
                     return;
                 }
@@ -308,6 +300,7 @@ public class PlayerController : MonoBehaviour
             {
                 ItemInLeftHand.GetComponent<IGrabbable>().Drop(transform.parent);
                 ItemInLeftHand = null;
+                PlayerInputs.PickupInput = false;
                 return;
             }
         }
@@ -325,6 +318,14 @@ public class PlayerController : MonoBehaviour
             doorcontrol.Open = true;
             return;
         }
+        if (other.TryGetComponent<OxygenCube>(out OxygenCube oxygenCube) == true)
+        {
+            CurrentOxygenArea = oxygenCube;
+            return;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
         if (other.TryGetComponent<OxygenCube>(out OxygenCube oxygenCube) == true)
         {
             CurrentOxygenArea = oxygenCube;

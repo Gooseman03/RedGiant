@@ -5,11 +5,14 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class AlarmController : ObjectDirector , IDurable, IInteract, IAudio, IGrabbable
+public class AlarmController : ObjectDirector , IDurable, IInteract, IAudio
 {
     private float _Durability;
     private float _MaxDurability;
     private AudioHandler _audioHandler;
+    private List<AudioClip> _audioClips;
+    private AudioSource audioSource;
+    
     public float Durability
     {
         get { return _Durability; }
@@ -24,6 +27,11 @@ public class AlarmController : ObjectDirector , IDurable, IInteract, IAudio, IGr
     {
         get { return _audioHandler; }
         set { _audioHandler = value; }
+    }
+    public List<AudioClip> audioClips
+    {
+        get { return _audioClips; }
+        set { _audioClips = value; }
     }
     public void ChangeDurability(float ammount)
     {
@@ -41,20 +49,6 @@ public class AlarmController : ObjectDirector , IDurable, IInteract, IAudio, IGr
     {
         MaxDurability = durability;
     }
-    public void playAudio()
-    {
-        audioHandler.ChangeAudioPlaying(true);
-    }
-    public void stopAudio()
-    {
-        audioHandler.ChangeAudioPlaying(false);
-    }
-    public bool IsAudioPlaying()
-    {
-        return audioHandler.IsAudioPlaying;
-    }
-    private List<AudioClip> audioClips;
-    private AudioSource audioSource;
 
     // bool is acknownlegdement
     public List<ErrorTypes> ErrorActive = new List<ErrorTypes>();
@@ -62,16 +56,15 @@ public class AlarmController : ObjectDirector , IDurable, IInteract, IAudio, IGr
 
     public void Start()
     {
-        audioSource = this.gameObject.AddComponent<AudioSource>();
-        objectReferences.GetConstructorAudioReferences(ObjectType.Alarm, out audioClips);
-        audioSource.loop = true;
-        audioSource.clip = audioClips[0];
-        audioSource.volume = .5f;
-        audioSource.spatialBlend = 1;
+        audioSource = this.gameObject.GetComponent<AudioSource>();
     }
     public void UpdateErrorTypes(List<ErrorTypes> ErrorsInput)
     {
         ErrorActive.Clear();
+        if (ErrorsInput == null)
+        {
+            return;
+        }
         foreach (ErrorTypes error in ErrorsInput)
         {
             ErrorActive.Add(error);
@@ -118,43 +111,5 @@ public class AlarmController : ObjectDirector , IDurable, IInteract, IAudio, IGr
     {
         MenuRequester.AddMessageToConsole(this.name + " Has Been Interacted With");
         CancelAlarm();
-    }
-
-    public bool Grab(Transform objectGrabPointTransform)
-    {
-        GetComponent<Rigidbody>().isKinematic = true;
-        gameObject.GetComponent<Collider>().enabled = false;
-        gameObject.layer = 6;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 6;
-        }
-        transform.position = objectGrabPointTransform.position;
-        transform.SetParent(objectGrabPointTransform);
-        return true;
-    }
-    public void Place(Transform objectPlacePointTransform)
-    {
-        transform.SetParent(objectPlacePointTransform);
-        GetComponent<Rigidbody>().isKinematic = true;
-        gameObject.layer = 0;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 0;
-        }
-        transform.position = objectPlacePointTransform.position;
-        transform.rotation = objectPlacePointTransform.rotation;
-        gameObject.GetComponent<Collider>().enabled = true;
-    }
-    public void Drop(Transform NewParent)
-    {
-        this.GetComponent<Rigidbody>().isKinematic = false;
-        this.gameObject.layer = 0;
-        foreach (Transform child in this.GetComponentsInChildren<Transform>())
-        {
-            child.gameObject.layer = 0;
-        }
-        this.transform.SetParent(NewParent);
-        this.gameObject.GetComponent<Collider>().enabled = true;
     }
 }

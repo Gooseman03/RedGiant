@@ -126,52 +126,33 @@ public static class ErrorCodes
     public static bool CheckWorking(ObjectDirector objectIn)
     {
         bool HasWorking = true;
-        //TODO: FIX THIS
-        //if (objectIn.objectType == ObjectType.AirFilter)
-        //{
-        //    if (objectIn.Dirt >= objectIn.MaxDirt)
-        //    {
-        //        HasWorking = false;
-        //    }
-        //}
-        //else if (objectIn.objectType == ObjectType.AirCanister || objectIn.objectType == ObjectType.Co2Canister)
-        //{
-        //    if (objectIn.Pressure <= 100)
-        //    {
-        //        HasWorking = false;
-        //    }
-        //}
-        //else if (objectIn.Durability < BrokenThresholdDurability)
-        //{
-        //    HasWorking = false;
-        //}
+        if (objectIn is IDirt dirtObject)
+        {
+            if (dirtObject.Dirt >= dirtObject.MaxDirt)
+            {
+                HasWorking = false;
+            }
+        }
+        else if (objectIn is ICapacity capacityObject)
+        {
+            if (capacityObject.Pressure <= 100)
+            {
+                HasWorking = false;
+            }
+        }
+        else if (objectIn is IDurable durableObject && durableObject.Durability <= BrokenThresholdDurability)
+        {
+            HasWorking = false;
+        }
         return HasWorking;
     }
     public static bool CheckWorking(List<ObjectDirector> objectsIn)
     {
-        bool HasWorking = true; 
-        //TODO: FIX THIS
-        //foreach(ObjectDirector Item in objectsIn)
-        //{
-        //    if (Item.objectType == ObjectType.AirFilter)
-        //    {
-        //        if (Item.Dirt <= Item.MaxDirt)
-        //        {
-        //            HasWorking = false;
-        //        }
-        //    }
-        //    else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
-        //    {
-        //        if (Item.Pressure >= 100)
-        //        {
-        //            HasWorking = false;
-        //        }
-        //    }
-        //    else if (Item.Durability < BrokenThresholdDurability)
-        //    {
-        //        HasWorking = false;
-        //    }
-        //}
+        bool HasWorking = true;
+        foreach (ObjectDirector Item in objectsIn)
+        {
+            CheckWorking(Item);
+        }
         return HasWorking;
     }
     public static bool CheckWorking<T>(ItemRegister register)
@@ -179,28 +160,27 @@ public static class ErrorCodes
         if (register.HasObject<T>(out List<T> ListToTest))
         {
             bool HasWorking = true;
-            //TODO: FIX THIS
-            //foreach (ObjectDirector Item in ListToTest)
-            //{
-            //    if (Item.objectType == ObjectType.AirFilter)
-            //    {
-            //        if (Item.Dirt >= Item.MaxDirt)
-            //        {
-            //            HasWorking = false;
-            //        }
-            //    }
-            //    else if (Item.objectType == ObjectType.AirCanister || Item.objectType == ObjectType.Co2Canister)
-            //    {
-            //        if (Item.Pressure <= 100)
-            //        {
-            //            HasWorking = false;
-            //        }
-            //    }
-            //    else if (Item.Durability < BrokenThresholdDurability)
-            //    {
-            //        HasWorking = false;
-            //    }
-            //}
+            foreach (T Item in ListToTest)
+            {
+                if (Item is IDirt dirtObject)
+                {
+                    if (dirtObject.Dirt >= dirtObject.MaxDirt)
+                    {
+                        HasWorking = false;
+                    }
+                }
+                else if (Item is ICapacity capacityObject)
+                {
+                    if (capacityObject.Pressure <= 100)
+                    {
+                        HasWorking = false;
+                    }
+                }
+                else if (Item is IDurable durableObject && durableObject.Durability <= BrokenThresholdDurability)
+                {
+                    HasWorking = false;
+                }
+            }
             return HasWorking;
         }
         return false;
