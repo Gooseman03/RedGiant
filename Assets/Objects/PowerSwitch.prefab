@@ -98,7 +98,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -6772670223807040513, guid: 5a8f9ec63f1cb754eada8f94aaf3eb0b, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -249,7 +249,7 @@ PrefabInstance:
     - target: {fileID: 5437679451551056649, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: e7da3a6a137d6264fa87c1a8708a6216, type: 2}
+      objectReference: {fileID: 2100000, guid: 71daac49e3a8ef64090c9901899bfb80, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49fee93a2a27eb94ba3154f03053a648, type: 3}
 --- !u!4 &317437856053886187 stripped

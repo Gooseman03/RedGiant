@@ -64,6 +64,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 1
+  _Dirt: 0
+  _MaxDirt: 100
 --- !u!64 &7570690637790974831
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -75,7 +77,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5423731134757305092, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
 --- !u!1001 &1212151614926081235
@@ -129,6 +131,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3954825483501320792, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b8569c94daaef4647ac34a604907762a, type: 2}
+    - target: {fileID: -1144534672713107074, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5a4b8567329126f43acac6e6e82bb152, type: 2}
     - target: {fileID: 919132149155446097, guid: cf5fda560a06dd1458b20e1867f09b35, type: 3}
       propertyPath: m_Name
       value: AirFilter v0

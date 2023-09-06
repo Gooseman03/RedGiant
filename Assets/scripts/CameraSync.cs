@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class CameraSync : MonoBehaviour
 {
-    void Update()
+    void LateUpdate()
     {
         OnCameraUpdate();
     }

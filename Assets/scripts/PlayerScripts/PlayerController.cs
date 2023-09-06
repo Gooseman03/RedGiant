@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviour
             if (!IsBeingShocked)
             {
                 MovePlayer();
-                //LookPlayer();
                 Pickup();
                 Interact();
                 Cursor.lockState = CursorLockMode.Locked;
@@ -79,7 +78,6 @@ public class PlayerController : MonoBehaviour
                 Shocked();
             }
         }
-        UpdateUi();
         UpdateOxygen();
         UpdateCarbon();
         Breathing();
@@ -204,7 +202,8 @@ public class PlayerController : MonoBehaviour
         }
         PlayerInputs.InteractInput = false;
     }
-    private void UpdateUi()
+
+    private void OnGUI()
     {
         if (IsBeingShocked)
         {
