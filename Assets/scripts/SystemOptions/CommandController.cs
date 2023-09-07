@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Cinemachine;
+using static InputSystem;
 
 public class CommandController : BaseSystem
 {
@@ -15,6 +13,11 @@ public class CommandController : BaseSystem
 
     private void Update()
     {
+        if (InputSystem.PlayerInputs.ShipExit)
+        {
+            ShipExit();
+        }
+        
         WhenPowered();
     }
     private void WhenPowered()
@@ -22,31 +25,31 @@ public class CommandController : BaseSystem
         if (playerController == null) { return; }
         if (SystemPower && PowerSwitchState)
         {
-            if (playerController == null) { return; }
             if (PlayerRequestedControl)
             {
-                PlayerTakeOver(playerController);
+                PlayerTakeOver();
             }
         }
         else
         {
-            PlayerLoseControl(playerController);
+            PlayerLoseControl();
         }
         PlayerRequestedControl = false;
     }
-    private void ShipExit(PlayerController playerController)
+    private void ShipExit()
     {
-        PlayerLoseControl(playerController);
+        PlayerLoseControl();
     }
-    private void PlayerTakeOver(PlayerController playerController)
+    private void PlayerTakeOver()
     {
         cinemachineVirtualCamera.gameObject.SetActive(true);
         playerController.RequestControlChange(ShipActionMap);
     }
-    private void PlayerLoseControl(PlayerController playerController)
+    private void PlayerLoseControl()
     {
         cinemachineVirtualCamera.gameObject.SetActive(false);
         playerController.RequestControlChange(null);
+        playerController = null;
     }
 
     private void SystemInteract(PlayerController _playerController)

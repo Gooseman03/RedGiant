@@ -7,7 +7,7 @@ public static class PlayerMessaging
     private static PlayerController player;
     public static void ShockPlayer()
     {
-        player.ShockPlayer();
+        //player.ShockPlayer();
     }
 
     public static void PlayerRegister(PlayerController playerController)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static InputSystem;
 public static class Ship
 {
     public static GameObject ShipObject { get; private set; } 
@@ -66,8 +67,15 @@ public class ShipControl : MonoBehaviour
         int ItemsToDamage = ((int)vector3.magnitude) / 5;
         DamageShip.DamageRandomItem(ItemsToDamage);
     }
+
     void Update()
     {
+
+        ShipMove(InputSystem.PlayerInputs.ShipMoveInput);
+        ShipLook(InputSystem.PlayerInputs.ShipLookInput);
+
+
+
         GetThrustAmmounts();
         MoveSetup();
 
@@ -187,9 +195,9 @@ public class ShipControl : MonoBehaviour
     private Vector3 Clamp(Vector3 toClamp)
     {
         Vector3 ClampedValue = new Vector3 (toClamp.x, toClamp.y, toClamp.z);
-        if (Mathf.Abs(toClamp.x) < .01f) { ClampedValue.x = 0; }
-        if (Mathf.Abs(toClamp.y) < .01f) { ClampedValue.y = 0; }
-        if (Mathf.Abs(toClamp.z) < .01f) { ClampedValue.z = 0; }
+        if (Mathf.Abs(toClamp.x) < .001f) { ClampedValue.x = 0; }
+        if (Mathf.Abs(toClamp.y) < .001f) { ClampedValue.y = 0; }
+        if (Mathf.Abs(toClamp.z) < .001f) { ClampedValue.z = 0; }
         return ClampedValue;
     }
 }
